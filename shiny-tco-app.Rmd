@@ -2,17 +2,6 @@
 title: "Shiny app - Tolling Customer Ombudsman"
 ---
 
-```{r, echo=FALSE}
-library(shiny)
-
-shinyAppDir <- "https://adamsimmons.shinyapps.io/TCO_app/"
-
-shinyApp(
-  ui = shinyUI(fluidPage(
-    includeHTML(shinyAppDir)
-  )),
-  server = shinyServer(function(input, output) {
-  })
-)
+```{r}
+knitr::include_url("https://adamsimmons.shinyapps.io/TCO_app/", height="780px")
 ```
-#<iframe height="400" width="100%" frameborder="no" src="https://datasciencegenie.shinyapps.io/MyShinyApp/"> </iframe>
