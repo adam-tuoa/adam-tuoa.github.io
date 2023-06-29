@@ -1,3 +1,28 @@
 ---
 title: "Adam Simmons"
 ---
+
+Here are a few of the projects I've been doing this year.  
+
+I'm just completed my Grad Cert of Data Science at RMIT Online, which has involved both Python (Jupyter Notebook) and R (RStudio):  
+- Data Science with Python
+
+- Data Visualisation
+
+- Data Wrangling
+
+- Applied Analytics  
+
+<br>
+
+It has been a good mix:  
+
+- applying statistical theory and methods involving understanding distributions, linear regression, hypothesis testing.
+
+- plenty of data wrangling using Tidy Data principles
+
+- a text analysis of two 17th century plays, Macbeth and The Tragedie of Mariam
+
+- creating data visualisation with Matplotlib, Seaborn, Plotly and ggplot
+
+- building my first interactive Shiny app
