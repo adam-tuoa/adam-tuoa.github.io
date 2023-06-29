@@ -1,5 +1,5 @@
 ---
-title: "RMIT - Stats and probability with R"
+title: "RMIT Stats and probability with R"
 ---
 
 
