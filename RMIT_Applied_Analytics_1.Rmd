@@ -1,10 +1,16 @@
 ---
-title: "MATH2406 Applied Analytics"
-author: "Adam Simmons - student ID: s4001341 - 21 May 2023"
-subtitle: "Assessment 1: Report"
+title: "RMIT Applied Analytics - Assignment 1"
+author: "Adam Simmons"
+subtitle: "Report"
+date: "21 May 2023"
 output:
   html_document:
     df_print: paged
+knit: (function(input_file, encoding) {
+    out_dir <- 'docs';
+    rmarkdown::render(input_file,
+      encoding=encoding,
+      output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
 ---
 
 ```{r setup, include=FALSE}
