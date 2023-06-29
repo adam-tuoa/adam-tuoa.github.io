@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>RMIT Applied Analytics - Assignment 1</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Adam Simmons</a>
+</li>
+<li>
+  <a href="RMIT-Statistical-Data-Analysis.html">RMIT - Statistical Data Analysis</a>
+</li>
+<li>
+  <a href="RMIT-Stats-and-probability-with-R.html">RMIT - Stats and probability with R</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">RMIT Applied Analytics - Assignment 1</h1>
+
+</div>
+
+
+<p><br></p>
+<div id="setup" class="section level2">
+<h2><strong>Setup</strong></h2>
+<pre class="r"><code>library(readr)
+library(dplyr) 
+library(tidyr)
+library(ggplot2) 
+library(scales)
+library(magrittr)
+library(here)
+library(knitr)
+library(forcats)</code></pre>
+<hr />
+</div>
+<div id="load-inspect-and-prepare-data" class="section level2">
+<h2><strong>Load, inspect and prepare data</strong></h2>
+<div id="load-data" class="section level4">
+<h4>Load data</h4>
+<pre class="r"><code>df &lt;- read_csv(here(&quot;pop_dataset_0002.csv&quot;), show_col_types = FALSE) %&gt;% as_tibble()</code></pre>
+</div>
+<div id="inspect-and-prepare-data" class="section level4">
+<h4>Inspect and prepare data</h4>
+<p>Check structure, values, data types to understand the data’s shape
+and nature, and investigate for errors, inconsistencies, missing values
+and potential issues to address prior to the analysis process.</p>
+<pre class="r"><code>df %&gt;% head()</code></pre>
+<pre><code>## # A tibble: 6 × 4
+##   region     age gender population
+##   &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;
+## 1 SSC21184     0 M             114
+## 2 SSC21184     0 F              95
+## 3 SSC21184     1 M              88
+## 4 SSC21184     1 F             107
+## 5 SSC21184     2 M             122
+## 6 SSC21184     2 F             120</code></pre>
+<p><br></p>
+<p><strong>Unique variables</strong></p>
+<p>All unique values were originally generated for investigation,
+thoiugh for purposes of this report, only up to the first 10 values are
+being shown.</p>
+<pre class="r"><code># Generate unique values and view first 10
+unique_vals &lt;- df %&gt;% lapply(unique) %&gt;% lapply(head, 10) 
+
+# View variables
+unique_vals</code></pre>
+<pre><code>## $region
+##  [1] &quot;SSC21184&quot; &quot;SSC20858&quot; &quot;SSC20503&quot; &quot;SSC20477&quot; &quot;SSC20330&quot; &quot;SSC21660&quot; &quot;SSC22396&quot; &quot;SSC20837&quot; &quot;SSC22373&quot;
+## [10] &quot;SSC20579&quot;
+## 
+## $age
+##  [1] 0 1 2 3 4 5 6 7 8 9
+## 
+## $gender
+## [1] &quot;M&quot; &quot;F&quot;
+## 
+## $population
+##  [1] 114  95  88 107 122 120 123 125 117 140</code></pre>
+<p><strong>Convert character data types to factors</strong></p>
+<pre class="r"><code>df$region %&lt;&gt;% as.factor()
+df$gender %&lt;&gt;% as.factor()</code></pre>
+<p><strong>Summary and structure</strong></p>
+<pre class="r"><code>df %&gt;% select(c(&quot;age&quot;, &quot;population&quot;)) %&gt;%  summary()</code></pre>
+<pre><code>##       age          population    
+##  Min.   : 0.00   Min.   :  0.00  
+##  1st Qu.:13.75   1st Qu.:  0.00  
+##  Median :27.50   Median :  0.00  
+##  Mean   :27.50   Mean   : 14.21  
+##  3rd Qu.:41.25   3rd Qu.:  7.00  
+##  Max.   :55.00   Max.   :726.00</code></pre>
+<pre class="r"><code>df %&gt;% str()</code></pre>
+<pre><code>## tibble [56,000 × 4] (S3: tbl_df/tbl/data.frame)
+##  $ region    : Factor w/ 500 levels &quot;SSC20005&quot;,&quot;SSC20012&quot;,..: 193 193 193 193 193 193 193 193 193 193 ...
+##  $ age       : num [1:56000] 0 0 1 1 2 2 3 3 4 4 ...
+##  $ gender    : Factor w/ 2 levels &quot;F&quot;,&quot;M&quot;: 2 1 2 1 2 1 2 1 2 1 ...
+##  $ population: num [1:56000] 114 95 88 107 122 120 123 125 114 117 ...</code></pre>
+<p><br></p>
+<p><strong>Head of dataset</strong></p>
+<pre class="r"><code>df %&gt;%  head()</code></pre>
+<pre><code>## # A tibble: 6 × 4
+##   region     age gender population
+##   &lt;fct&gt;    &lt;dbl&gt; &lt;fct&gt;       &lt;dbl&gt;
+## 1 SSC21184     0 M             114
+## 2 SSC21184     0 F              95
+## 3 SSC21184     1 M              88
+## 4 SSC21184     1 F             107
+## 5 SSC21184     2 M             122
+## 6 SSC21184     2 F             120</code></pre>
+<p><strong>Missing values</strong></p>
+<pre class="r"><code># Check for NA values
+colSums(is.na(df))</code></pre>
+<pre><code>##     region        age     gender population 
+##          0          0          0          0</code></pre>
+<p><br></p>
+<p><strong>Summary - the dataset contains</strong></p>
+<ul>
+<li>Regions - 500 regions, each coded “SSC#####”</li>
+<li>Age - range between 0-55</li>
+<li>Gender - male (M) and female (F)</li>
+<li>Population - number of people</li>
+<li>There are no missing values</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="task-1" class="section level2">
+<h2><strong>Task 1</strong></h2>
+<div
+id="perform-the-following-data-analysis-by-looking-at-some-descriptive-statistics-on-the-complete-dataset"
+class="section level3">
+<h3><strong>1. Perform the following data analysis by looking at some
+descriptive statistics on the complete dataset</strong></h3>
+<p>First it is necessary convert the dataset to Tidy format - in its
+current form, the <code>population</code> values are actually multiple
+observations and values combined. This will make it easier to work with
+for analysis and visualisation.</p>
+<p>Using the tidyr function, <code>uncount()</code>, this breaks down
+the <code>population</code> values so each row will be a single
+observation (each person) with one value for each of three variables:
+<code>region</code>, <code>gender</code> and <code>age</code>.</p>
+<pre class="r"><code>df_uncount &lt;- df %&gt;% uncount(weights = population)</code></pre>
+</div>
+<div id="find-the-mean-age-of-all-people-included-in-the-dataset."
+class="section level3">
+<h3>1.1 Find the mean age of all people included in the dataset.</h3>
+<pre class="r"><code>region_mean_age &lt;- df_uncount$age %&gt;% mean()
+region_mean_age</code></pre>
+<pre><code>## [1] 27.80027</code></pre>
+<p>The mean age of all people in the dataset is:
+<strong>27.8</strong></p>
+</div>
+<div id="find-the-standard-deviation-of-all-people-in-the-dataset."
+class="section level3">
+<h3>1.2 Find the standard deviation of all people in the dataset.</h3>
+<pre class="r"><code>region_stand_dev &lt;- df_uncount$age %&gt;% sd()
+region_stand_dev</code></pre>
+<pre><code>## [1] 15.77805</code></pre>
+<p>The standard deviation for age of all people in the data set is:
+<strong>15.78</strong></p>
+<hr />
+</div>
+</div>
+<div id="task-2" class="section level2">
+<h2><strong>Task 2</strong></h2>
+<div id="consider-only-the-mean-age-of-each-region."
+class="section level3">
+<h3><strong>2. Consider only the mean age of each region.</strong></h3>
+<p>For this task, the mean age for each region will be calculated to
+create a new dataset.</p>
+<pre class="r"><code># Calculate mean age for each region - arrange by region code
+region_means &lt;- df_uncount %&gt;% 
+  group_by(region) %&gt;% 
+  summarise(mean_age = mean(age)) %&gt;%
+  arrange(region)
+
+# View first 5 rows
+region_means %&gt;% head(5)</code></pre>
+<pre><code>## # A tibble: 5 × 2
+##   region   mean_age
+##   &lt;fct&gt;       &lt;dbl&gt;
+## 1 SSC20005     30.5
+## 2 SSC20012     30.1
+## 3 SSC20018     32.8
+## 4 SSC20027     27.9
+## 5 SSC20029     21.4</code></pre>
+<p><br> <br></p>
+</div>
+<div id="produce-summary-statistics-for-the-region-means"
+class="section level3">
+<h3>2.1 Produce summary statistics for the region means:</h3>
+<ul>
+<li>mean</li>
+<li>standard deviation</li>
+<li>minimum</li>
+<li>first quartile</li>
+<li>median</li>
+<li>third quartile</li>
+<li>maximum</li>
+<li>interquartile range</li>
+<li>histogram of the distribution of region means</li>
+</ul>
+<div id="summary-statistics-for-region-means" class="section level4">
+<h4>Summary statistics for region means:</h4>
+<pre class="r"><code>region_summary &lt;- region_means %&gt;% 
+        summarise(Mean = mean(mean_age),
+                  `Standard deviation` = sd(mean_age),
+                  Minimum = min(mean_age),
+                  `First quartile` = quantile(mean_age, probs = 0.25),
+                  Median = median(mean_age),
+                  `Third quartile` = quantile(mean_age,probs = 0.75),
+                  Maximum = max(mean_age),
+                  `Interquartile range` = IQR(mean_age))
+region_summary</code></pre>
+<pre><code>## # A tibble: 1 × 8
+##    Mean `Standard deviation` Minimum `First quartile` Median `Third quartile` Maximum `Interquartile range`
+##   &lt;dbl&gt;                &lt;dbl&gt;   &lt;dbl&gt;            &lt;dbl&gt;  &lt;dbl&gt;            &lt;dbl&gt;   &lt;dbl&gt;                 &lt;dbl&gt;
+## 1  30.6                 8.00       2             27.4   29.2             33.4      55                  5.92</code></pre>
+<pre class="r"><code>region_summary %&gt;% t() %&gt;% 
+  kable(caption = &quot;Summary statistics for region means&quot;, align = &quot;lc&quot;, digits = 2)</code></pre>
+<table>
+<caption>Summary statistics for region means</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Mean</td>
+<td align="left">30.61</td>
+</tr>
+<tr class="even">
+<td align="left">Standard deviation</td>
+<td align="left">8.00</td>
+</tr>
+<tr class="odd">
+<td align="left">Minimum</td>
+<td align="left">2.00</td>
+</tr>
+<tr class="even">
+<td align="left">First quartile</td>
+<td align="left">27.43</td>
+</tr>
+<tr class="odd">
+<td align="left">Median</td>
+<td align="left">29.23</td>
+</tr>
+<tr class="even">
+<td align="left">Third quartile</td>
+<td align="left">33.35</td>
+</tr>
+<tr class="odd">
+<td align="left">Maximum</td>
+<td align="left">55.00</td>
+</tr>
+<tr class="even">
+<td align="left">Interquartile range</td>
+<td align="left">5.92</td>
+</tr>
+</tbody>
+</table>
+<p><br> <br></p>
+</div>
+<div id="histogram-of-distribution-of-region-means"
+class="section level4">
+<h4>Histogram of distribution of region means</h4>
+<pre class="r"><code>region_means %&gt;%  
+  ggplot() +
+  geom_histogram(aes(mean_age), bins = 11, color = &quot;white&quot;, fill = &quot;steelblue&quot;) +
+  labs(x = &quot;Region Mean Age&quot;, y = &#39;Frequency&#39;, title = &quot;Histogram of region means - frequency&quot;)</code></pre>
+<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-16-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div
+id="produce-a-histogram-of-the-region-means-with-proportions-or-percentages-on-the-y-axis."
+class="section level3">
+<h3>2.2 Produce a histogram of the region means with proportions or
+percentages on the y axis.</h3>
+<pre class="r"><code>region_means %&gt;% ggplot() +
+  geom_histogram(aes(x = mean_age, y = after_stat(density)), bins=11, color = &quot;white&quot;, fill = &quot;steelblue&quot;) +
+  labs(title = &quot;Histogram of region means - percentage&quot;, x = &quot;Mean Age&quot;, y = &quot;Percentage&quot;) +
+  scale_y_continuous(labels = percent) +
+  scale_x_continuous(breaks = seq(0,55,10)) </code></pre>
+<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-17-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div
+id="discuss-whether-the-region-means-exhibit-the-characteristic-shape-of-a-normal-distribution.-include-at-least-two-justifications-in-support-of-your-conclusion."
+class="section level3">
+<h3>2.3 Discuss whether the region means exhibit the characteristic
+shape of a normal distribution. Include at least two justifications in
+support of your conclusion.</h3>
+<p>In considering whether the distribution of the region means exhibits
+the characteristics of a normal distribution, there are several factors
+that will be checked:</p>
+<ul>
+<li>symmetrical about the central values?</li>
+<li>is it bell-shaped?</li>
+<li>QQ plot</li>
+<li>Shapiro-Wilk test</li>
+</ul>
+<p><br></p>
+<div id="symmetryshape" class="section level4">
+<h4>Symmetry/Shape</h4>
+<pre class="r"><code>plot_region_means &lt;- region_means %&gt;%  
+  ggplot() +
+  geom_histogram(aes(mean_age), bins = 11, color = &quot;white&quot;, fill = &quot;steelblue&quot;) +
+  labs(x = &quot;Region Mean Age&quot;, y = &#39;Frequency&#39;, title = &quot;Histogram of region means&quot;) +
+  scale_x_continuous(breaks = seq(0,55,10)) +
+  geom_vline(aes(xintercept = mean(mean_age)), alpha = 0.6, color = &#39;red&#39;, linetype = &#39;dashed&#39;, size = 0.4)
+
+plot_region_means</code></pre>
+<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-18-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><strong>Observation 1:</strong> From this histogram, it can be seen
+that the distribution of the region means is not symmetrical about the
+mean, nor is it a symmetrical bell shape. It is slightly right-skewed,
+with long tails on either side of the middle.</p>
+<p><br> <br> <br> <br> <br> <br> <br></p>
+</div>
+<div id="qq-plot" class="section level4">
+<h4>QQ Plot</h4>
+<pre class="r"><code>region_means %&gt;% 
+  ggplot(aes(sample = mean_age)) + 
+  stat_qq(color = &quot;steelblue3&quot;, alpha=0.6) + 
+  stat_qq_line(color=&quot;red&quot;, alpha=0.6) +
+  labs(x  = &#39;Theoretical quantiles&#39;, y = &#39;Sample quantiles&#39;, 
+       title = &#39;Q-Q Plot for Region means&#39;)</code></pre>
+<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-19-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><strong>Observation 2:</strong> To be considered as a normal
+distribution, in a QQ plot the data points (blue) should match the
+theoretical line (red), which would indicate the sample and theoretical
+quantiles align. From the plot above, it can be seen that the data
+points do not match and are not in a straight line, indicating the
+region means are not normally distributed.</p>
+</div>
+<div id="shapiro-wilk-normality-test" class="section level4">
+<h4>Shapiro-Wilk normality test</h4>
+<pre class="r"><code>sw_results &lt;- shapiro.test(region_means$mean_age)
+sw_results</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  region_means$mean_age
+## W = 0.90793, p-value &lt; 2.2e-16</code></pre>
+<pre class="r"><code>sw_results$p.value</code></pre>
+<pre><code>## [1] 7.757325e-17</code></pre>
+<p><strong>Observation 3:</strong> The p-value calculated by the
+Shapiro-Wilks test is 0.000000000000000078, which is much less than
+0.05, indicating that the data is not normally distributed.</p>
+</div>
+<div id="summary" class="section level4">
+<h4><strong>Summary</strong></h4>
+<p>From visual investigation and statistical testing of the data, the
+region means do not exhibit the characteristic shape of a normal
+distribution.</p>
+</div>
+</div>
+</div>
+<div id="task-3" class="section level2">
+<h2><strong>Task 3</strong></h2>
+<div id="consider-the-region-with-the-largest-population-size"
+class="section level3">
+<h3><strong>3. Consider the region with the largest population
+size</strong></h3>
+</div>
+<div
+id="identify-the-region-and-describe-its-population-size-in-comparison-with-the-other-regions."
+class="section level3">
+<h3>3.1 Identify the region and describe its population size in
+comparison with the other regions.</h3>
+<pre class="r"><code>region_population &lt;- df_uncount %&gt;% 
+  group_by(region) %&gt;% 
+  summarise(population = n()) %&gt;% 
+  arrange(desc(population))
+region_population %&gt;% head(5)</code></pre>
+<pre><code>## # A tibble: 5 × 2
+##   region   population
+##   &lt;fct&gt;         &lt;int&gt;
+## 1 SSC22015      37948
+## 2 SSC21671      22979
+## 3 SSC21125      20939
+## 4 SSC20911      19340
+## 5 SSC22569      19274</code></pre>
+<pre class="r"><code>region_mean_pop &lt;- region_population %&gt;% mean(population)
+
+# Set parameters to highlight region with largest population, with annotation 
+highlight &lt;- region_population[1,] 
+region_max_code &lt;-as.character(region_population[[1, &quot;region&quot;]])
+annotation &lt;- data.frame(x=13, y=region_population[[1,2]], label=region_max_code)
+
+# Plot to show Top 100 Regions by population
+region_population[1:100,] %&gt;%  
+  mutate(region = fct_reorder(region, desc(population))) %&gt;%
+  ggplot(aes(x = region, y = population)) +
+  geom_bar(stat = &quot;identity&quot;, colour=&quot;white&quot;, fill = &quot;steelblue&quot;, alpha = 0.5) +
+  geom_bar(data = highlight, aes(x = region, y = population), stat=&quot;identity&quot;, colour=&quot;white&quot;, fill = &quot;steelblue&quot;) +
+  scale_x_discrete(labels = NULL) +
+  labs(x=&quot;Region&quot;, y=&quot;Population&quot;, title=paste(&quot;Top 100 Regions by Population&quot;)) +
+  geom_text(data=annotation, aes( x=x, y=y-4000, label=label), size=3) +
+  annotate(&quot;segment&quot;, x = 7, xend = 3, y = annotation$y-4200, yend = annotation$y - 4200, color = &quot;grey60&quot;, size=0.5, arrow=arrow(angle = 30, length = unit(0.1, &quot;cm&quot;), type = &quot;closed&quot;)) +
+  geom_hline(data = region_population, aes(yintercept = mean(population)), alpha = 0.6, color = &quot;red&quot;, linetype = &quot;dashed&quot;, size = 0.4) +
+  theme(panel.background = element_rect(NA), axis.ticks = element_blank())</code></pre>
+<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" />
+As can be seen in the chart above, there is a wide range of population
+values across the first 20% of the 500 regions, with the remaining 80%
+forming a long flat tail. The mean population is 1592.03, though the
+median is 81, also indicating the distribution is highly skewed.</p>
+<p>The region with the largest population is SSC22015, with a total of
+37948. This region could well be considered an outlier as it is 23.84
+times greater than the mean population for all regions, and 65.14%
+greater than the second largest region.</p>
+</div>
+<div id="produce-summary-statistics-for-age-in-this-region."
+class="section level3">
+<h3>3.2 Produce summary statistics for age in this region.</h3>
+<ul>
+<li>mean</li>
+<li>standard deviation</li>
+<li>minimum</li>
+<li>first quartile</li>
+<li>median</li>
+<li>third quartile</li>
+<li>maximum</li>
+<li>interquartile range</li>
+<li>histogram of the distribution of ages in the region [as indicated
+during the course Q&amp;A sessions]</li>
+</ul>
+<p><br></p>
+<div id="summary-statistics-for-the-largest-region---ssc22015"
+class="section level4">
+<h4>Summary statistics for the largest region - SSC22015:</h4>
+<pre class="r"><code>pop_largest &lt;- df_uncount %&gt;% 
+  filter(region == region_max_code)</code></pre>
+<pre class="r"><code>largest_region_summary &lt;- pop_largest %&gt;%   
+        summarise(Mean = mean(age),
+                  `Standard deviation` = sd(age),
+                  Minimum = min(age),
+                  `First quartile` = quantile(age, probs = 0.25),
+                  Median = median(age),
+                  `Third quartile` = quantile(age,probs = 0.75),
+                  Maximum = max(age),
+                  `Interquartile range` = IQR(age))
+
+largest_region_summary</code></pre>
+<pre><code>## # A tibble: 1 × 8
+##    Mean `Standard deviation` Minimum `First quartile` Median `Third quartile` Maximum `Interquartile range`
+##   &lt;dbl&gt;                &lt;dbl&gt;   &lt;dbl&gt;            &lt;dbl&gt;  &lt;dbl&gt;            &lt;dbl&gt;   &lt;dbl&gt;                 &lt;dbl&gt;
+## 1  25.5                 15.9       0               11     26               38      55                    27</code></pre>
+<pre class="r"><code>largest_region_summary %&gt;% t() %&gt;% 
+  kable(caption = paste(&quot;Summary statistics for region&quot;, region_max_code), align = &quot;lc&quot;, digits = 2)</code></pre>
+<table>
+<caption>Summary statistics for region SSC22015</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Mean</td>
+<td align="left">25.52</td>
+</tr>
+<tr class="even">
+<td align="left">Standard deviation</td>
+<td align="left">15.90</td>
+</tr>
+<tr class="odd">
+<td align="left">Minimum</td>
+<td align="left">0.00</td>
+</tr>
+<tr class="even">
+<td align="left">First quartile</td>
+<td align="left">11.00</td>
+</tr>
+<tr class="odd">
+<td align="left">Median</td>
+<td align="left">26.00</td>
+</tr>
+<tr class="even">
+<td align="left">Third quartile</td>
+<td align="left">38.00</td>
+</tr>
+<tr class="odd">
+<td align="left">Maximum</td>
+<td align="left">55.00</td>
+</tr>
+<tr class="even">
+<td align="left">Interquartile range</td>
+<td align="left">27.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="histogram-of-distribution-of-age-in-the-region"
+class="section level4">
+<h4>Histogram of distribution of age in the region</h4>
+<pre class="r"><code>plot_largest_region &lt;- pop_largest %&gt;%  ggplot() +
+  geom_histogram(aes(age), bins = 11, color = &quot;white&quot;, fill = &quot;steelblue&quot;) +
+  labs(x = &quot;Age&quot;, y = &quot;Frequency&quot;, title = paste(&quot;Histogram of age in&quot;, region_max_code)) + scale_x_continuous(breaks = seq(0,55,10)) +
+  geom_vline(aes(xintercept = mean(age)), alpha = 0.6, color = &quot;red&quot;, linetype = &quot;dashed&quot;, size = 0.4)
+plot_largest_region</code></pre>
+<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-26-1.png" width="480" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Combine summary stats
+sum_stats &lt;- data.frame(cbind(t(largest_region_summary), t(region_summary)))
+# View table of summary stats for comparison  
+sum_stats %&gt;% kable(align = &quot;lll&quot;, digits = 2, col.names = c(region_max_code, &quot;All regions&quot;))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">SSC22015</th>
+<th align="left">All regions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Mean</td>
+<td align="left">25.52</td>
+<td align="left">30.61</td>
+</tr>
+<tr class="even">
+<td align="left">Standard deviation</td>
+<td align="left">15.90</td>
+<td align="left">8.00</td>
+</tr>
+<tr class="odd">
+<td align="left">Minimum</td>
+<td align="left">0.00</td>
+<td align="left">2.00</td>
+</tr>
+<tr class="even">
+<td align="left">First quartile</td>
+<td align="left">11.00</td>
+<td align="left">27.43</td>
+</tr>
+<tr class="odd">
+<td align="left">Median</td>
+<td align="left">26.00</td>
+<td align="left">29.23</td>
+</tr>
+<tr class="even">
+<td align="left">Third quartile</td>
+<td align="left">38.00</td>
+<td align="left">33.35</td>
+</tr>
+<tr class="odd">
+<td align="left">Maximum</td>
+<td align="left">55.00</td>
+<td align="left">55.00</td>
+</tr>
+<tr class="even">
+<td align="left">Interquartile range</td>
+<td align="left">27.00</td>
+<td align="left">5.92</td>
+</tr>
+</tbody>
+</table>
+<p>There are significant differences between the two distributions,
+despite the range being similar.</p>
+<ul>
+<li>the central values are lower in SSC22015, with the example of its
+mean of 25.52 compared to the overall region mean of 30.61.</li>
+<li>the standard variation of SSC22015 is almost double of the region
+means - 15.9 compared to 8.</li>
+<li>The middle 50% or interquartile range is much wider in SSC22015 - 27
+compared to 5.92.</li>
+</ul>
+<p>These differences are borne out when looking at visualisations of the
+two distributions side-by-side (below). The reason is that they
+represent different things - the distribution of ages within a specific
+region shows the frequency across the entire age range, whereas the
+region means are by definition, an indication of the central value
+within each region.</p>
+<pre class="r"><code>ggpubr::ggarrange(plot_largest_region, plot_region_means, ncol = 2, nrow=1)</code></pre>
+<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-28-1.png" width="864" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="plot-the-distribution-of-age-for-males-in-the-region."
+class="section level3">
+<h3>3.4 Plot the distribution of age for males in the region.</h3>
+<pre class="r"><code>pop_largest %&gt;% filter(gender == &quot;M&quot;) %&gt;% 
+  ggplot() + 
+  geom_histogram(aes(x = age), color = &quot;white&quot;, alpha = 0.9, fill = &quot;steelblue&quot;, bins=11) +
+  scale_x_continuous(breaks = seq(0,55,10)) + 
+  labs(x = &quot;Age&quot;, y = &quot;Frequency&quot;, title = paste(&quot;Histogram of age in&quot;, region_max_code,&quot;- Male&quot;))</code></pre>
+<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-29-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="plot-the-distribution-of-age-for-females-in-the-region."
+class="section level3">
+<h3>3.5 Plot the distribution of age for females in the region.</h3>
+<pre class="r"><code>pop_largest %&gt;% filter(gender == &quot;F&quot;) %&gt;% 
+  ggplot(aes(x = age)) + 
+  geom_histogram(color = &quot;white&quot;, alpha = 0.8, fill = &quot;coral1&quot;, bins=11) +
+  scale_x_continuous(breaks = seq(0,55,10)) + 
+  labs(x = &quot;Age&quot;, y = &quot;Frequency&quot;, title = paste(&quot;Histogram of age in&quot;, region_max_code,&quot;- Female&quot;))</code></pre>
+<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-30-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div
+id="compare-the-distributions-of-task-3.4-and-task-3.5-and-discuss-your-findings."
+class="section level3">
+<h3>3.6 Compare the distributions of Task 3.4 and Task 3.5, and discuss
+your findings.</h3>
+<p><br></p>
+<pre class="r"><code>pop_largest %&gt;% 
+  ggplot(aes(x = age)) + 
+  geom_histogram(color = &quot;white&quot;, fill = &quot;steelblue&quot;, bins=11) + 
+  labs(x = &quot;Age&quot;, y = &quot;Frequency&quot;, title = &quot;Histogram of Age - by Gender&quot;) +
+  scale_x_continuous(breaks = seq(0,55,10)) +   
+  facet_wrap(~gender, labeller = labeller(gender = c(&quot;F&quot; = &quot;Female&quot;, &quot;M&quot; =&quot;Male&quot;)))</code></pre>
+<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-31-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p><br> <br></p>
+<pre class="r"><code>pop_largest %&gt;%
+  ggplot(mapping = aes(x = age, fill = gender), ) +
+  geom_histogram(bins=11, alpha=0.6, position = &quot;identity&quot;, color = &quot;white&quot;) +
+  scale_x_continuous(breaks = seq(0,55,10))  +
+  scale_fill_manual(values = c(&quot;coral2&quot;, &quot;steelblue3&quot;)) +
+  labs(x = &quot;Age&quot;, y = &quot;Frequency&quot;, title = &quot;Histogram of Age - comparing Gender&quot;)</code></pre>
+<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-32-1.png" width="480" style="display: block; margin: auto;" />
+<br> <br></p>
+<p>The individual and combined histograms above show that while similar
+in overall shape and size, there are discernible differences.</p>
+<ul>
+<li>there is a male-bias for ages 0-20</li>
+<li>there is a female-bias for all ages above 20</li>
+<li>the difference between the peak in the childhood range and the
+higher adult range between ages 25-40, is approximately 20-35 years,
+which would correspond to common age difference between parents and
+their children<br />
+</li>
+<li>a gradual decrease in numbers at older ages, which is to be expected
+as the possibility of illness, accidents and mortality resulting in
+death increases.</li>
+</ul>
+<p>The observed bias towards males in childhood shifting to females in
+adulthood reflects the trends shown in worldwide data, such as outlined
+by Ritchie and Roser (2019), which states “the sex ratio – the number of
+males relative to females – at birth and in childhood are male-biased in
+almost every country”, though “as we move through adulthood we see that
+this ratio is lower and lower.”</p>
+<p>Though in this case, there is a significant higher female-biased
+difference in the sex ratio between the ages of 21-37. Further data
+would be required to understand the reason for this, but factors could
+include gender-biased employment and education opportunities, services,
+mortality rate of males (young drivers), cultural/family/community
+networks and/or housing affordability.</p>
+<hr />
+</div>
+</div>
+<div id="task-4" class="section level2">
+<h2><strong>Task 4</strong></h2>
+<div id="now-consider-all-regions" class="section level3">
+<h3><strong>4. Now consider all regions:</strong></h3>
+</div>
+<div
+id="for-each-region-calculate-the-ratio-of-older-to-younger-people-where-younger-is-defined-as-aged-below-40-years-and-older-as-age-40-years-and-above."
+class="section level3">
+<h3>4.1 For each region, calculate the ratio of older to younger people,
+where ‘younger’ is defined as aged below 40 years and ‘older’ as age 40
+years and above.</h3>
+<p><br></p>
+<pre class="r"><code># Add factor for age group- older/younger
+df_groups &lt;- df_uncount %&gt;%
+  mutate(age_group = factor(case_when(
+    age &lt; 40 ~ &quot;Younger&quot;,
+    age &gt;= 40 ~ &quot;Older&quot;
+  )))</code></pre>
+<p><br></p>
+<pre class="r"><code># Generate ratios for older/younger age groups by region
+region_age_stats &lt;- df_groups %&gt;% 
+  group_by(region) %&gt;% 
+  summarise(population = n(),
+            older = sum(age_group == &quot;Older&quot;),
+            younger = sum(age_group == &quot;Younger&quot;),
+            ratio_older_to_younger = older/younger)
+
+# View first 6 rows
+region_age_stats %&gt;%  head()</code></pre>
+<pre><code>## # A tibble: 6 × 5
+##   region   population older younger ratio_older_to_younger
+##   &lt;fct&gt;         &lt;int&gt; &lt;int&gt;   &lt;int&gt;                  &lt;dbl&gt;
+## 1 SSC20005         33    17      16                  1.06 
+## 2 SSC20012        425   178     247                  0.721
+## 3 SSC20018        100    50      50                  1    
+## 4 SSC20027       1137   371     766                  0.484
+## 5 SSC20029         51    12      39                  0.308
+## 6 SSC20048        924   316     608                  0.520</code></pre>
+</div>
+<div id="plot-the-ratio-of-each-region-against-its-population-size."
+class="section level3">
+<h3>4.2 Plot the ratio of each region against its population size.</h3>
+<pre class="r"><code># Create plot ratio older/younger vs population
+region_age_stats %&gt;%
+  ggplot(aes(x = population, y = ratio_older_to_younger)) + 
+  geom_point(alpha=0.3) +
+  geom_hline(aes(yintercept = 1), alpha = 0.6, color = &#39;red&#39;, linetype = &#39;dashed&#39;, size = 0.4) +
+  labs(x = &quot;Population&quot;, y = &quot;Ratio&quot;, title = &quot;Ratio of Older/Younger per Region by Population size&quot;)</code></pre>
+<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-35-1.png" width="480" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Create plot ratio for populations under 250 
+plot_less_250 &lt;- region_age_stats %&gt;% filter (population &lt; 200) %&gt;% 
+  ggplot(aes(x = population, y = ratio_older_to_younger)) + 
+  geom_point(alpha=0.4) +
+  geom_hline(aes(yintercept = 1), alpha = 0.6, color = &#39;red&#39;, linetype = &#39;dashed&#39;, size = 0.4) +
+  labs(x = &quot;Population&quot;, y = &quot;Ratio&quot;, title = &quot;Ratio of Older/Younger per Region by Population - under 250&quot;)</code></pre>
+<pre class="r"><code># Create plot ratio for populations 250 and over 
+plot_over_250 &lt;- region_age_stats %&gt;%
+  filter (population &gt;= 200) %&gt;% 
+  ggplot(aes(x = population, y = ratio_older_to_younger)) + 
+  geom_point(alpha=0.4) +
+  geom_hline(aes(yintercept = 1), alpha = 0.6, color = &#39;red&#39;, linetype = &#39;dashed&#39;, size = 0.4) +
+  labs(x = &quot;Population&quot;, y = &quot;Ratio&quot;, title = &quot;Ratio of Older/Younger per Region by Population - 250 and over&quot;)
+
+# View plots
+ggpubr::ggarrange(plot_less_250, plot_over_250, ncol = 2, nrow=1)</code></pre>
+<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-37-1.png" width="864" style="display: block; margin: auto;" /></p>
+</div>
+<div
+id="comment-on-any-trends-you-see-in-the-data.-what-could-explain-such-trends"
+class="section level3">
+<h3>4.3 Comment on any trends you see in the data. What could explain
+such trends?</h3>
+<p><strong>From the plots above, the general trends about age groups
+observed are:</strong></p>
+<ul>
+<li>Regions with smaller populations have a greater variety of ratios
+from no older people, to over 8 times more than younger people.</li>
+<li>Regions with populations greater than 200 have a greater proportion
+of younger people.</li>
+<li>Regions with populations greater than 5000 are likely to have two to
+four times more young people than old.</li>
+<li>For larger populations there is a degree of negative correlation to
+the ratio of older to younger age groups.</li>
+</ul>
+<p><strong>Explanations for these trends for more young people in
+regions of larger population could be:</strong></p>
+<ul>
+<li>Education institutions of all levels more likely to be in larger
+regions, where greater numbers can facilitate more options and
+resources.</li>
+<li>Greater number and variety of work opportunities in more densely
+populated regions, which can have lower unemployment rates than regional
+areas.</li>
+<li>Greater access to hospitals/health services - important for all age
+groups, including families,</li>
+<li>Migrants tend to settle in urban areas, and according to Australian
+Bureau of Statistics (2018) the majority of migrants to Australia are
+aged between 18 and 34 years (ABS 2018).</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="task-5" class="section level2">
+<h2><strong>Task 5</strong></h2>
+<div id="once-again-consider-all-regions" class="section level3">
+<h3><strong>5. Once again consider all regions:</strong></h3>
+</div>
+<div id="for-each-region-calculate-the-ratio-of-males-to-females."
+class="section level3">
+<h3>5.1 For each region, calculate the ratio of males to females.</h3>
+<pre class="r"><code>region_gender_stats &lt;- df_groups %&gt;% group_by(region) %&gt;% 
+  summarise(population = n(),
+            female = sum(gender == &quot;F&quot;),
+            male = sum(gender == &quot;M&quot;),
+            ratio_male_to_female = male/female)
+region_gender_stats %&gt;%  head(5)</code></pre>
+<pre><code>## # A tibble: 5 × 5
+##   region   population female  male ratio_male_to_female
+##   &lt;fct&gt;         &lt;int&gt;  &lt;int&gt; &lt;int&gt;                &lt;dbl&gt;
+## 1 SSC20005         33     20    13                 0.65
+## 2 SSC20012        425    208   217                 1.04
+## 3 SSC20018        100     40    60                 1.5 
+## 4 SSC20027       1137    538   599                 1.11
+## 5 SSC20029         51     21    30                 1.43</code></pre>
+</div>
+<div
+id="plot-the-ratio-of-gender-for-each-region-against-its-population-size."
+class="section level3">
+<h3>5.2 Plot the ratio of gender for each region against its population
+size.</h3>
+<pre class="r"><code>region_gender_stats %&gt;% ggplot(aes(x = population, y = ratio_male_to_female)) + 
+  geom_point(alpha=0.3) +
+  geom_hline(aes(yintercept = 1), alpha = 0.6, color = &#39;red&#39;, linetype = &#39;dashed&#39;, size = 0.4) +
+  labs(x = &quot;Population&quot;, y = &quot;Ratio&quot;, title = &quot;Ratio of Gender per Region by Population size&quot;)</code></pre>
+<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-39-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div
+id="comment-on-any-trends-you-see-in-the-data.-what-could-explain-such-trends-1"
+class="section level3">
+<h3>5.3 Comment on any trends you see in the data. What could explain
+such trends?</h3>
+<p><strong>From the plot above, the general trends on gender observed
+are:</strong></p>
+<ul>
+<li>Regions with smaller populations have a greater variety of gender
+ratios from having no males, to approximately 6 times more males than
+females.</li>
+<li>Regions with populations greater than approximately 1500-2000 are
+likely to be close to parity</li>
+</ul>
+<p><strong>Explanations for these trends on gender could
+be:</strong></p>
+<ul>
+<li>For regions with populations greater than approximately 1000, where
+gender ratios tend to be close to parity, this is likely to be due to
+greater and more equal access to resources, facilities and
+opportunities.</li>
+<li>Regions with smaller populations may be more significantly impacted
+by factors such as work type opportunities, immigration and
+culture/social norms, which in turn may impact the gender makeup.</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="task-6" class="section level2">
+<h2><strong>Task 6</strong></h2>
+<div
+id="imagine-you-have-enough-financial-resources-for-launching-a-new-energy-drink-in-any-two-regions"
+class="section level3">
+<h3><strong>6. Imagine you have enough financial resources for launching
+a new energy drink in any two regions:</strong></h3>
+</div>
+<div
+id="select-a-gender-and-age-group-which-spans-3-to-5-years-as-primary-target-market."
+class="section level3">
+<h3>6.1 Select a gender and age group which spans 3 to 5 years as
+primary target market.</h3>
+<p><strong>Selection for target market:</strong></p>
+<ul>
+<li>female</li>
+<li>18-23</li>
+</ul>
+<p>The choice for this market is to establish brand awareness in a
+cohort that are likely to be engaged in social and physical activities,
+forming habits that may be long-lasting, and to benefit from increasing
+female-bias in population as age increases.</p>
+</div>
+<div id="which-two-regions-would-you-choose-explain-your-reasoning."
+class="section level3">
+<h3>6.2 Which two regions would you choose? Explain your reasoning.</h3>
+<p>The preferred regions will have the largest population of females for
+the target age bracket. Let’s look at the top 5 regions based on that
+criteria.</p>
+<pre class="r"><code># Get top 2 regions by filtering on selection criteria (age and gender)
+top_5_regions &lt;- 
+  df_groups %&gt;% 
+  group_by(region) %&gt;% 
+  filter(age &gt;= 18 &amp; age &lt; 23) %&gt;% 
+  summarise(population = n(),
+            female = sum(gender == &quot;F&quot;),
+            male = sum(gender == &quot;M&quot;),
+            ratio_male_to_female = male/female) %&gt;% 
+  arrange(desc(population)) %&gt;% head(5)
+
+top_5_regions</code></pre>
+<pre><code>## # A tibble: 5 × 5
+##   region   population female  male ratio_male_to_female
+##   &lt;fct&gt;         &lt;int&gt;  &lt;int&gt; &lt;int&gt;                &lt;dbl&gt;
+## 1 SSC20492       5529   3218  2311                0.718
+## 2 SSC22015       2816   1453  1363                0.938
+## 3 SSC21143       2432   1176  1256                1.07 
+## 4 SSC21125       2047    915  1132                1.24 
+## 5 SSC21671       1995    976  1019                1.04</code></pre>
+<p><strong>The two regions that will be targeted are:</strong></p>
+<ul>
+<li>SSC20492</li>
+<li>SSC22015</li>
+</ul>
+<p>These two regions have been selected as they have the largest female
+populations for the selected age group, 3218 and 1453 respectively.</p>
+<p>An unexpected bonus is that the gender ratio of the target age
+bracket is in favour of females in both regions, which may help
+potential flow-on to the general population.</p>
+</div>
+<div id="estimating-attendance-numbers-and-likelihood"
+class="section level3">
+<h3>6.3 Estimating attendance numbers and likelihood</h3>
+<p>Task exercise: <em>In planning each region’s campaign launch, you
+believe that 15% of your primary target market in the region will attend
+the launch. Use this assumption to estimate the number of the primary
+target market that you expect to attend in each region. Also estimate
+the likelihood that at least 30% of the primary target market will
+attend in each region. Explain your reasoning for both
+estimates.</em></p>
+<p><strong>Calculating expected attendance for each region</strong></p>
+<pre class="r"><code># Calculate expected attendance based on 15% attendance
+target &lt;- top_5_regions %&gt;% 
+  select(&quot;region&quot;, &quot;female&quot;) %&gt;% 
+  rename(target_population = female) %&gt;% 
+  mutate(expected_attendance = round(target_population * 0.15),
+         double_attendance = round(target_population * 0.3)) %&gt;% 
+  arrange(desc(target_population)) %&gt;% head(2)
+target</code></pre>
+<pre><code>## # A tibble: 2 × 4
+##   region   target_population expected_attendance double_attendance
+##   &lt;fct&gt;                &lt;int&gt;               &lt;dbl&gt;             &lt;dbl&gt;
+## 1 SSC20492              3218                 483               965
+## 2 SSC22015              1453                 218               436</code></pre>
+<p><strong>Expected attendance numbers for each region calculated at 15%
+of the total number of females in the target age bracket:</strong></p>
+<ul>
+<li>483 in Region SSC20492</li>
+<li>218 in Region SSC22015</li>
+</ul>
+<p><strong>Calculating probability of 30% attendance for each
+region</strong></p>
+<p>To calculate the possibility of achieving 30% attendance of the
+target population, a binomial distribution will be used to estimate this
+likelihood.</p>
+<p>The binomial distribution has been selected based on there being:</p>
+<ul>
+<li>two mutually exclusive outcomes - attending yes/no</li>
+<li>defined number of trials (target population)</li>
+<li>probability for each person (trial) is fixed at 15%</li>
+</ul>
+<pre class="r"><code># Probability - 15%
+p &lt;- 0.15
+
+# Region 1 parameters
+target_region1 &lt;- target$double_attendance[1]
+n1 &lt;- target$target_population[1]
+
+# Calculate Region 1 probability
+p_region1 &lt;- pbinom(target_region1, size = n1, prob = p, lower.tail = FALSE)
+
+# Region 2 parameters
+target_region2 &lt;- target$double_attendance[2]
+n2 &lt;- target$target_population[2]
+
+# Calculate Region 1 probability
+p_region2 &lt;- pbinom(target_region2, size = n2, prob = p, lower.tail = FALSE)</code></pre>
+<pre class="r"><code># Probability of achieving 30% attendance in Region 1
+p_region1 </code></pre>
+<pre><code>## [1] 3.243292e-103</code></pre>
+<pre class="r"><code># Probability of achieving 30% attendance in Region 2
+p_region2</code></pre>
+<pre><code>## [1] 5.073508e-48</code></pre>
+<p><br></p>
+<p><strong>The probability of achieving 30% attendance in either region
+is close to 0% in both cases.</strong></p>
+<p><br></p>
+<div id="conclusion" class="section level4">
+<h4><strong>Conclusion</strong></h4>
+<p>Given the premise of expecting only 15% success from the expected
+number of trials of a yes/no outcome, achieving the expected outcome is
+a 50% probability. To double the attendance to 30% would require double
+the expected number of successes, which is more than the 15% probability
+rate allows for - hence the negligible likelihood of doing so.</p>
+<p><br></p>
+<hr />
+</div>
+</div>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<p><br></p>
+<p>ABS (Australian Bureau of Statistics) (2018) <em>FEATURE ARTICLE 2:
+SPOTLIGHT ON NET OVERSEAS MIGRATION</em>, ABS website, accessed 17 May
+2023. <a
+href="https://www.abs.gov.au/ausstats/abs@.nsf/featurearticlesbyCatalogue/7A40A407211F35F4CA257A2200120EAA"
+class="uri">https://www.abs.gov.au/ausstats/abs@.nsf/featurearticlesbyCatalogue/7A40A407211F35F4CA257A2200120EAA</a></p>
+<p>cmdlinetips (9 May 2019) <em>How To Highlight Select Data Points with
+ggplot2 in R?</em>, Python and R Tips website, accessed 21 May 2023. <a
+href="https://cmdlinetips.com/2019/05/how-to-highlight-select-data-points-with-ggplot2-in-r/"
+class="uri">https://cmdlinetips.com/2019/05/how-to-highlight-select-data-points-with-ggplot2-in-r/</a></p>
+<p>Dragićević M (19 February 2018) <em>changing ggplot2::facet_wrap
+title from the default</em>, Stack Overflow website, accessed 20 May
+2023. <a
+href="https://stackoverflow.com/questions/48860158/changing-ggplot2facet-wrap-title-from-the-default"
+class="uri">https://stackoverflow.com/questions/48860158/changing-ggplot2facet-wrap-title-from-the-default</a></p>
+<p>Holtz Y (2018) <em>Histogram with several groups - ggplot2</em>, The
+R Graph Gallery website, accessed 18 May 2023. <a
+href="https://r-graph-gallery.com/histogram_several_group.html"
+class="uri">https://r-graph-gallery.com/histogram_several_group.html</a></p>
+<p>Hyndman R (2 December 2017) <em>NOTE or WARNING from package check
+when README.md includes images</em>, Stack Overflow website, accessed 19
+May 2023. <a
+href="https://stackoverflow.com/questions/44113759/note-or-warning-from-package-check-when-readme-md-includes-images"
+class="uri">https://stackoverflow.com/questions/44113759/note-or-warning-from-package-check-when-readme-md-includes-images</a></p>
+<p>Kassambara A (1 September 2017) <em>ggplot2 - Easy Way to Mix
+Multiple Graphs on The Same Page</em>, STHDA (Statistical tools for
+high-throughput data analysis) website, accessed 20 May 2023. <a
+href="http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page"
+class="uri">http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page</a></p>
+<p>Kassambara A (n.d.) <em>ggplot2 axis ticks : A guide to customize
+tick marks and labels</em>, STHDA, accessed 19 May 2023. <a
+href="http://www.sthda.com/english/wiki/ggplot2-axis-ticks-a-guide-to-customize-tick-marks-and-labels"
+class="uri">http://www.sthda.com/english/wiki/ggplot2-axis-ticks-a-guide-to-customize-tick-marks-and-labels</a></p>
+<p>Ritchie H and Roser M (2019) <em>Gender Ratio</em>, Our World in Data
+website, accessed 17 May 2023. <a
+href="https://ourworldindata.org/gender-ratio"
+class="uri">https://ourworldindata.org/gender-ratio</a></p>
+<p>Schork J (n.d.) <em>Draw Histogram with Percentages Instead of
+Frequency Counts in Base R</em>, Statistics Globe website, accessed 19
+May 2023. <a
+href="https://statisticsglobe.com/draw-histogram-with-percentages-in-base-r"
+class="uri">https://statisticsglobe.com/draw-histogram-with-percentages-in-base-r</a></p>
+<p>Wickham H (2016) <em>Histograms and frequency polygons</em>, ggplot2
+website, accessed 19 May 2023. <a
+href="https://ggplot2.tidyverse.org/reference/geom_histogram.html#computed-variables"
+class="uri">https://ggplot2.tidyverse.org/reference/geom_histogram.html#computed-variables</a></p>
+<p>Yihue X, Dervieux C and Riederer E (2022) <em>10.1 The function
+knitr::kable()</em>, R Markdown Cookbook website, accessed 19 May 2023.
+<a href="https://bookdown.org/yihui/rmarkdown-cookbook/kable.html"
+class="uri">https://bookdown.org/yihui/rmarkdown-cookbook/kable.html</a></p>
+<p><br> <br> <br></p>
+<p><strong>R packages</strong></p>
+<p>Müller K (2020) <em>here: A Simpler Way to Find Your Files</em>, R
+package version 1.0.1. <a href="https://CRAN.R-project.org/package=here"
+class="uri">https://CRAN.R-project.org/package=here</a></p>
+<p>Bache S, Wickham H (2022) <em>magrittr: A Forward-Pipe Operator for
+R</em>, R package version 2.0.3. <a
+href="https://CRAN.R-project.org/package=magrittr"
+class="uri">https://CRAN.R-project.org/package=magrittr</a></p>
+<p>Wickham H (2023) <em>forcats: Tools for Working with Categorical
+Variables (Factors)</em> R package version 1.0.0. <a
+href="https://CRAN.R-project.org/package=forcats"
+class="uri">https://CRAN.R-project.org/package=forcats</a></p>
+<p>Wickham H. (2016) <em>ggplot2: Elegant Graphics for Data
+Analysis</em>, Springer-Verlag New York.</p>
+<p>Wickham H, François R, Henry L, Müller K, Vaughan D (2023) <em>dplyr:
+A Grammar of Data Manipulation</em>, R package version 1.1.0. <a
+href="https://CRAN.R-project.org/package=dplyr"
+class="uri">https://CRAN.R-project.org/package=dplyr</a></p>
+<p>Wickham H, Hester J, Bryan J (2023) <em>readr: Read Rectangular Text
+Data</em>, R package version 2.1.4. <a
+href="https://CRAN.R-project.org/package=readr"
+class="uri">https://CRAN.R-project.org/package=readr</a></p>
+<p>Wickham H, Seidel D (2022). <em>scales: Scale Functions for
+Visualization</em>. R package version 1.2.1. <a
+href="https://CRAN.R-project.org/package=scales"
+class="uri">https://CRAN.R-project.org/package=scales</a>.</p>
+<p>Wickham H, Vaughan D, Girlich M (2023) <em>tidyr: Tidy Messy
+Data</em>, R package version 1.3.0. <a
+href="https://CRAN.R-project.org/package=tidyr"
+class="uri">https://CRAN.R-project.org/package=tidyr</a></p>
+<p>Yihui X (2023) <em>knitr: A General-Purpose Package for Dynamic
+Report Generation in R</em>, R package version 1.42.</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

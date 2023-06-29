@@ -1,0 +1,1998 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>RMIT Stats and probability with R</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Adam Simmons</a>
+</li>
+<li>
+  <a href="RMIT-Statistical-Data-Analysis.html">RMIT - Statistical Data Analysis</a>
+</li>
+<li>
+  <a href="RMIT-Stats-and-probability-with-R.html">RMIT - Stats and probability with R</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">RMIT Stats and probability with R</h1>
+
+</div>
+
+
+<div id="setup" class="section level2">
+<h2><strong>Setup</strong></h2>
+<p>Install required packages</p>
+<pre class="r"><code>library(plyr) 
+library(dplyr) 
+library(tidyr)
+library(stringr)
+library(ggplot2) 
+library(magrittr)
+library(knitr)
+library(MASS)
+library(binom)
+library(car)
+library(ggpubr) 
+library(pwr)
+library(rstatix)
+library(outliers)</code></pre>
+</div>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>This assessment responds to five scenario-based problems, covering a
+range of statistical methods and theories.</p>
+<p>Topics include</p>
+<ul>
+<li>probability distributions</li>
+<li>sampling distributions</li>
+<li>confidence intervals</li>
+<li>hypothesis testing</li>
+<li>ANOVA</li>
+</ul>
+<p>Synthetic data and values The random seed is reset at the beginning
+of a section. This means for a couple of the questions that have
+sections that are repeated with different variables, the “random” values
+are also repeated. Analysis has been conducted on the basis of the data
+being “real”.</p>
+<p>All calculated values referred to in the text are dynamic as inline
+code. In the event of changing any parameters or the random seed value,
+the report’s findings may require revision.</p>
+<p>Number to be used as random seed throughout to ensure reproducible
+results:</p>
+<pre class="r"><code>seed = 4001341</code></pre>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="problem-1" class="section level2">
+<h2><strong>Problem 1</strong></h2>
+<p><i></p>
+<p>Two hundred adults take part in an experiment to examine the efficacy
+of having a flu jab ahead of the winter season. They are randomly
+assigned to two groups of equal size. Group A received the flu jab and
+group B received a placebo jab. At the end of the winter season all
+participants are asked to disclose whether they contracted the flu.</p>
+<p><code>Condition                Group A     Group B</code><br />
+<code>Contracted the flu           ?           ?</code><br />
+<code>Did not contract the flu     ?           ?</code><br />
+<code>TOTAL                       100         100</code></p>
+<p>It can be assumed that the number in each group who contract the flu
+will follow a Binomial distribution. Participants in group A are
+expected to have a 10% chance of contracting the flu whereas, for those
+in group B, the chance of catching the flu is 30%.</p>
+<p></i></p>
+<div
+id="a-generate-synthetic-data-for-the-number-who-contract-the-flu-in-each-group-and-complete-the-above-table."
+class="section level5">
+<h5>a) Generate synthetic data for the number who ‘contract the flu’ in
+each group and complete the above table.</h5>
+<pre class="r"><code># Set random seed
+set.seed(seed)
+
+labels = c(&quot;Did not contract the flu&quot;, &quot;Contracted the flu&quot;)
+# Group A
+total_num = 100
+p = 0.10
+grp_a &lt;- data.frame(condition = rbinom(total_num, 1 , p)) %&gt;% 
+  mutate(condition = factor(condition, levels = c(0, 1), labels = labels))
+grp_a_flu &lt;- count(grp_a, condition=condition)
+# Group B
+total_num = 100
+p = 0.30
+grp_b &lt;- data.frame(condition = rbinom(total_num, 1 , p)) %&gt;% 
+  mutate(condition = factor(condition, levels = c(0, 1), labels = labels))
+grp_b_flu &lt;- count(grp_b, condition=condition)
+# merge into one dataset
+table &lt;- merge(grp_a_flu, grp_b_flu, by = &quot;condition&quot;)
+colnames(table) &lt;- c(&quot;Condition&quot;, &quot;Group A&quot;, &quot;Group B&quot;)</code></pre>
+<pre class="r"><code># Add totals row and print table
+table %&gt;%
+  add_row(Condition = &quot;TOTAL&quot;, 
+          `Group A` = sum(table$`Group A`), `Group B` = sum(table$`Group B`)) %&gt;% 
+  kable(align = &quot;lcc&quot;, digits = 2)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Condition</th>
+<th align="center">Group A</th>
+<th align="center">Group B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Contracted the flu</td>
+<td align="center">10</td>
+<td align="center">29</td>
+</tr>
+<tr class="even">
+<td align="left">Did not contract the flu</td>
+<td align="center">90</td>
+<td align="center">71</td>
+</tr>
+<tr class="odd">
+<td align="left">TOTAL</td>
+<td align="center">100</td>
+<td align="center">100</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div
+id="b-answer-the-following-questions-based-only-on-the-synthetic-data."
+class="section level5">
+<h5>b) Answer the following questions based only on the synthetic
+data.</h5>
+</div>
+<div
+id="i.-what-is-your-estimated-probability-that-a-person-receiving-the-placebo-will-not-contract-the-flu-during-the-winter-season"
+class="section level5">
+<h5>i. What is your estimated probability that a person receiving the
+placebo will not contract the flu during the winter season?</h5>
+<pre class="r"><code>prob_placebo_no_flu &lt;- table$`Group B`[table$Condition == &quot;Did not contract the flu&quot;] * 100 / sum(table$`Group B`)
+prob_placebo_no_flu</code></pre>
+<pre><code>## [1] 71</code></pre>
+<p><strong>Answer:</strong><br />
+From the table, the probability that someone who has received the
+placebo will <em>not</em> contract the flu is: <strong>71%</strong></p>
+<p><br></p>
+</div>
+<div
+id="ii.-derive-a-95-confidence-interval-for-the-proportion-of-people-receiving-the-placebo-who-do-not-contract-the-flu-in-that-winter-season.-give-a-non-technical-explanation-of-your-result."
+class="section level5">
+<h5>ii. Derive a 95% confidence interval for the proportion of people
+receiving the placebo who do not contract the flu in that winter season.
+Give a non-technical explanation of your result.</h5>
+<p>Method 1 - manual:</p>
+<pre class="r"><code># Get total of placebo people and number who did not get flu
+num_placebo &lt;- 100  # sample size 
+num_no_flu &lt;-  table$`Group B`[table$Condition == &quot;Did not contract the flu&quot;] 
+
+#Calculations
+est_p &lt;- num_no_flu/num_placebo   # sample proportion
+sample_var &lt;- est_p*(1-est_p) # sample variance 
+s_error    &lt;- sqrt(sample_var/num_placebo)   # standard error
+conf_level &lt;- 0.95
+alpha &lt;- 1-conf_level 
+z_value &lt;- qnorm(alpha/2, mean = 0, sd = 1, lower.tail = FALSE) 
+m_error &lt;- z_value*s_error
+
+# Confidence limits
+LCL &lt;- est_p-m_error # Lower 
+UCL &lt;- est_p+m_error # Upper
+
+# Output 
+str_glue(&quot;{conf_level*100}% CI: [{round(LCL,3)}, {round(UCL,3)}]&quot;)</code></pre>
+<pre><code>## 95% CI: [0.621, 0.799]</code></pre>
+<pre class="r"><code># Calculate width of confidence interval
+conf_width &lt;- UCL - LCL
+str_glue(&quot;{conf_level*100}% CI width: {round(conf_width * 100, 1)}%&quot;)</code></pre>
+<pre><code>## 95% CI width: 17.8%</code></pre>
+<div style="page-break-after: always;"></div>
+<p>Method 2 - binom package:</p>
+<pre class="r"><code># Using binom library
+binom.confint( num_no_flu, num_placebo, 0.95, method = &quot;asymptotic&quot;) %&gt;% kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">method</th>
+<th align="right">x</th>
+<th align="right">n</th>
+<th align="right">mean</th>
+<th align="right">lower</th>
+<th align="right">upper</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">asymptotic</td>
+<td align="right">71</td>
+<td align="right">100</td>
+<td align="right">0.71</td>
+<td align="right">0.6210643</td>
+<td align="right">0.7989357</td>
+</tr>
+</tbody>
+</table>
+<p>I came across the binom package, which offers a specific function for
+calculating confidence intervals based on nine different methods. I
+chose to use the asymptotic method based on the R documentation on
+<code>binom.confint</code>, which explains that the asymptotic method is
+“the text-book definition for confidence limits on a single proportion
+using the Central Limit Theorem” (Dorai-Raj 2022). The results of both
+methods agree.</p>
+<p><strong>Answer:</strong><br />
+The 95% confidence interval is:</p>
+<ul>
+<li>Upper confidence limit: <strong>0.799</strong></li>
+<li>Lower confidence limit: <strong>0.621</strong></li>
+<li>Confidence interval width: <strong>17.8%</strong></li>
+</ul>
+<p>This result means we can be 95% confident that between <strong>62%
+and 80%</strong> of people receiving the placebo contracted the flu - in
+other words, 6-8 out of 10 people.</p>
+<p><br></p>
+</div>
+<div
+id="iii.-if-40-of-the-wider-adult-population-receive-the-flu-vaccine-what-percentage-would-you-anticipate-contracting-the-flu-that-year"
+class="section level5">
+<h5>iii. If 40% of the wider adult population receive the flu vaccine,
+what percentage would you anticipate contracting the flu that year?</h5>
+<p>Calculating percentages separately for 40% of vaccinated and 60%
+placebo groups, then applying the probability estimated from the
+experiment.</p>
+<pre class="r"><code># Get percentage of those in Group A who caught the flu
+prob_vaccine_flu &lt;- table$`Group A`[table$Condition == &quot;Contracted the flu&quot;] * 100 / sum(table$`Group A`)
+prob_vaccine_flu</code></pre>
+<pre><code>## [1] 10</code></pre>
+<pre class="r"><code># Get percentage of those in Group B who caught the flu
+prob_placebo_flu &lt;- table$`Group B`[table$Condition == &quot;Contracted the flu&quot;] * 100/ sum(table$`Group B` )
+prob_placebo_flu</code></pre>
+<pre><code>## [1] 29</code></pre>
+<p>From the experiment, it was found that of those who got the flu:</p>
+<ul>
+<li><strong>10%</strong> had the vaccine</li>
+<li><strong>29%</strong> had the placebo</li>
+</ul>
+<div style="page-break-after: always;"></div>
+<pre class="r"><code># Calc percentage of the 40% vaccinated people likely to get the flu
+pop_vaccine_percent &lt;- 0.4 * prob_vaccine_flu
+pop_vaccine_percent</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r"><code># Calc percentage of remaining 60% non-vaccinated people likely to get the flu
+pop_placebo_percent &lt;- 0.6 * prob_placebo_flu
+pop_placebo_percent</code></pre>
+<pre><code>## [1] 17.4</code></pre>
+<p>Calculating based on 40% vaccinations, the percentages expected to
+get sick are:</p>
+<ul>
+<li>10% of 40% vaccinated: <strong>4%</strong></li>
+<li>29% of 60% non-vaccinated: <strong>17.4%</strong></li>
+</ul>
+<pre class="r"><code>pop_flu &lt;- pop_vaccine_percent + pop_placebo_percent
+pop_flu</code></pre>
+<pre><code>## [1] 21.4</code></pre>
+<p><strong>Answer:</strong><br />
+The overall percentage anticipated to contract the flu in the next year
+is: <strong>21.4%</strong></p>
+<p><br></p>
+</div>
+<div
+id="iv.-what-is-your-estimate-of-the-probability-that-a-person-who-is-vaccinated-against-the-flu-for-ten-years-running-will-contract-the-flu-on-at-least-three-of-those-years"
+class="section level5">
+<h5>iv. What is your estimate of the probability that a person who is
+vaccinated against the flu for ten years running, will contract the flu
+on at least three of those years?</h5>
+<p>The binomial distribution can be used for this - the outcomes are
+mutually exclusive, the number of trials is fixed, and the probability
+is the same for each trial.</p>
+<pre class="r"><code>num_times_flu &lt;- 3
+
+prob_flu_3yrs_plus &lt;- 
+  pbinom((num_times_flu-1), size=10, (prob_vaccine_flu/100), lower.tail=FALSE) 
+prob_flu_3yrs_plus</code></pre>
+<pre><code>## [1] 0.07019083</code></pre>
+<p><strong>Answer:</strong><br />
+The estimated probability that a vaccinated person contracts the flu at
+least three times over 10 years is: <strong>7.019%</strong></p>
+<hr />
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div id="problem-2" class="section level2">
+<h2><strong>Problem 2</strong></h2>
+<p><em>This question explores the distribution of the sample mean when
+the underlying variable has an exponential distribution with mean
+10.</em></p>
+<div id="a-generate-1000-observation-from-the-given-distribution."
+class="section level5">
+<h5>a) Generate 1000 observation from the given distribution.</h5>
+<pre class="r"><code># Set random seed
+set.seed(seed)
+# Paramters - number of observations to select and population mean (or lambda)
+n &lt;- 1000
+lambda &lt;- 10
+# Generate sample data
+exp_data &lt;- data.frame(value = rexp(n, 1/lambda))</code></pre>
+<pre class="r"><code>par(mfrow=c(1,2))
+# Create charts
+exp_data$value %&gt;% plot(main=&quot;Fig. 2.1 Observed values&quot;, xlab=&quot;Observation&quot;, ylab=&quot;Value&quot;)
+exp_data$value %&gt;% hist(main=&quot;Fig. 2.2 Histogram of values&quot;, xlab = &quot;Value&quot;)</code></pre>
+<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-13-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p><strong>Answer:</strong> 1000 observations have been randomly
+generated as a sample, with the charts above showing the distribution of
+values.</p>
+<p><br></p>
+</div>
+<div
+id="i.-compare-the-sample-estimates-for-the-mean-and-standard-deviation-with-the-population-mean-and-standard-deviation-for-the-exponential-distribution.-discuss."
+class="section level5">
+<h5>i. Compare the sample estimates for the mean and standard deviation
+with the population mean and standard deviation for the exponential
+distribution. Discuss.</h5>
+<pre class="r"><code>exp_data %&gt;% summarise(mean = mean(value), standard_deviation = sd(value)) %&gt;% 
+  kable(align = &quot;cc&quot;)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="center">mean</th>
+<th align="center">standard_deviation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">10.49528</td>
+<td align="center">9.983155</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Answer:</strong><br />
+As the standard deviation of an exponential distribution is equal to the
+population mean (Siegel and Wagner 2022), the value for both in this
+example is <strong>10</strong>. This compares with our sample estimates
+for the mean of <strong>10.5</strong> and standard deviation of
+<strong>9.98</strong>.</p>
+<p>The measures for the population and sample data are reasonably close
+(less than 5% difference), suggesting the sample is an accurate
+representation of the population.</p>
+<p><br></p>
+</div>
+<div
+id="ii.-compare-the-histogram-of-the-sample-data-with-the-density-function-of-the-exponential-distribution.-discuss."
+class="section level5">
+<h5>ii. Compare the histogram of the sample data with the density
+function of the exponential distribution. Discuss.</h5>
+<pre class="r"><code># creating values to plot density function of exponential distribution
+x &lt;- seq(1, round(max(exp_data$value)))
+y &lt;- dexp(x, rate = 1/lambda)
+exp_pop &lt;- data.frame(x = x, y = y)</code></pre>
+<pre class="r"><code>par(mfrow=c(1,2))
+annotation &lt;- data.frame(x=20, y= (length(exp_data$value) *0.27), label=str_glue(&quot;Sample Mean: {round(mean(exp_data$value), 2)}&quot;))
+# Histogram of sample
+p_sample &lt;- exp_data %&gt;% ggplot(aes(x = value)) + 
+  geom_histogram( bins = 12, colour = &quot;grey20&quot;, fill = &quot;grey&quot;) +
+  geom_vline(aes(xintercept = mean(value)), 
+             alpha = 0.6, color = &quot;red&quot;, linetype = &quot;dashed&quot;, size = 0.4) +
+  geom_text(data=annotation, aes( x=x, y=y, label=str_glue(&quot;Mean: {round(mean(exp_data$value), 3)}&quot;)), size=3) +
+  labs(title = &quot;Fig. 2.3 Histogram of Sample&quot;, x=&quot;Value&quot;, y=&quot;Frequency&quot;) </code></pre>
+<pre class="r"><code># Create density 
+p_pop &lt;- exp_data %&gt;% ggplot(aes(x = value)) + 
+  geom_line(data=exp_pop, aes(x=x, y=y), 
+            lwd = 1, color = &quot;tomato&quot;, linetype = 1, alpha = 0.7) +
+  geom_vline(aes(xintercept = lambda), alpha = 0.6, color = &quot;red&quot;, linetype = &quot;dashed&quot;, size = 0.4) +
+  geom_text(data=annotation, aes( x=18, y=0.08, label=str_glue(&quot;Mean: {lambda}&quot;)), size=3) +  
+  labs(title=&quot;Fig. 2.4 Density of Exponential Distribution&quot;, x=&quot;Value&quot;,y=&quot;Density&quot;) </code></pre>
+<pre class="r"><code># Create combined plot
+line_colours &lt;- c(&quot;sample&quot; = &quot;steelblue&quot;, &quot;population&quot; = &quot;tomato&quot;)
+plot_combined &lt;- exp_data %&gt;% ggplot(aes(x = value)) + 
+  geom_histogram(aes(y=..density..), bins=12, colour=&quot;grey20&quot;, fill=&quot;grey80&quot;) +
+  geom_density(aes(x = value, color = &quot;sample&quot;),
+               fill=4, lwd = 0.7, linetype = 2, alpha = 0.3) +
+  geom_line(data=exp_pop, aes(x=x, y=y, color = &quot;population&quot;), 
+               lwd = 1, linetype = 1, alpha = 0.7) +
+  labs(title = &quot;Fig. 2.5 Compare Density of Sample &amp; Population&quot;, x=&quot;Value&quot;, y=&quot;Density&quot;, color = &quot;&quot;) +
+  scale_color_manual(values = line_colours) +
+  theme(legend.key.height= unit(0., &#39;cm&#39;), legend.key.width= unit(1, &#39;cm&#39;))</code></pre>
+<pre class="r"><code>ggarrange(p_sample, p_pop, ncol = 2, nrow=1)</code></pre>
+<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-19-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_combined</code></pre>
+<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-20-1.png" width="528" style="display: block; margin: auto;" /></p>
+<p><strong>Answer:</strong><br />
+Above are separate plots for the histogram of the sample values (Fig
+2.1) and the density function for the exponential distribution (2.2),
+with their respective means indicated. It can be seen that they are
+similarly shaped.</p>
+<p>The combined plot (Fig 2.3) overlays the density function of the
+population and the sample. This shows the sample is a good
+representation of the exponential distribution.</p>
+<p><br></p>
+</div>
+<div
+id="b-generate-1000-sample-means-of-sample-size-2-where-the-observations-are-drawn-at-random-from-the-exponential-distribution."
+class="section level5">
+<h5>b) Generate 1000 sample means of sample size 2 where the
+observations are drawn at random from the exponential distribution.</h5>
+<p>To generate the observations, this function creates a random set of
+numbers from the exponential distribution, then selects a sample of the
+desired sample size and calculates the sample mean. This repeats for the
+required number of observations with the output being a list of sample
+means.</p>
+<pre class="r"><code># Function to generate sample means with default values 
+get_sample_means &lt;- function(number=1000, sample_size=2, population_size=100000, lambda=10)
+{ sample_means &lt;- rep(NA, number)                         # create empty list
+  population &lt;- rexp(population_size, 1/lambda)           # generate population      
+  for(i in 1:number) {                                    # loop &quot;number&quot; times
+    samp &lt;- sample(population, sample_size)                # select values
+    sample_means[i] &lt;- mean(samp)                           # add to dataset
+  } 
+sample_means 
+}</code></pre>
+<p>Generate 1000 sample means of sample size 2:</p>
+<pre class="r"><code># Set random seed
+set.seed(seed)
+
+sample_means2 &lt;- get_sample_means(sample_size = 2) </code></pre>
+</div>
+<div
+id="i.-display-a-histogram-of-the-sample-means-and-discuss-its-characteristics."
+class="section level5">
+<h5>i. Display a histogram of the sample means and discuss its
+characteristics.</h5>
+<pre class="r"><code># fig 2.4
+hist(sample_means2, breaks = 20, main = &quot;Fig. 2.6 Histogram of Sample Means (n=2)&quot;,
+     xlab = &quot;Value&quot;)
+abline(v = mean(sample_means2), col = &quot;red&quot;, lty = 2)</code></pre>
+<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-23-1.png" width="528" style="display: block; margin: auto;" /></p>
+<p><strong>Answer:</strong><br />
+The histogram of sample means with sample size 2 is right-skewed. The
+mean of the sample means is <strong>9.868</strong>, while the median is
+<strong>8.397</strong>, which also indicates non-normality. The standard
+deviation of <strong>6.911</strong> for the sample means is decreasing,
+indicating the data is becoming less spread out. Overall, this is more
+accurate than the previous example of the measures for one sample of
+1000 observations, though improvement in the method is required to
+approach normality.</p>
+<p><br></p>
+</div>
+<div
+id="c-generate-1000-sample-means-of-sample-size-30-where-the-observations-are-drawn-at-random-from-the-exponential-distribution."
+class="section level5">
+<h5>c) Generate 1000 sample means of sample size 30 where the
+observations are drawn at random from the exponential distribution.</h5>
+<p>Generate 1000 sample means of sample size 30:</p>
+<pre class="r"><code># Set random seed
+set.seed(seed)
+# Generate 1000 sample means of sample size 30
+sample_means30 &lt;- get_sample_means(sample_size = 30) </code></pre>
+</div>
+<div
+id="i.-display-a-histogram-of-the-sample-means-and-discuss-its-characteristics.-1"
+class="section level5">
+<h5>i. Display a histogram of the sample means and discuss its
+characteristics.</h5>
+<pre class="r"><code>hist(sample_means30, breaks = 20, main = &quot;Fig. 2.7 Histogram of Sample Means (n=30)&quot;,
+     xlab = &quot;Value&quot;)
+abline(v = mean(sample_means30), col = &quot;red&quot;, lty = 2, lwd = 1.5)</code></pre>
+<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-25-1.png" width="528" style="display: block; margin: auto;" /></p>
+<p><strong>Answer:</strong><br />
+The histogram of sample means with sample size 2 is looking close to a
+normal distribution. The mean and median of the sample means are
+<strong>10.02</strong> and <strong>9.906</strong> respectively, which
+are much closer, while the standard deviation has reduced to
+<strong>1.799</strong>. Increasing the sample size to generate the
+sample means has greatly improved the accuracy, which is to be expected
+as the sample size approaches the population size.</p>
+<hr />
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div id="problem-3" class="section level2">
+<h2><strong>Problem 3</strong></h2>
+<p><i></p>
+<p>A dairy processor is considering whether to change the design of its
+2-litre containers of milk, and so they engage an advertising agency to
+develop a mock-up of what the new packaging will look like.</p>
+<p>When the agency completed their mock-up of the new design, they
+decided to conduct a small market research study with 20 randomly
+selected participants. To begin with, each participant was shown the
+current design and asked to rate its attractiveness. Then they were
+shown the mock-up of the new design and asked to rate its
+attractiveness.</p>
+<p>Attractiveness was measured on an 11-point scale, ranging from 0 to
+10, where 0 means a design “is not at all attractive” and 10 means it
+“is very attractive” The study resulted in the current and new designs
+averaging 7.5 and 8.2 respectively, with a standard deviation of the
+difference being 1.9.</p>
+<p>When senior management was shown the new design, and told the results
+of the research study, they were impressed - especially with the
+potential improvement in the attractiveness score that the new design
+would bring. Nonetheless, they turn to you as their chief data scientist
+to help them make sense of these findings.</p>
+<p></i></p>
+<div
+id="a-in-preparation-for-your-meeting-with-management-conduct-a-one-tailed-test-of-the-difference-between-the-means-using-a-5-significance-level.-what-can-you-conclude-from-the-test"
+class="section level5">
+<h5>a) In preparation for your meeting with management, conduct a
+one-tailed test of the difference between the means, using a 5%
+significance level. What can you conclude from the test?</h5>
+<p><strong>Answer:</strong><br />
+For this case a one-tailed paired t-test will be used as the variables
+are dependent - each pair of ratings relate to the two versions of the
+carton design. A t-test is suggested when the sample size is small
+(<span class="math inline">\(n\leq30\)</span>), as is the case here.
+Without further information about the data, it will be assumed the
+distribution is normal. (Surbhi 2018)</p>
+<p>The null hypothesis, <span
+class="math inline">\(H_{0}\leq\mu\)</span>, will be that the new design
+mean rating is equal to or less than the current one. The alternative
+hypothesis, <span class="math inline">\(H_{a}&gt;\mu\)</span>, will be
+that the new design has a greater mean rating than the current one.</p>
+<p>Calculate t-score - <span
+class="math inline">\(t=\frac{\sigma-\mu}{s\sqrt{n}}\)</span> - and then
+use the function <code>pt()</code> to calculate the p-score to check
+against our 5% significance level. Effect size and power will be
+calculated also.</p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(\sigma\)</span> - sample mean (new
+design)</li>
+<li><span class="math inline">\(s\)</span> - sample standard
+deviation</li>
+<li><span class="math inline">\(n\)</span> - sample size</li>
+<li><span class="math inline">\(\mu\)</span> - population mean (old
+design)</li>
+</ul>
+<p>(Surbhi 2018)</p>
+<p>First, setting values:</p>
+<pre class="r"><code>obs &lt;- 20        # number of observations
+mean_old &lt;- 7.5  # mean rating for current(old) design
+mean_new &lt;- 8.2  # mean rating for proposed(new) design
+sd_diff &lt;- 1.9   # standard deviation of the difference between the two means</code></pre>
+<div style="page-break-after: always;"></div>
+<p>Calculations:</p>
+<pre class="r"><code># t-score
+t_score &lt;- (mean_new - mean_old) / (sd_diff / sqrt(obs))
+print(str_glue(&quot;t-score: {t_score}&quot;))</code></pre>
+<pre><code>## t-score: 1.64762903605248</code></pre>
+<pre class="r"><code># p-score
+p &lt;- pt(t_score, obs - 1, lower.tail = FALSE)
+print(str_glue(&quot;p-score: {p}&quot;))</code></pre>
+<pre><code>## p-score: 0.0579337413131463</code></pre>
+<pre class="r"><code>if (p &gt; 0.05) {
+  print(&quot;Fail to reject the null hypothesis&quot;)
+} else {
+  print(&quot;Reject the null hypothesis&quot;) }</code></pre>
+<pre><code>## [1] &quot;Fail to reject the null hypothesis&quot;</code></pre>
+<p>From this t-test, we fail reject the null hypothesis and assume there
+is no significant statistical difference between the rating means of the
+two versions. Though, there are some caveats to consider given the lack
+of complete access to the detail of the data and the size of the sample
+- and noting that the calculated p-score is actually very close to the
+significance level of 5%</p>
+<p>Calculate effect size and power</p>
+<pre class="r"><code># calc effect size
+d &lt;- (8.2 - 7.5) / 1.9
+# calc power value
+pwr.t.test(n = 20, d = d, power = NULL,
+           type = &quot;paired&quot;, alternative = &quot;greater&quot;)</code></pre>
+<pre><code>## 
+##      Paired t test power calculation 
+## 
+##               n = 20
+##               d = 0.3684211
+##       sig.level = 0.05
+##           power = 0.4775867
+##     alternative = greater
+## 
+## NOTE: n is number of *pairs*</code></pre>
+<pre class="r"><code># Get minimum size for medium effect size (0.5) and 0.8 power
+pwr.t.test(n = NULL, d = 0.5, power = 0.8,
+           type = &quot;paired&quot;, alternative = &quot;greater&quot;)</code></pre>
+<pre><code>## 
+##      Paired t test power calculation 
+## 
+##               n = 26.13753
+##               d = 0.5
+##       sig.level = 0.05
+##           power = 0.8
+##     alternative = greater
+## 
+## NOTE: n is number of *pairs*</code></pre>
+</div>
+<div
+id="b-write-up-your-advice-to-management-together-with-key-supporting-points."
+class="section level5">
+<h5>b) Write up your advice to management, together with key supporting
+points.</h5>
+<p><strong>Answer:</strong><br />
+My advice to management is that patience should be exercised before
+making any changes and that further analysis is required. While it seems
+the new design has received higher average ratings than the old one,
+from my statistical analysis the difference is marginal at best. For the
+following reasons, I believe there is not sufficiently conclusive
+evidence to move ahead with implementing a new design based on the data
+alone - especially when considering the costs involved in that.</p>
+<p>Key points:</p>
+<ul>
+<li>my test scores failed to reject the notion that there was no
+difference</li>
+<li>the sample size was very small, which limits accuracy</li>
+<li>effect size is small (37%) and power is less than 50% likely to
+avoid a Type II error (failure to reject the null hypothesis)</li>
+<li>the standard deviation of the difference is large - this could
+reflect that opinion is divided rather than shared.</li>
+<li>not all of the data was available for analysis</li>
+</ul>
+<p>Actions</p>
+<ul>
+<li>provide access to the full data to enable better analysis</li>
+<li>obtain more observations internally/externally- more reliable
+testing could be done with at least 27 people, though 30+ would be
+preferable.</li>
+<li>conduct further testing, such as A/B testing, that may be more
+fit-for-purpose in this instance</li>
+</ul>
+<p>And kudos to management for having the wisdom to use data science and
+statistics to drive their decision-making.</p>
+<hr />
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div id="problem-4" class="section level2">
+<h2><strong>Problem 4</strong></h2>
+<div
+id="a-generate-10-pairs-of-observations-from-a-bivariate-normal-distribution-with-parameter-values-𝜇1-𝜇2-𝜎1-𝜎2-𝜌-50-55-10-10-0.8."
+class="section level5">
+<h5>a) Generate 10 pairs of observations from a bivariate Normal
+distribution with parameter values (𝜇1, 𝜇2, 𝜎1, 𝜎2, 𝜌) = (50, 55, 10,
+10, 0.8).</h5>
+<pre class="r"><code># Set parameter values
+mean_X &lt;- 50 # mean of X 
+mean_Y &lt;- 55 # mean of Y 
+sd_X &lt;- 10 # standard deviation of X 
+sd_Y &lt;- 10 # standard deviation of Y 
+cor_XY &lt;- 0.8 # correlation of X and Y 
+
+mu &lt;- c(mean_X,mean_Y) # means
+cov_XY &lt;- sd_X * sd_Y * cor_XY # rearrange correlation formula
+sigma &lt;- matrix(c(sd_X^2, cov_XY, cov_XY, sd_Y^2), nrow = 2) # var-covar matrix
+
+# Set random seed
+set.seed(seed)
+
+n &lt;- 10 # number of observations
+pop_10 &lt;- mvrnorm(n, mu, sigma) 
+colnames(pop_10) &lt;- c(&quot;X&quot;, &quot;Y&quot;) 
+ 
+pop_10 %&gt;% head(5) # look at first 5 sampled values</code></pre>
+<pre><code>##             X        Y
+## [1,] 32.74119 47.71375
+## [2,] 51.08754 44.92890
+## [3,] 53.48131 62.85633
+## [4,] 45.72604 45.01784
+## [5,] 46.75191 49.40479</code></pre>
+<p><strong>Define functions for use in this problem:</strong></p>
+<pre class="r"><code># Scatter plot for X &amp; Y - n = number of samples
+plot_scatter &lt;- function(dataframe, n, title) {
+  dataframe %&gt;% ggplot(aes(x=X, y=Y)) + 
+  geom_point() + ggtitle(title, subtitle = str_glue(&quot;n={n}&quot;)) }  
+
+# Convert to tidy data format for use with ggplot2
+pivot_df_long &lt;- function(dataframe) {
+  dataframe %&gt;% pivot_longer(cols = c(X, Y),
+                names_to = &quot;variable&quot;, values_to = &quot;value&quot;) }
+
+# Histogram - show variables as facets
+plot_histogram_facets &lt;- function(dataframe, title) {
+  dataframe %&gt;% ggplot(mapping = aes(x = value, fill = variable), ) +
+    geom_histogram(bins=6, alpha=0.8, position = &quot;identity&quot;, color = &quot;white&quot;) +
+    facet_wrap(~variable) +
+    labs(x = &quot;value&quot;, y = &quot;Frequency&quot;, title = title, subtitle = str_glue(&quot;n={n}&quot;)) }</code></pre>
+<pre class="r"><code># Q-Q plot - facet by variable (i.e X and Y) - add dashed line for normal dist.
+plot_qqplot &lt;- function(dataframe, title) {
+  dataframe %&gt;% 
+    ggplot(aes(sample = value, color = variable)) + 
+    geom_qq(alpha = 0.9) + 
+    geom_qq_line(linetype = &quot;dashed&quot;, colour = &quot;black&quot;, alpha = 0.5) + 
+    facet_wrap(~variable, scales = &quot;free_x&quot;) + 
+    #scale_color_manual(values = c(&quot;grey20&quot;, &quot;grey50&quot;)) +
+    labs(title = title) }
+
+# Calculate Cohen&#39;s D for effect size
+calc_cohen_d &lt;- function (dataframe) {
+  calc &lt;- dataframe %&gt;% 
+    pivot_df_long() %&gt;% 
+    cohens_d(value ~ variable, var.equal = TRUE)
+  return(calc$effsize) }</code></pre>
+<p>Visualise observations as scatterplot</p>
+<pre class="r"><code>pop_10_df &lt;- as.data.frame(pop_10)
+
+pop_10_df %&gt;% plot_scatter(n, title = &quot;Fig. 4.1 Scatterplot - X vs Y&quot;)</code></pre>
+<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-32-1.png" width="432" style="display: block; margin: auto;" /></p>
+<p><br></p>
+</div>
+<div
+id="i.-decide-on-an-appropriate-hypothesis-test-of-the-difference-between-the-two-means-based-only-on-these-10-observations-i.e.-as-though-you-are-unaware-of-the-parameter-values.-explain-how-you-arrived-at-that-decision."
+class="section level5">
+<h5>i. Decide on an appropriate hypothesis test of the difference
+between the two means based only on these 10 observations (i.e. as
+though you are unaware of the parameter values). Explain how you arrived
+at that decision.</h5>
+<p><strong>Answer:</strong><br />
+To inform the choice of an appropriate hypothesis test, the data will be
+checked for normality first.</p>
+<p><strong>Histogram</strong> - examine to see if a single peak and
+roughly symmetrical</p>
+<pre class="r"><code>pop_10_df %&gt;% pivot_df_long() %&gt;% plot_histogram_facets(title = &quot;Fig 4.2 Histogram of values - compare X and Y&quot;)</code></pre>
+<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><strong>Q-Q plot</strong> - checking each variable against normal
+distribution</p>
+<pre class="r"><code>pop_10_df %&gt;% pivot_df_long() %&gt;% plot_qqplot(title=&quot;Fig. 4.3 QQ plot of X and Y&quot;)</code></pre>
+<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><strong>Shapiro-Wilk’s test</strong> - calculating p-values - if p
+&gt; 0.05 we do not reject null hypothesis that data is normally
+distributed</p>
+<pre class="r"><code>sw_x &lt;- shapiro.test(pop_10_df$X)
+sw_y &lt;- shapiro.test(pop_10_df$Y)
+
+str_glue(&quot;X p-value: {sw_x$p.value}&quot;)</code></pre>
+<pre><code>## X p-value: 0.997071600148941</code></pre>
+<pre class="r"><code>str_glue(&quot;Y p-value: {sw_y$p.value}&quot;)</code></pre>
+<pre><code>## Y p-value: 0.19979958943426</code></pre>
+<p><strong>Summary (n=10)</strong><br />
+Normality of the data has been investigated through visual and
+statistical means:</p>
+<ul>
+<li>Histogram - indicative but inconclusive due to small sample
+size</li>
+<li>Q-Q plot - X appears to be normal, Y may be normal but with greater
+variance</li>
+<li>Shapiro-Wilks test - p-values for X and Y are both greater than
+0.05, so we do not reject assumption of normality for either
+variable</li>
+</ul>
+<p><strong>Choice of test</strong><br />
+A two-sample t-test will be an appropriate choice as:</p>
+<ul>
+<li>the sample size is small (<span
+class="math inline">\(n\leq30\)</span>)</li>
+<li>the datasets are both based on random sampling</li>
+<li>both variables are assumed to be normally distributed</li>
+</ul>
+<p><br></p>
+</div>
+<div
+id="ii.-conduct-the-test-using-a-5-significance-level-and-write-up-your-findings.-conclude-this-part-of-the-question-by-reflecting-on-the-ability-of-the-test-to-reach-a-correct-conclusion."
+class="section level5">
+<h5>ii. Conduct the test using a 5% significance level and write up your
+findings. Conclude this part of the question by reflecting on the
+ability of the test to reach a correct conclusion.</h5>
+<p><strong>Two-sample t-test</strong></p>
+<pre class="r"><code>results_10 &lt;- t.test(pop_10_df$X, pop_10_df$Y, alternative = &quot;two.sided&quot;, paired = FALSE, var.equal= TRUE)
+
+results_10</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  pop_10_df$X and pop_10_df$Y
+## t = -0.99355, df = 18, p-value = 0.3336
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -14.805584   5.298283
+## sample estimates:
+## mean of x mean of y 
+##  47.21460  51.96825</code></pre>
+<p><strong>Power and Effect Size</strong></p>
+<pre class="r"><code># Calc Cohen&#39;s D for effect size (d)
+d &lt;- pop_10_df %&gt;% calc_cohen_d()
+# Calc power 
+n10_power &lt;- pwr.t.test(n = n, d = d,
+           type = &quot;paired&quot;, alternative = &quot;two.sided&quot;)
+n10_power</code></pre>
+<pre><code>## 
+##      Paired t test power calculation 
+## 
+##               n = 10
+##               d = 0.4443269
+##       sig.level = 0.05
+##           power = 0.242009
+##     alternative = two.sided
+## 
+## NOTE: n is number of *pairs*</code></pre>
+<p><strong>Answer (n=10):</strong><br />
+The p-value (0.334) is greater than the significance value (0.05) so we
+fail to reject the null hypothesis that the means are equal, concluding
+there is no significant difference between the means of the two
+variables.</p>
+<p>The 95% confidence interval width is <strong>20.104</strong>.</p>
+<p>The value for Cohen’s <em>d</em> or effect size is
+<strong>0.444</strong> and the power is <strong>0.242</strong></p>
+<p>In concluding, the test has does not have strong ability to reach a
+correct conclusion for the following reasons:</p>
+<ul>
+<li>small sample size:<br />
+</li>
+<li>the standard deviation of the difference is greater than the
+difference of the means</li>
+<li>the confidence interval width is quite wide</li>
+<li>the effect size is moderate, while the power indicates the test is
+only <strong>24.2%</strong> likely to avoid a Type II error.</li>
+</ul>
+<p><br></p>
+</div>
+<div
+id="b-generate-30-pairs-of-observations-from-a-bivariate-normal-distribution-with-the-same-parameter-values-𝜇1-𝜇2-𝜎1-𝜎2-𝜌-50-55-10-10-0.8."
+class="section level5">
+<h5>b) Generate 30 pairs of observations from a bivariate Normal
+distribution with the same parameter values, (𝜇1, 𝜇2, 𝜎1, 𝜎2, 𝜌) = (50,
+55, 10, 10, 0.8).</h5>
+<pre class="r"><code># Set random seed
+set.seed(seed)
+
+n &lt;- 30 # number of observations
+pop_30 &lt;- mvrnorm(n, mu, sigma) 
+colnames(pop_30) &lt;- c(&quot;X&quot;, &quot;Y&quot;) 
+ 
+head(pop_30, 5) # look at first 5 sampled values</code></pre>
+<pre><code>##             X        Y
+## [1,] 34.93939 45.51554
+## [2,] 50.39415 45.62229
+## [3,] 56.80429 59.53335
+## [4,] 49.96636 40.77752
+## [5,] 42.10634 54.05036</code></pre>
+<pre class="r"><code>pop_30_df &lt;- as.data.frame(pop_30)
+
+pop_30_df %&gt;% plot_scatter(n, title = &quot;Fig. 4.4 Scatterplot - X vs Y&quot;)</code></pre>
+<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-39-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><br></p>
+</div>
+<div
+id="i.-decide-on-an-appropriate-hypothesis-test-of-the-difference-between-the-two-means-based-only-on-these-30-observations-i.e.-as-though-you-are-unaware-of-the-parameter-values.-explain-how-you-arrived-at-that-decision."
+class="section level5">
+<h5>i. Decide on an appropriate hypothesis test of the difference
+between the two means based only on these 30 observations (i.e. as
+though you are unaware of the parameter values). Explain how you arrived
+at that decision.</h5>
+<p><strong>Answer:</strong><br />
+As for (a) above, the data will be checked for normality first to inform
+choice of test.</p>
+<p><strong>Histogram</strong> - examine to see if a single peak and
+roughly symmetrical</p>
+<pre class="r"><code>pop_30_df %&gt;% pivot_df_long() %&gt;% plot_histogram_facets(title = &quot;Fig 4.5 Histogram of values - compare X and Y&quot;) </code></pre>
+<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div style="page-break-after: always;"></div>
+<p><strong>Q-Q plot</strong> - checking each variable against normal
+distribution</p>
+<pre class="r"><code>pop_30_df %&gt;% pivot_df_long() %&gt;% plot_qqplot(title=&quot;Fig. 4.6 QQ plot of X and Y&quot;)</code></pre>
+<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-41-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><strong>Shapiro-Wilk’s test</strong> - calculating p-values - if p
+&gt; 0.05 we do not reject null hypothesis that data is normally
+distributed</p>
+<pre class="r"><code>sw_x &lt;- shapiro.test(pop_30_df$X)
+sw_y &lt;- shapiro.test(pop_30_df$Y)
+
+str_glue(&quot;X p-value: {sw_x$p.value}&quot;)</code></pre>
+<pre><code>## X p-value: 0.807045848755308</code></pre>
+<pre class="r"><code>str_glue(&quot;Y p-value: {sw_y$p.value}&quot;)</code></pre>
+<pre><code>## Y p-value: 0.29606841033515</code></pre>
+<p><strong>Summary (n=30)</strong><br />
+Normality of the data has been investigated through visual and
+statistical means:</p>
+<ul>
+<li>Histogram - indicative of normality</li>
+<li>Q-Q plot - X appears to be normal, Y may be normal but the tails do
+diverge</li>
+<li>Shapiro-Wilks test - p-values for X and Y are both greater than
+0.05, so we do not reject assumption of normality for either
+variable</li>
+</ul>
+<p><strong>Choice of test</strong><br />
+A two-sample t-test will be an appropriate choice as:</p>
+<ul>
+<li>the sample size is small (<span
+class="math inline">\(n\leq30\)</span>)</li>
+<li>the datasets are both based on random sampling</li>
+<li>both variables are assumed to be normally distributed</li>
+</ul>
+<p><br></p>
+</div>
+<div
+id="ii.-conduct-the-test-using-a-5-significance-level-and-write-up-your-findings.-conclude-this-part-of-the-question-by-reflecting-on-the-ability-of-the-test-to-reach-a-correct-conclusion.-1"
+class="section level5">
+<h5>ii. Conduct the test using a 5% significance level and write up your
+findings. Conclude this part of the question by reflecting on the
+ability of the test to reach a correct conclusion.</h5>
+<p><strong>Two-sample t-test</strong></p>
+<pre class="r"><code>results_30 &lt;- t.test(pop_30_df$X, pop_30_df$Y, alternative = &quot;two.sided&quot;, paired = FALSE, var.equal= TRUE)
+
+results_30</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  pop_30_df$X and pop_30_df$Y
+## t = -1.7126, df = 58, p-value = 0.09214
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -10.3004657   0.8019027
+## sample estimates:
+## mean of x mean of y 
+##  49.07459  53.82387</code></pre>
+<p><strong>Power and Effect Size</strong></p>
+<pre class="r"><code># Calc Cohen&#39;s D for effect size (d)
+d &lt;- pop_30_df %&gt;% calc_cohen_d()
+# Calc power 
+n30_power &lt;- pwr.t.test(n = n, d = d,
+           type = &quot;paired&quot;, alternative = &quot;two.sided&quot;)
+n30_power</code></pre>
+<pre><code>## 
+##      Paired t test power calculation 
+## 
+##               n = 30
+##               d = 0.4421803
+##       sig.level = 0.05
+##           power = 0.6484789
+##     alternative = two.sided
+## 
+## NOTE: n is number of *pairs*</code></pre>
+<p><strong>Answer (n=30):</strong><br />
+The p-value (0.092) is greater than the significance value (0.05) so we
+fail to reject the null hypothesis that the means are equal, concluding
+there is no significant difference between the means of the two
+variables.</p>
+<p>The 95% confidence interval width is <strong>11.102</strong>.</p>
+<p>The value for Cohen’s <em>d</em> or effect size is
+<strong>0.442</strong> and the power is <strong>0.648</strong></p>
+<p>In this instance, with a larger sample size, the test has come closer
+to reaching a correct conclusion.</p>
+<p>In concluding, the test has a moderate ability to reach a correct
+conclusion than for the previous example for the following reasons:</p>
+<ul>
+<li>small sample size</li>
+<li>the standard deviation of the difference is greater than the
+difference of the means</li>
+<li>the confidence interval width is quite wide</li>
+<li>the effect size is moderate, while the power indicates the test has
+a likelihood of <strong>64.8%</strong> to avoid a Type II error.</li>
+</ul>
+<p><br></p>
+</div>
+<div id="c-compare-your-answers-to-parts-a-and-b.-what-can-you-conclude"
+class="section level5">
+<h5>c) Compare your answers to parts (a) and (b). What can you
+conclude?</h5>
+<p><strong>Answer:</strong><br />
+Comparing the results of parts (a) and (b), the following has been
+observed:</p>
+<ul>
+<li><p>The p-value for (a) was <strong>0.334</strong> compared to the
+much lower value for (b) of <strong>0.092</strong>, which in turn is
+much closer to the significance level of 0.05, where we would reject the
+null hypothesis that the means are equal.</p></li>
+<li><p>The confidence interval width for (b) is significantly narrower
+by <strong>44.8%</strong> than (a) : <strong>11.102</strong> compared to
+<strong>20.104</strong></p></li>
+<li><p>The effect size is similar for both: <strong>0.444</strong> (a)
+and <strong>0.442</strong> (b)</p></li>
+<li><p>The probabilty of avoiding a Type II error (power) is unlikely
+for (a) at <strong>24.2%</strong>, while (b) is more likely to be
+accruate at <strong>64.8%</strong></p></li>
+</ul>
+<p>Overall, it can be concluded that the larger sample size has a
+positive impact on the ability of the testing to reach a correct
+conclusion.</p>
+<hr />
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div id="problem-5" class="section level2">
+<h2><strong>Problem 5</strong></h2>
+<p><i></p>
+<p>A supermarket chain decides to conduct an experiment to compare the
+sales effectiveness of three promotional scenarios for its home brand
+chocolate blocks:</p>
+<ol style="list-style-type: decimal">
+<li>Include home brand chocolate blocks in its weekly catalogue of
+specials</li>
+<li>Promote home brand chocolate blocks with an end of aisle
+display</li>
+<li>Include home brand chocolate blocks in its weekly catalogue of
+specials, and at the same time promote the chocolate blocks with an end
+of aisle display.</li>
+</ol>
+<p>Eighteen comparable stores in terms of sales and store size are
+selected for running this experiment over a given month. Each scenario
+is randomly allocated to six stores.</p>
+<p></i></p>
+<p><strong>Define functions for use in this problem:</strong></p>
+<pre class="r"><code>cols &lt;- c(&quot;#7b3f00&quot;, &quot;#bd6f02&quot;, &quot;#ffa600&quot;)                    # colours for plots
+scenario_names &lt;- c(&quot;scenario_1&quot;, &quot;scenario_2&quot;, &quot;scenario_3&quot;) # for filtering   
+
+# Box plot to check distribution of values by scenario
+plot_scenario_box &lt;- function(dataframe, title) {
+  plot(sales~scenario, data=dataframe, main=title, xlab=&quot;&quot;,ylab=&quot;sales ($000&#39;s)&quot;, col=cols) }
+
+# Density plot for sales faceted by scenario 
+plot_scenario_density &lt;- function(dataframe, title) {
+  dataframe %&gt;% ggplot() + geom_density(aes(color = scenario, x = sales)) +
+  scale_colour_manual(values = cols, aesthetics = c(&quot;colour&quot;, &quot;scenario&quot;)) +
+  facet_wrap(~scenario) + labs(title = title, x=&quot;sales ($000&#39;s)&quot;) }
+
+# Generate z-scores - set filter
+get_zscores &lt;- function(dataframe, filter) {
+  z_scores &lt;- scores(dataframe[&quot;sales&quot;][dataframe[&quot;scenario&quot;]==filter], type=&quot;z&quot;)}
+
+# Print z-scores for each scenario
+run_zscores &lt;- function(dataframe) {
+  cat(&quot;Z-scores for sales by scenario \n&quot;)
+  for (scenario in scenario_names) {
+    cat(str_to_title(scenario),&quot;:\n&quot;, dataframe %&gt;% get_zscores(filter=scenario), &quot;\n&quot;) }}
+
+# Check for outliers with Grubbs&#39;s test for each scenario
+run_grubbs &lt;- function(dataframe) {
+  cat(&quot;Grubbs&#39;s test for high and low outlier values in each scenario:\n&quot;)
+  for (scenario in scenario_names) {
+    high &lt;- grubbs.test(dataframe[&quot;sales&quot;][dataframe[&quot;scenario&quot;] == scenario])
+    low &lt;- grubbs.test(dataframe[&quot;sales&quot;][dataframe[&quot;scenario&quot;] == scenario], opposite=TRUE)
+    if (high$p.value &lt; 0.05) {
+      print(str_glue(&quot;- {scenario} has a high outlier of value {max(dataframe[&#39;sales&#39;][dataframe[&#39;scenario&#39;] == scenario])}&quot;))
+    } else {
+    if (low$p.value &lt; 0.05) {
+      print(str_glue(&quot;- {scenario} has a low outlier of value {min(dataframe[&#39;sales&#39;][dataframe[&#39;scenario&#39;] == scenario])}&quot;))
+    } else { print(str_glue(&quot;- There are no outliers in {scenario}&quot;)) }}}}
+
+# Check for outliers with Dixon&#39;s test for each scenario
+run_dixon &lt;- function(dataframe) {
+  cat(&quot;Dixon&#39;s test for high and low outlier values in each scenario:\n&quot;)
+  for (scenario in scenario_names) {
+    high &lt;- dixon.test(dataframe[&quot;sales&quot;][dataframe[&quot;scenario&quot;] == scenario])
+    low &lt;- dixon.test(dataframe[&quot;sales&quot;][dataframe[&quot;scenario&quot;] == scenario], opposite=TRUE)
+    if (high$p.value &lt; 0.05) {
+      print(str_glue(&quot;- {scenario} has a high outlier of value {max(dataframe[&#39;sales&#39;][dataframe[&#39;scenario&#39;] == scenario])}&quot;))
+    } else {
+    if (low$p.value &lt; 0.05) {
+      print(str_glue(&quot;- {scenario} has a low outlier of value {min(dataframe[&#39;sales&#39;][dataframe[&#39;scenario&#39;] == scenario])}&quot;))
+    } else { print(str_glue(&quot;- There are no outliers in {scenario}&quot;)) }}}}</code></pre>
+<div
+id="a-generate-six-monthly-sales-recorded-in-thousands-of-units-for-each-scenario-according-to-the-following"
+class="section level5">
+<h5>a) Generate six monthly sales (recorded in thousands of units) for
+each scenario, according to the following:</h5>
+<ul>
+<li>All sales are normally distributed with a standard deviation of
+30</li>
+<li>Scenario 1 sales have a mean of 50</li>
+<li>Scenario 2 sales have a mean of 55</li>
+<li>Scenario 3 sales have a mean of 60.</li>
+</ul>
+<pre class="r"><code># Set random seed
+set.seed(seed)
+# Randomise store list 
+store &lt;- sample(1:18)
+# Generate random sales data for each scenario
+n = 6
+sd = 30
+scenario_1 &lt;- round(rnorm(n, mean = 50, sd))
+scenario_2 &lt;- round(rnorm(n, mean = 55, sd))
+scenario_3 &lt;- round(rnorm(n, mean = 60, sd))
+# Make dataframe - combine stores, scenario (as factor), sales - reorder by store
+df_a &lt;- data.frame(store, 
+    scenario = factor(rep(c(&quot;scenario_1&quot;, &quot;scenario_2&quot;, &quot;scenario_3&quot;), each=n)), 
+    sales = c(scenario_1, scenario_2, scenario_3)) %&gt;% arrange(store)
+df_a %&gt;% head(5) %&gt;% kable(align = &quot;clc&quot;)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="center">store</th>
+<th align="left">scenario</th>
+<th align="center">sales</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="left">scenario_3</td>
+<td align="center">68</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="left">scenario_2</td>
+<td align="center">54</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="left">scenario_1</td>
+<td align="center">127</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="left">scenario_3</td>
+<td align="center">68</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="left">scenario_1</td>
+<td align="center">11</td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<p><strong>Looking at summary of data:</strong></p>
+<pre class="r"><code>df_a %&gt;% group_by(scenario) %&gt;% summarise(mean = mean(sales), median = median(sales), `standard deviation` = sd(sales), `sales (000&#39;s)` = sum(sales)) %&gt;% kable(caption = &quot;Compare Scenario summary stats&quot;)</code></pre>
+<table>
+<caption>Compare Scenario summary stats</caption>
+<thead>
+<tr class="header">
+<th align="left">scenario</th>
+<th align="right">mean</th>
+<th align="right">median</th>
+<th align="right">standard deviation</th>
+<th align="right">sales (000’s)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">scenario_1</td>
+<td align="right">49.66667</td>
+<td align="right">38.5</td>
+<td align="right">50.23810</td>
+<td align="right">298</td>
+</tr>
+<tr class="even">
+<td align="left">scenario_2</td>
+<td align="right">49.16667</td>
+<td align="right">58.0</td>
+<td align="right">34.56250</td>
+<td align="right">295</td>
+</tr>
+<tr class="odd">
+<td align="left">scenario_3</td>
+<td align="right">63.00000</td>
+<td align="right">68.0</td>
+<td align="right">22.54773</td>
+<td align="right">378</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>df_a %&gt;% plot_scenario_box(title=&quot;Fig. 5.1 Boxplot Sales by Scenario&quot;)</code></pre>
+<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-48-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>df_a %&gt;% plot_scenario_density(title = &quot;Fig. 5.2 Density of Sales by Scenario&quot;)</code></pre>
+<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-49-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p>The summary statistics for each scenario suggests Scenario 3 has
+performed better with greater total sales. Though scenarios 1 and 2 have
+larger values for standard deviation as seen in their more even spread
+of values (Figs. 5.1 and 5.2). No outliers are apparent from visual
+investigation (Fig. 5.1).</p>
+<p><br></p>
+</div>
+<div
+id="i.-decide-on-an-appropriate-test-of-the-difference-between-the-means-based-only-on-the-observations-i.e.-as-though-you-are-unaware-of-the-parameter-values.-explain-how-you-arrived-at-that-decision."
+class="section level5">
+<h5>i. Decide on an appropriate test of the difference between the means
+based only on the observations (i.e. as though you are unaware of the
+parameter values). Explain how you arrived at that decision.</h5>
+<p>To test the difference between the means, a one-way ANOVA test will
+be applied. It is a tool that can compare the means of two or more
+groups and determine whether there are significant differences between
+the means.</p>
+<ul>
+<li><p>Firstly, we will check for normality of distribution for each
+scenario’s values. The null hypothesis (<span
+class="math inline">\(H_0\)</span>) is that the means are all the same -
+if the test fails to prove the null hypothesis, then we may assume
+normality of the distribution.</p></li>
+<li><p>Secondly, we will test for homogeneity of variance for each group
+with Levene’s test.</p></li>
+<li><p>Thirdly, we will check for outliers as ANOVA can be sensitive to
+them.</p></li>
+<li><p>Finally, pending these outcomes, the ANOVA test will be
+conducted. The null hypothesis (<span
+class="math inline">\(H_0\)</span>) is that the means are all the same -
+if the test fails to prove the null hypothesis, then we may assume
+normality of the distribution.</p></li>
+</ul>
+</div>
+<div
+id="ii.-conduct-the-test-using-a-5-significance-level-and-write-up-your-findings.-what-can-you-conclude"
+class="section level5">
+<h5>ii. Conduct the test using a 5% significance level and write up your
+findings. What can you conclude?</h5>
+<p><strong>Check for normality - Shapiro-Wilks test</strong></p>
+<pre class="r"><code>for (scenario in scenario_names) {
+ print(str_to_title(scenario))
+ print(shapiro.test(df_a$sales[df_a$scenario == scenario])) }</code></pre>
+<pre><code>## [1] &quot;Scenario_1&quot;
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  df_a$sales[df_a$scenario == scenario]
+## W = 0.8749, p-value = 0.2464
+## 
+## [1] &quot;Scenario_2&quot;
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  df_a$sales[df_a$scenario == scenario]
+## W = 0.94426, p-value = 0.6937
+## 
+## [1] &quot;Scenario_3&quot;
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  df_a$sales[df_a$scenario == scenario]
+## W = 0.9234, p-value = 0.5302</code></pre>
+<p><strong>Check for homogeneity of variance - Levene’s
+test</strong></p>
+<pre class="r"><code>leveneTest(sales ~ scenario, data = df_a, center = mean) %&gt;% print()</code></pre>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = mean)
+##       Df F value  Pr(&gt;F)  
+## group  2  3.2611 0.06669 .
+##       15                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p><strong>Check for outliers</strong></p>
+<p>Testing for outliers is important as ANOVA trsting can be sentive to
+them. Though given the small sample size, I have struggled to idnentify
+the best test as z-scores are not advised for sample size less than 30
+and Grubbs and Dixon tests for six or less - and each scenario is based
+on six stores. Each of these tests will be run, but with the
+understanding that the results may not be reliable.</p>
+<p><strong>Z-scores</strong> - values greater than 3 indicate a value is
+more than 3 standard variations from mean:</p>
+<pre class="r"><code>df_a %&gt;% run_zscores()</code></pre>
+<pre><code>## Z-scores for sales by scenario 
+## Scenario_1 :
+##  1.539336 -0.7696682 -0.8094786 0.3251185 -0.9289099 0.6436018 
+## Scenario_2 :
+##  0.1398433 1.297167 0.5449065 -0.9596141 -1.39361 0.371308 
+## Scenario_3 :
+##  0.2217518 0.2217518 0.2661022 1.507913 -1.330511 -0.8870074</code></pre>
+<p>No z-scores are found to be greater than 3, indicating no outliers.
+Though, as z-scores should be used where <span
+class="math inline">\(n\geq30\)</span>`, Grubbs’s or Dixon’s test will
+be a better choice.</p>
+<p><strong>Grubbs’s and Dixon’s tests</strong> - values for each
+scenario are checked by these tests for either a single high or low
+outlier</p>
+<pre class="r"><code>df_a %&gt;% run_grubbs()</code></pre>
+<pre><code>## Grubbs&#39;s test for high and low outlier values in each scenario:
+## - There are no outliers in scenario_1
+## - There are no outliers in scenario_2
+## - There are no outliers in scenario_3</code></pre>
+<pre class="r"><code>df_a %&gt;% run_dixon()</code></pre>
+<pre><code>## Dixon&#39;s test for high and low outlier values in each scenario:
+## - There are no outliers in scenario_1
+## - There are no outliers in scenario_2
+## - There are no outliers in scenario_3</code></pre>
+<p><strong>Preliminary investigation:</strong></p>
+<ul>
+<li>The p-values are all greater than 0.05, which allows us to reject
+the null hypothesis and instead assume normally.</li>
+<li>Levene’s test’s p-value is greater than 0.05, indicating no
+significant difference in variances.</li>
+<li>No outliers have been found in the data by visual or statistical
+investigation.</li>
+</ul>
+<p>Having checked for these features, we can now conduct our one-way
+ANOVA test.</p>
+<p><strong>ANOVA test</strong></p>
+<pre class="r"><code>results_a &lt;- aov(sales ~ scenario, data = df_a) 
+
+summary_aov_a &lt;-summary(results_a)
+summary_aov_a</code></pre>
+<pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)
+## scenario     2    739   369.4   0.262  0.773
+## Residuals   15  21134  1408.9</code></pre>
+<pre class="r"><code>par(mfrow=c(1,2))
+plot(results_a, 1, main = &quot;Fig. 5.3&quot;)
+plot(results_a, 2, main = &quot;Fig. 5.4&quot;)</code></pre>
+<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-54-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p>The results for (a) from ANOVA indicate an F value of
+<strong>0.262</strong> and a p-value of <strong>0.773</strong>. The F
+value is not high, indicating a weak relationship between the variables,
+while the p-value is less than 0.05, so we fail to reject the null
+hypothesis and assume that there is no significant difference between
+the means.</p>
+<p>The post hoc tests on the residuals here are not necessarily
+required, given the assumption of no significant difference, but have
+been double-checked anyway. The results indicate normality of
+distribution of the residuals.</p>
+<p>There is no need to calculate effect size given the assumption of no
+significant difference.</p>
+<p><strong>Conclusion - sd=30:</strong></p>
+<p>From these results, while scenario 3 has a greater total than the
+other two, the testing indicates there is no significant difference
+between the scenarios when comparing their means.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div
+id="b-repeat-part-a-under-the-changed-assumption-the-standard-deviation-of-sales-is-25."
+class="section level5">
+<h5>b) Repeat part (a) under the changed assumption the standard
+deviation of sales is 25.</h5>
+<pre class="r"><code># Set random seed
+set.seed(seed)
+# Randomise store list 
+store &lt;- sample(1:18)
+# Generate random sales data for each scenario
+n = 6
+sd = 25
+scenario_1 &lt;- round(rnorm(n, mean = 50, sd))
+scenario_2 &lt;- round(rnorm(n, mean = 55, sd))
+scenario_3 &lt;- round(rnorm(n, mean = 60, sd))
+
+# Make dataframe - combine stores, scenario (as factor), sales - reorder by store
+df_b &lt;- data.frame(store, 
+    scenario = factor(rep(c(&quot;scenario_1&quot;, &quot;scenario_2&quot;, &quot;scenario_3&quot;), each=n)), 
+    sales = c(scenario_1, scenario_2, scenario_3)) %&gt;% 
+  arrange(store)
+
+df_b %&gt;% head(5) %&gt;% kable(align = &quot;clc&quot;)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="center">store</th>
+<th align="left">scenario</th>
+<th align="center">sales</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="left">scenario_3</td>
+<td align="center">67</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="left">scenario_2</td>
+<td align="center">54</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="left">scenario_1</td>
+<td align="center">114</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="left">scenario_3</td>
+<td align="center">67</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="left">scenario_1</td>
+<td align="center">17</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Looking at summary of data:</strong></p>
+<pre class="r"><code>df_b %&gt;% group_by(scenario) %&gt;% summarise(mean = mean(sales), median = median(sales), `standard deviation` = sd(sales), `sales (000&#39;s)` = sum(sales)) %&gt;% kable(caption = &quot;Compare Scenario summary stats&quot;)</code></pre>
+<table>
+<caption>Compare Scenario summary stats</caption>
+<thead>
+<tr class="header">
+<th align="left">scenario</th>
+<th align="right">mean</th>
+<th align="right">median</th>
+<th align="right">standard deviation</th>
+<th align="right">sales (000’s)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">scenario_1</td>
+<td align="right">49.50000</td>
+<td align="right">40.0</td>
+<td align="right">41.72649</td>
+<td align="right">297</td>
+</tr>
+<tr class="even">
+<td align="left">scenario_2</td>
+<td align="right">50.33333</td>
+<td align="right">57.5</td>
+<td align="right">28.86289</td>
+<td align="right">302</td>
+</tr>
+<tr class="odd">
+<td align="left">scenario_3</td>
+<td align="right">62.66667</td>
+<td align="right">67.0</td>
+<td align="right">18.68333</td>
+<td align="right">376</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>df_b %&gt;% plot_scenario_box(title=&quot;Fig. 5.5 Boxplot of Sales by Scenario&quot;)</code></pre>
+<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-57-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>df_b %&gt;% plot_scenario_density(title = &quot;Fig. 5.6 Density of Sales by Scenario&quot;)</code></pre>
+<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-58-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p>The nature of the summary statistics for (b) is similar to (a) -
+scenario 3 has greater total sales, scenarios 1 and 2 have greater
+variability (Figs. 5.5 and 5.6). No outliers are apparent from visual
+investigation (Fig. 5.5).</p>
+<p><br></p>
+</div>
+<div
+id="i.-decide-on-an-appropriate-test-of-the-difference-between-the-means-based-only-on-the-observations-i.e.-as-though-you-are-unaware-of-the-parameter-values.-explain-how-you-arrived-at-that-decision.-1"
+class="section level5">
+<h5>i. Decide on an appropriate test of the difference between the means
+based only on the observations (i.e. as though you are unaware of the
+parameter values). Explain how you arrived at that decision.</h5>
+<p>To test the difference between the means, a one-way ANOVA test will
+be applied. It is a tool that can compare the means of two or more
+groups and determine whether there are significant differences between
+the means.</p>
+<p>As above for (a) the process will be repeated:</p>
+<ul>
+<li>test for normality</li>
+<li>test for homogeneity of variance</li>
+<li>check for outliers</li>
+<li>conduct ANOVA test</li>
+</ul>
+<p><br></p>
+</div>
+<div
+id="ii.-conduct-the-test-using-a-5-significance-level-and-write-up-your-findings.-what-can-you-conclude-1"
+class="section level5">
+<h5>ii. Conduct the test using a 5% significance level and write up your
+findings. What can you conclude?</h5>
+<p><strong>Check for normality - Shapiro-Wilks test</strong></p>
+<pre class="r"><code>for (scenario in scenario_names) {
+ print(str_to_title(scenario))
+ print(shapiro.test(df_b$sales[df_b$scenario == scenario])) }</code></pre>
+<pre><code>## [1] &quot;Scenario_1&quot;
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  df_b$sales[df_b$scenario == scenario]
+## W = 0.87202, p-value = 0.2344
+## 
+## [1] &quot;Scenario_2&quot;
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  df_b$sales[df_b$scenario == scenario]
+## W = 0.94804, p-value = 0.7244
+## 
+## [1] &quot;Scenario_3&quot;
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  df_b$sales[df_b$scenario == scenario]
+## W = 0.91547, p-value = 0.4733</code></pre>
+<p><strong>Check for homogeneity of variance - Levene’s
+test</strong></p>
+<pre class="r"><code>leveneTest(sales ~ scenario, data = df_b, center = mean) %&gt;% print()</code></pre>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = mean)
+##       Df F value  Pr(&gt;F)  
+## group  2  3.2014 0.06953 .
+##       15                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p><strong>Check for outliers</strong></p>
+<p>As above for (a), z-scores, Grubb’s and Dixon’s tests will be used to
+check for outliers, though with it noted again that the sample size is
+insufficient for reliable results.</p>
+<p><strong>Z-scores</strong> - values greater than 3 indicate a value is
+more than 3 standard variations from mean:</p>
+<pre class="r"><code>df_b %&gt;% run_zscores()</code></pre>
+<pre><code>## Z-scores for sales by scenario 
+## Scenario_1 :
+##  1.545781 -0.7788817 -0.8028473 0.3235355 -0.9226753 0.6350882 
+## Scenario_2 :
+##  0.1270374 1.30502 0.5427961 -0.947006 -1.397411 0.3695633 
+## Scenario_3 :
+##  0.2319359 0.2319359 0.2319359 1.516504 -1.32025 -0.892061</code></pre>
+<p>No z-scores are found to be greater than 3, indicating no outliers.
+Though, as z-scores should be used where <span
+class="math inline">\(n\geq30\)</span>`, Grubbs’s or Dixon’s test will
+be a better choice.</p>
+<p><strong>Grubb’s and Dixon’s tests</strong> - values for each scenario
+are checked by these tests for either a single high or low outlier</p>
+<pre class="r"><code>df_a %&gt;% run_grubbs()</code></pre>
+<pre><code>## Grubbs&#39;s test for high and low outlier values in each scenario:
+## - There are no outliers in scenario_1
+## - There are no outliers in scenario_2
+## - There are no outliers in scenario_3</code></pre>
+<pre class="r"><code>df_a %&gt;% run_dixon()</code></pre>
+<pre><code>## Dixon&#39;s test for high and low outlier values in each scenario:
+## - There are no outliers in scenario_1
+## - There are no outliers in scenario_2
+## - There are no outliers in scenario_3</code></pre>
+<p><strong>Preliminary investigation:</strong></p>
+<ul>
+<li>The p-values are all greater than 0.05, which allows us to reject
+the null hypothesis and instead assume normally.</li>
+<li>Levene’s test’s p-value is greater than 0.05, indicating no
+significant difference in variances.</li>
+<li>No outliers have been found in the data by visual or statistical
+investigation.</li>
+</ul>
+<p>Having checked for these features, we can now conduct our one-way
+ANOVA test.</p>
+<p><strong>ANOVA test</strong></p>
+<pre class="r"><code>results_b &lt;- aov(sales ~ scenario, data = df_b) 
+
+summary_aov_b &lt;-summary(results_b)
+summary_aov_b</code></pre>
+<pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)
+## scenario     2    652   326.2   0.335  0.721
+## Residuals   15  14616   974.4</code></pre>
+<pre class="r"><code>par(mfrow=c(1,2))
+plot(results_b, 1, main = &quot;Fig 5.7&quot;)
+plot(results_b, 2, main = &quot;Fig 5.8&quot;)</code></pre>
+<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-63-1.png" width="864" style="display: block; margin: auto;" />
+The results for (b) from ANOVA indicate an F value of
+<strong>0.335</strong> and a p-value of <strong>0.721</strong>. The F
+value is not high, indicating a weak relationship between the variables,
+while the p-value is less than 0.05, so we fail to reject the null
+hypothesis and assume that there is no significant difference between
+the means.</p>
+<p>Again, the effect size and post hoc tests are not required given the
+assumption of no difference, but the latter have been included for
+consistency in this report. The results indicate normality of
+distribution of the residuals.</p>
+<p><strong>Conclusion - sd=25</strong><br />
+From these results, while scenario 3 has a greater total than the other
+two, the testing indicates there is no significant difference between
+the scenarios when comparing their means.</p>
+<p><br></p>
+</div>
+<div
+id="c-compare-your-answers-to-parts-a-and-b.-what-can-you-conclude-1"
+class="section level5">
+<h5>c) Compare your answers to parts (a) and (b). What can you
+conclude?</h5>
+<p><strong>Answer:</strong><br />
+In the data collected for this month of sales, scenario 3 of having both
+the catalogue and end-of-aisle display generated more sales, but
+scenario 1 with only the catalogue had a greater range of sales
+figures.</p>
+<p>When using ANOVA testing, neither (a) nor (b) showed any significant
+difference in means between the three scenarios. Though, there was a
+slight increase in F value and decrease in p-value for the lower
+standard deviation value. This suggests that if the standard deviation
+value could be reduced sufficiently, then any differences will be more
+likely to be found.</p>
+<p>Interestingly, while the range of values for sales is narrower in
+(b), the sales totals for (a) and (b) are almost identical, despite the
+difference is standard deviation for both. This will be because of
+resetting the random seed each time, resulting in the generated values
+following the same distribution pattern but with a greater or lesser
+variance corresponding to the change in standard deviation.</p>
+<p>For both versions, the fact that there are only six stores with one
+month’s worth of sales for each scenario, makes it difficult to be
+statistically rigorous with the testing, as the sample sizes are smaller
+than would be ideal for some of the tests.</p>
+<p>Ideally more testing would be done, whether in more stores and/or
+longer time period for more data. Why did the catalogue-only stores have
+such a wide range of values - are catalogues distributed equally for
+each store? Were the aisles located in the same location for each store?
+Why did the stores that did both have a more consistent level of sales -
+but not necessarily large? Is it just this month or would this be a
+repeated pattern?</p>
+<p>Alternatively, doing only two scenarios across the 18 stores might
+help more clearly identify any differences between them.</p>
+<p><strong>Conclusion</strong> In conclusion, there has been no
+significant difference found between the average sales amounts for the
+three scenarios from the data provided.</p>
+<p>Ideally, further data collection and research would be undertaken for
+more conclusive results.</p>
+<p>Though, if required to recommend one option, the results may help
+management decide by considering them each by level of risk. With no
+significant difference in the means, in order of risk:</p>
+<ul>
+<li>catalogue only - high risk - possibility of high sales but also low
+sales</li>
+<li>end-of-aisle only - moderate risk - similar mean less chance of high
+sales</li>
+<li>both - low-risk - expect consistent sales, less surprises</li>
+</ul>
+<p><br></p>
+<hr />
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<p>BYJU’S Learning (2023) <em>Exponential Distribution</em>, BYJU’S
+Learning website, accessed 30 May 2023. <a
+href="https://byjus.com/maths/exponential-distribution"
+class="uri">https://byjus.com/maths/exponential-distribution</a></p>
+<p>CRAN (The Comprehensive R Archive Network) (n.d.) <em>A simple
+example</em>, CRAN website, accessed 1 June 2023. <a
+href="https://cran.r-project.org/web/packages/pwr/vignettes/pwr-vignette.html"
+class="uri">https://cran.r-project.org/web/packages/pwr/vignettes/pwr-vignette.html</a></p>
+<p>Dorai-Raj S (2022) <em>binom: Binomial Confidence Intervals for
+Several Parameterizations</em>, CRAN website, accessed 28 May 2023. <a
+href="https://cran.r-project.org/web/packages/binom/binom.pdf"
+class="uri">https://cran.r-project.org/web/packages/binom/binom.pdf</a></p>
+<p>Heiss A (2020) <em>Generating random numbers</em>, Program Evaluation
+for Public Service website, accessed 26 May 2023. <a
+href="https://evalf20.classes.andrewheiss.com/example/random-numbers/#binomial-distribution"
+class="uri">https://evalf20.classes.andrewheiss.com/example/random-numbers/#binomial-distribution</a></p>
+<p>iforgetredditpws (2021) <em>Add legend on ggplot with two overlayed
+lines from different data sets?</em>, reddit website, accessed 31 May
+2023. &lt;<a
+href="https://www.reddit.com/r/RStudio/comments/qgw05r/add_legend_on_ggplot_with_two_overlayed_lines"
+class="uri">https://www.reddit.com/r/RStudio/comments/qgw05r/add_legend_on_ggplot_with_two_overlayed_lines</a></p>
+<p>Kassambara A (n.d.) <em>One-Way ANOVA Test in R</em>, STHDA
+(Statistical tools for high-throughput data analysis) website, accessed
+03 June 2023. <a
+href="http://www.sthda.com/english/wiki/one-way-anova-test-in-r"
+class="uri">http://www.sthda.com/english/wiki/one-way-anova-test-in-r</a></p>
+<p>Khan Academy (2018) <em>Two-sample t test for difference of
+means</em>, Khan Academy website, accessed 29 May 2023. <a
+href="https://www.khanacademy.org/math/ap-statistics/xfb5d8e68:inference-quantitative-means/two-sample-t-test-means/v/two-sample-t-test-for-difference-of-means"
+class="uri">https://www.khanacademy.org/math/ap-statistics/xfb5d8e68:inference-quantitative-means/two-sample-t-test-means/v/two-sample-t-test-for-difference-of-means</a></p>
+<p>Quiaoit J and Shah K (2022) <em>4.9 Combining Random Variables</em>,
+Fiveable website, accessed 28 May 2023. <a
+href="https://library.fiveable.me/ap-stats/unit-4/combining-random-variables/study-guide/4a4RK1Yx83jckDNdzaX6"
+class="uri">https://library.fiveable.me/ap-stats/unit-4/combining-random-variables/study-guide/4a4RK1Yx83jckDNdzaX6</a></p>
+<p>Siegel A F and Wagner M R (2022) () <em>Practical Business
+Statistics</em>, 8th edn, Academic Press,
+doi.org/10.1016/B978-0-12-820025-4.00007-5.</p>
+<p>Soage J C (2023) <em>Histogram with density in ggplot2</em>, R Charts
+website, accessed 28 May 2023. &lt;<a
+href="https://r-charts.com/distribution/histogram-density-ggplot2"
+class="uri">https://r-charts.com/distribution/histogram-density-ggplot2</a></p>
+<p>Soetewey A (2020) <em>Outliers detection in R</em>, Stats and R
+website, accessed 02 June 2023. <a
+href="https://statsandr.com/blog/outliers-detection-in-r"
+class="uri">https://statsandr.com/blog/outliers-detection-in-r</a></p>
+<p>Soetewey A (2020) <em>Student’s t-test in R and by hand: how to
+compare two groups under different scenarios?</em>, Stats and R website,
+accessed 31 May 2023. <a
+href="https://statsandr.com/blog/student-s-t-test-in-r-and-by-hand-how-to-compare-two-groups-under-different-scenarios"
+class="uri">https://statsandr.com/blog/student-s-t-test-in-r-and-by-hand-how-to-compare-two-groups-under-different-scenarios</a></p>
+<p>Surbhi S (2018) <em>Difference Between T-test and Z-test</em>, Key
+Differences website, accessed 31 May 2023. <a
+href="https://keydifferences.com/difference-between-t-test-and-z-test.html"
+class="uri">https://keydifferences.com/difference-between-t-test-and-z-test.html</a></p>
+<p>Wlömert N (2021) <em>9 R Markdown &amp; assignments</em>, Marketing
+Research Design &amp; Analysis 2021 website, accessed 30 May 2023. <a
+href="https://imsmwu.github.io/MRDA2020/r-markdown-assignments.html"
+class="uri">https://imsmwu.github.io/MRDA2020/r-markdown-assignments.html</a></p>
+<p><br></p>
+<p><strong>R packages</strong></p>
+<p>Bache S, Wickham H (2022) <em>magrittr: A Forward-Pipe Operator for
+R</em>, R package version 2.0.3. <a
+href="https://CRAN.R-project.org/package=magrittr"
+class="uri">https://CRAN.R-project.org/package=magrittr</a></p>
+<p>Champely S (2020) <em>pwr: Basic Functions for Power Analysis</em>, R
+package version 1.3-0. <a href="https://CRAN.R-project.org/package=pwr"
+class="uri">https://CRAN.R-project.org/package=pwr</a></p>
+<p>Dorai-Raj S (2022) <em>binom: Binomial Confidence Intervals for
+Several Parameterizations</em>, R package version 1.1-1.1. <a
+href="https://CRAN.R-project.org/package=binom"
+class="uri">https://CRAN.R-project.org/package=binom</a></p>
+<p>Fox J and Weisberg S (2019) <em>An R Companion to Applied
+Regression</em>, 3rd edition, Sage, Thousand Oaks CA. <a
+href="https://socialsciences.mcmaster.ca/jfox/Books/Companion"
+class="uri">https://socialsciences.mcmaster.ca/jfox/Books/Companion</a></p>
+<p>Kassambara A (2023) <em>ggpubr: ‘ggplot2’ Based Publication Ready
+Plots</em>, R package version 0.6.0. <a
+href="https://CRAN.R-project.org/package=ggpubr"
+class="uri">https://CRAN.R-project.org/package=ggpubr</a></p>
+<p>Kassambara A (2023) <em>rstatix: Pipe-Friendly Framework for Basic
+Statistical Tests</em>, R package version 0.7.2. <a
+href="https://CRAN.R-project.org/package=rstatix"
+class="uri">https://CRAN.R-project.org/package=rstatix</a></p>
+<p>Komsta L (2022) <em>outliers: Tests for Outliers</em>, R package
+version 0.15. <a href="https://CRAN.R-project.org/package=outliers"
+class="uri">https://CRAN.R-project.org/package=outliers</a></p>
+<p>Venables W N and Ripley B D (2002) <em>Modern Applied Statistics with
+S</em>, Fourth edn, Springer, New York. ISBN 0-387-95457-0</p>
+<p>Wickham H (2022). <em>stringr: Simple, Consistent Wrappers for Common
+String Operations</em>. R package version 1.5.0, <a
+href="https://CRAN.R-project.org/package=stringr"
+class="uri">https://CRAN.R-project.org/package=stringr</a>.</p>
+<p>Wickham H. (2016) <em>ggplot2: Elegant Graphics for Data
+Analysis</em>, Springer-Verlag New York.</p>
+<p>Hadley Wickham (2011) <em>The Split-Apply-Combine Strategy for Data
+Analysis</em>, Journal of Statistical Software, 40(1), 1-29. <a
+href="https://www.jstatsoft.org/v40/i01"
+class="uri">https://www.jstatsoft.org/v40/i01</a></p>
+<p>Wickham H, François R, Henry L, Müller K, Vaughan D (2023) <em>dplyr:
+A Grammar of Data Manipulation</em>, R package version 1.1.0. <a
+href="https://CRAN.R-project.org/package=dplyr"
+class="uri">https://CRAN.R-project.org/package=dplyr</a></p>
+<p>Wickham H, Vaughan D, Girlich M (2023) <em>tidyr: Tidy Messy
+Data</em>, R package version 1.3.0. <a
+href="https://CRAN.R-project.org/package=tidyr"
+class="uri">https://CRAN.R-project.org/package=tidyr</a></p>
+<p>Yihui X (2023) <em>knitr: A General-Purpose Package for Dynamic
+Report Generation in R</em>, R package version 1.42.</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
