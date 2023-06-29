@@ -39,8 +39,8 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
-# pkgdown site
-docs/
+# pkgdown site - HAVE COMMENTED OUT TO ALLOW WEBSITE UPDATE
+# docs/
 
 # translation temp files
 po/*~
