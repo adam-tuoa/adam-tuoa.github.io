@@ -3,9 +3,6 @@ title: "RMIT Applied Analytics - Assignment 2"
 author: "Adam Simmons"
 subtitle: "Applied Data Project"
 date: "4 June 2023"
-output:
-  html_document:
-    df_print: paged
 knit: (function(input_file, encoding) {
     out_dir <- 'docs';
     rmarkdown::render(input_file,
