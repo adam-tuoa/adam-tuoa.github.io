@@ -1,10 +1,9 @@
 name: "Adam Simmons"
 output_dir: "docs"
 navbar:
-  title: "Home"
+  title: "Adam Simmons"
+  href: index.html
   left:
-  - text: "Adam Simmons"
-    href: index.html
   - text: "RMIT - Statistical Data Analysis"
     href: RMIT-Statistical-Data-Analysis.html 
   - text: "RMIT - Stats and probability with R"
