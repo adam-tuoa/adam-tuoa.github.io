@@ -1,0 +1,837 @@
+---
+title: "MATH2406 Applied Analytics"
+author: "Adam Simmons - student ID: s4001341 - 21 May 2023"
+subtitle: "Assessment 1: Report"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, fig.path = "man/figures/README-")
+```
+
+<br>
+
+## **Setup**
+
+
+```{r, echo = TRUE, warnings = FALSE}
+
+library(readr)
+library(dplyr) 
+library(tidyr)
+library(ggplot2) 
+library(scales)
+library(magrittr)
+library(here)
+library(knitr)
+library(forcats)
+
+```
+
+---
+
+## **Load, inspect and prepare data**
+
+#### Load data
+```{r}
+
+df <- read_csv(here("pop_dataset_0002.csv"), show_col_types = FALSE) %>% as_tibble()
+
+```
+
+#### Inspect and prepare data
+
+Check structure, values, data types to understand the data's shape and nature, and investigate for errors, inconsistencies, missing values and potential issues to address prior to the analysis process.  
+
+
+```{r}
+
+df %>% head()
+
+```
+
+<br>
+
+**Unique variables**
+
+All unique values were originally generated for investigation, thoiugh for purposes of this report, only up to the first 10 values are being shown.
+
+```{r}
+# Generate unique values and view first 10
+unique_vals <- df %>% lapply(unique) %>% lapply(head, 10) 
+
+# View variables
+unique_vals
+```
+
+**Convert character data types to factors**
+
+```{r}
+
+df$region %<>% as.factor()
+df$gender %<>% as.factor()
+
+```
+
+**Summary and structure**
+
+```{r}
+
+df %>% select(c("age", "population")) %>%  summary()
+
+```
+
+```{r}
+
+df %>% str()
+
+```
+
+<br>
+
+**Head of dataset**
+
+```{r}
+df %>%  head()
+
+```
+
+**Missing values**
+
+```{r}
+
+# Check for NA values
+colSums(is.na(df))
+
+```
+
+<br>
+
+**Summary - the dataset contains**
+
+- Regions - 500 regions, each coded "SSC#####"
+- Age - range between 0-55
+- Gender - male (M) and female (F)
+- Population - number of people
+- There are no missing values
+
+___
+
+## **Task 1**
+
+### **1. Perform the following data analysis by looking at some descriptive statistics on the complete dataset**
+
+First it is necessary convert the dataset to Tidy format - in its current form, the `population` values are actually multiple observations and values combined. This will make it easier to work with for analysis and visualisation.
+
+Using the tidyr function, `uncount()`, this breaks down the `population` values so each row will be a single observation (each person) with one value for each of three variables: `region`, `gender` and `age`.
+
+```{r}
+
+df_uncount <- df %>% uncount(weights = population)
+
+```
+
+
+
+### 1.1 Find the mean age of all people included in the dataset.
+
+```{r}
+
+region_mean_age <- df_uncount$age %>% mean()
+region_mean_age
+
+```
+
+
+
+The mean age of all people in the dataset is: **`r round(region_mean_age, 2)`**
+
+
+### 1.2 Find the standard deviation of all people in the dataset.
+
+
+```{r}
+
+region_stand_dev <- df_uncount$age %>% sd()
+region_stand_dev
+
+```
+
+The standard deviation for age of all people in the data set is: **`r round(region_stand_dev, 2)`**
+
+
+---
+
+## **Task 2**
+
+### **2. Consider only the mean age of each region.**
+
+For this task, the mean age for each region will be calculated to create a new dataset.
+
+```{r}
+
+# Calculate mean age for each region - arrange by region code
+region_means <- df_uncount %>% 
+  group_by(region) %>% 
+  summarise(mean_age = mean(age)) %>%
+  arrange(region)
+
+# View first 5 rows
+region_means %>% head(5)
+
+```
+
+<br>
+<br>
+
+### 2.1 Produce summary statistics for the region means:
+- mean
+- standard deviation
+- minimum
+- first quartile
+- median
+- third quartile
+- maximum
+- interquartile range
+- histogram of the distribution of region means
+
+#### Summary statistics for region means:
+
+```{r}
+
+region_summary <- region_means %>% 
+        summarise(Mean = mean(mean_age),
+                  `Standard deviation` = sd(mean_age),
+                  Minimum = min(mean_age),
+                  `First quartile` = quantile(mean_age, probs = 0.25),
+                  Median = median(mean_age),
+                  `Third quartile` = quantile(mean_age,probs = 0.75),
+                  Maximum = max(mean_age),
+                  `Interquartile range` = IQR(mean_age))
+region_summary
+
+```
+
+```{r}
+
+region_summary %>% t() %>% 
+  kable(caption = "Summary statistics for region means", align = "lc", digits = 2)
+
+```
+
+<br>
+<br>
+
+#### Histogram of distribution of region means
+
+```{r fig.height = 3, fig.width=5, fig.align = "center"}
+region_means %>%  
+  ggplot() +
+  geom_histogram(aes(mean_age), bins = 11, color = "white", fill = "steelblue") +
+  labs(x = "Region Mean Age", y = 'Frequency', title = "Histogram of region means - frequency")
+
+```
+
+
+
+
+### 2.2 Produce a histogram of the region means with proportions or percentages on the y axis.
+
+
+```{r fig.height = 3, fig.width=5, fig.align = "center"}
+
+region_means %>% ggplot() +
+  geom_histogram(aes(x = mean_age, y = after_stat(density)), bins=11, color = "white", fill = "steelblue") +
+  labs(title = "Histogram of region means - percentage", x = "Mean Age", y = "Percentage") +
+  scale_y_continuous(labels = percent) +
+  scale_x_continuous(breaks = seq(0,55,10)) 
+
+```
+
+
+### 2.3 Discuss whether the region means exhibit the characteristic shape of a normal distribution. Include at least two justifications in support of your conclusion.
+
+In considering whether the distribution of the region means exhibits the characteristics of a normal distribution, there are several factors that will be checked:
+
+- symmetrical about the central values?
+- is it bell-shaped?
+- QQ plot 
+- Shapiro-Wilk test
+
+<br>
+
+#### Symmetry/Shape
+
+```{r fig.height = 3, fig.width=5, fig.align = "center"}
+
+plot_region_means <- region_means %>%  
+  ggplot() +
+  geom_histogram(aes(mean_age), bins = 11, color = "white", fill = "steelblue") +
+  labs(x = "Region Mean Age", y = 'Frequency', title = "Histogram of region means") +
+  scale_x_continuous(breaks = seq(0,55,10)) +
+  geom_vline(aes(xintercept = mean(mean_age)), alpha = 0.6, color = 'red', linetype = 'dashed', size = 0.4)
+
+plot_region_means
+
+```
+
+**Observation 1:** From this histogram, it can be seen that the distribution of the region means is not symmetrical about the mean, nor is it a symmetrical bell shape. It is slightly right-skewed, with long tails on either side of the middle.  
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+#### QQ Plot
+
+```{r fig.height = 3, fig.width=5, fig.align = "center"}
+
+region_means %>% 
+  ggplot(aes(sample = mean_age)) + 
+  stat_qq(color = "steelblue3", alpha=0.6) + 
+  stat_qq_line(color="red", alpha=0.6) +
+  labs(x  = 'Theoretical quantiles', y = 'Sample quantiles', 
+       title = 'Q-Q Plot for Region means')
+
+```
+
+**Observation 2:** To be considered as a normal distribution, in a QQ plot the data points (blue) should match the theoretical line (red), which would indicate the sample and theoretical quantiles align. From the plot above, it can be seen that the data points do not match and are not in a straight line, indicating the region means are not normally distributed.
+
+
+
+#### Shapiro-Wilk normality test
+
+```{r}
+
+sw_results <- shapiro.test(region_means$mean_age)
+sw_results
+
+sw_results$p.value
+
+```
+**Observation 3:** The p-value calculated by the Shapiro-Wilks test is `r formatC(sw_results$p.value, format="f", digits=18)`, which is much less than 0.05, indicating that the data is not normally distributed.
+
+#### **Summary**
+
+From visual investigation and statistical testing of the data, the region means do not exhibit the characteristic shape of a normal distribution.
+
+
+
+
+
+## **Task 3**
+
+### **3. Consider the region with the largest population size**
+
+### 3.1 Identify the region and describe its population size in comparison with the other regions.
+
+
+```{r}
+
+region_population <- df_uncount %>% 
+  group_by(region) %>% 
+  summarise(population = n()) %>% 
+  arrange(desc(population))
+region_population %>% head(5)
+
+```
+
+```{r fig.height = 3, fig.width = 7, fig.align = "center"}
+
+region_mean_pop <- region_population %>% mean(population)
+
+# Set parameters to highlight region with largest population, with annotation 
+highlight <- region_population[1,] 
+region_max_code <-as.character(region_population[[1, "region"]])
+annotation <- data.frame(x=13, y=region_population[[1,2]], label=region_max_code)
+
+# Plot to show Top 100 Regions by population
+region_population[1:100,] %>%  
+  mutate(region = fct_reorder(region, desc(population))) %>%
+  ggplot(aes(x = region, y = population)) +
+  geom_bar(stat = "identity", colour="white", fill = "steelblue", alpha = 0.5) +
+  geom_bar(data = highlight, aes(x = region, y = population), stat="identity", colour="white", fill = "steelblue") +
+  scale_x_discrete(labels = NULL) +
+  labs(x="Region", y="Population", title=paste("Top 100 Regions by Population")) +
+  geom_text(data=annotation, aes( x=x, y=y-4000, label=label), size=3) +
+  annotate("segment", x = 7, xend = 3, y = annotation$y-4200, yend = annotation$y - 4200, color = "grey60", size=0.5, arrow=arrow(angle = 30, length = unit(0.1, "cm"), type = "closed")) +
+  geom_hline(data = region_population, aes(yintercept = mean(population)), alpha = 0.6, color = "red", linetype = "dashed", size = 0.4) +
+  theme(panel.background = element_rect(NA), axis.ticks = element_blank())
+```
+As can be seen in the chart above, there is a wide range of population values across the first 20% of the 500 regions, with the remaining 80% forming a long flat tail. The mean population is `r mean(region_population$population)`, though the median is `r median(region_population$population)`, also indicating the distribution is highly skewed. 
+
+The region with the largest population is `r region_max_code`, with a total of `r region_population$population[[1]]`. This region could well be considered an outlier as it is `r round(region_population$population[[1]] / mean(region_population$population), 2)` times greater than the mean population for all regions, and  `r round((region_population$population[[1]] - region_population$population[[2]]) / region_population$population[[2]] * 100, 2)`% greater than the second largest region. 
+
+
+### 3.2 Produce summary statistics for age in this region.
+- mean
+- standard deviation
+- minimum
+- first quartile
+- median
+- third quartile
+- maximum
+- interquartile range
+- histogram of the distribution of ages in the region [as indicated during the course Q&A sessions]
+
+<br>
+
+#### Summary statistics for the largest region - `r region_max_code`:
+
+```{r}
+
+pop_largest <- df_uncount %>% 
+  filter(region == region_max_code)
+```
+
+``` {r}
+largest_region_summary <- pop_largest %>%   
+        summarise(Mean = mean(age),
+                  `Standard deviation` = sd(age),
+                  Minimum = min(age),
+                  `First quartile` = quantile(age, probs = 0.25),
+                  Median = median(age),
+                  `Third quartile` = quantile(age,probs = 0.75),
+                  Maximum = max(age),
+                  `Interquartile range` = IQR(age))
+
+largest_region_summary
+
+```
+
+
+```{r}
+
+largest_region_summary %>% t() %>% 
+  kable(caption = paste("Summary statistics for region", region_max_code), align = "lc", digits = 2)
+
+```
+
+
+#### Histogram of distribution of age in the region
+
+```{r fig.height = 3, fig.width=5, fig.align = "center"}
+
+plot_largest_region <- pop_largest %>%  ggplot() +
+  geom_histogram(aes(age), bins = 11, color = "white", fill = "steelblue") +
+  labs(x = "Age", y = "Frequency", title = paste("Histogram of age in", region_max_code)) + scale_x_continuous(breaks = seq(0,55,10)) +
+  geom_vline(aes(xintercept = mean(age)), alpha = 0.6, color = "red", linetype = "dashed", size = 0.4)
+plot_largest_region
+
+```
+
+
+
+```{r}
+
+# Combine summary stats
+sum_stats <- data.frame(cbind(t(largest_region_summary), t(region_summary)))
+# View table of summary stats for comparison  
+sum_stats %>% kable(align = "lll", digits = 2, col.names = c(region_max_code, "All regions"))
+
+```
+
+There are significant differences between the two distributions, despite the range being similar.
+
+- the central values are lower in `r region_max_code`, with the example of its mean of `r round(largest_region_summary[["Mean"]], 2)` compared to the overall region mean of `r round(region_summary[["Mean"]], 2)`.
+- the standard variation of `r region_max_code` is almost double of the region means - `r round(largest_region_summary[["Standard deviation"]], 2)` compared to `r round(region_summary[["Standard deviation"]], 2)`.
+- The middle 50% or interquartile range is much wider in `r region_max_code` - `r round(largest_region_summary[["Interquartile range"]], 2)` compared to `r round(region_summary[["Interquartile range"]], 2)`.
+
+These differences are borne out when looking at visualisations of the two distributions side-by-side (below). The reason is that they represent different things - the distribution of ages within a specific region shows the frequency across the entire age range, whereas the region means are by definition, an indication of the central value within each region.
+
+
+```{r fig.height = 3, fig.width = 9, fig.align = "center"}
+
+ggpubr::ggarrange(plot_largest_region, plot_region_means, ncol = 2, nrow=1)
+
+```
+
+
+### 3.4 Plot the distribution of age for males in the region.
+
+
+
+```{r fig.height = 3, fig.width=5, fig.align = "center"}
+
+pop_largest %>% filter(gender == "M") %>% 
+  ggplot() + 
+  geom_histogram(aes(x = age), color = "white", alpha = 0.9, fill = "steelblue", bins=11) +
+  scale_x_continuous(breaks = seq(0,55,10)) + 
+  labs(x = "Age", y = "Frequency", title = paste("Histogram of age in", region_max_code,"- Male"))
+
+```
+
+### 3.5 Plot the distribution of age for females in the region.
+
+```{r fig.height = 3, fig.width=5, fig.align = "center"}
+
+pop_largest %>% filter(gender == "F") %>% 
+  ggplot(aes(x = age)) + 
+  geom_histogram(color = "white", alpha = 0.8, fill = "coral1", bins=11) +
+  scale_x_continuous(breaks = seq(0,55,10)) + 
+  labs(x = "Age", y = "Frequency", title = paste("Histogram of age in", region_max_code,"- Female"))
+
+```
+
+### 3.6 Compare the distributions of Task 3.4 and Task 3.5, and discuss your findings.
+
+<br>
+
+```{r fig.height = 3, fig.width=9, fig.align = "center"}
+
+pop_largest %>% 
+  ggplot(aes(x = age)) + 
+  geom_histogram(color = "white", fill = "steelblue", bins=11) + 
+  labs(x = "Age", y = "Frequency", title = "Histogram of Age - by Gender") +
+  scale_x_continuous(breaks = seq(0,55,10)) +   
+  facet_wrap(~gender, labeller = labeller(gender = c("F" = "Female", "M" ="Male")))
+
+```
+
+<br>
+<br>
+
+```{r fig.height = 3, fig.width=5, fig.align = "center"}
+
+pop_largest %>%
+  ggplot(mapping = aes(x = age, fill = gender), ) +
+  geom_histogram(bins=11, alpha=0.6, position = "identity", color = "white") +
+  scale_x_continuous(breaks = seq(0,55,10))  +
+  scale_fill_manual(values = c("coral2", "steelblue3")) +
+  labs(x = "Age", y = "Frequency", title = "Histogram of Age - comparing Gender")
+
+```
+<br>
+<br>
+
+
+The individual and combined histograms above show that while similar in overall shape and size, there are discernible differences.
+
+- there is a male-bias for ages 0-20
+- there is a female-bias for all ages above 20
+- the difference between the peak in the childhood range and the higher adult range between ages 25-40, is approximately 20-35 years, which would correspond to common age difference between parents and their children   
+- a gradual decrease in numbers at older ages, which is to be expected as the possibility of illness, accidents and mortality resulting in death increases.
+
+The observed bias towards males in childhood shifting to females in adulthood reflects the trends shown in worldwide data, such as outlined by Ritchie and Roser (2019), which states "the sex ratio – the number of males relative to females – at birth and in childhood are male-biased in almost every country", though "as we move through adulthood we see that this ratio is lower and lower."
+
+Though in this case, there is a significant higher female-biased difference in the sex ratio between the ages of 21-37. Further data would be required to understand the reason for this, but factors could include gender-biased employment and education opportunities, services, mortality rate of males (young drivers), cultural/family/community networks and/or housing affordability. 
+
+---
+
+## **Task 4**
+
+
+### **4. Now consider all regions:**
+
+
+### 4.1 For each region, calculate the ratio of older to younger people, where ‘younger’ is defined as aged below 40 years and ‘older’ as age 40 years and above.
+
+<br>
+
+
+```{r}
+
+# Add factor for age group- older/younger
+df_groups <- df_uncount %>%
+  mutate(age_group = factor(case_when(
+    age < 40 ~ "Younger",
+    age >= 40 ~ "Older"
+  )))
+```
+
+<br>
+
+``` {r}
+# Generate ratios for older/younger age groups by region
+region_age_stats <- df_groups %>% 
+  group_by(region) %>% 
+  summarise(population = n(),
+            older = sum(age_group == "Older"),
+            younger = sum(age_group == "Younger"),
+            ratio_older_to_younger = older/younger)
+
+# View first 6 rows
+region_age_stats %>%  head()
+
+```
+
+### 4.2 Plot the ratio of each region against its population size.
+
+```{r fig.height = 3, fig.width=5, fig.align = "center"}
+
+# Create plot ratio older/younger vs population
+region_age_stats %>%
+  ggplot(aes(x = population, y = ratio_older_to_younger)) + 
+  geom_point(alpha=0.3) +
+  geom_hline(aes(yintercept = 1), alpha = 0.6, color = 'red', linetype = 'dashed', size = 0.4) +
+  labs(x = "Population", y = "Ratio", title = "Ratio of Older/Younger per Region by Population size")
+
+```
+
+```{r fig.height = 3.5, fig.width=9, fig.align = "center"}
+
+# Create plot ratio for populations under 250 
+plot_less_250 <- region_age_stats %>% filter (population < 200) %>% 
+  ggplot(aes(x = population, y = ratio_older_to_younger)) + 
+  geom_point(alpha=0.4) +
+  geom_hline(aes(yintercept = 1), alpha = 0.6, color = 'red', linetype = 'dashed', size = 0.4) +
+  labs(x = "Population", y = "Ratio", title = "Ratio of Older/Younger per Region by Population - under 250")
+```
+
+
+``` {r fig.height = 3.5, fig.width=9, fig.align = "center"}
+# Create plot ratio for populations 250 and over 
+plot_over_250 <- region_age_stats %>%
+  filter (population >= 200) %>% 
+  ggplot(aes(x = population, y = ratio_older_to_younger)) + 
+  geom_point(alpha=0.4) +
+  geom_hline(aes(yintercept = 1), alpha = 0.6, color = 'red', linetype = 'dashed', size = 0.4) +
+  labs(x = "Population", y = "Ratio", title = "Ratio of Older/Younger per Region by Population - 250 and over")
+
+# View plots
+ggpubr::ggarrange(plot_less_250, plot_over_250, ncol = 2, nrow=1)
+```
+
+
+
+### 4.3 Comment on any trends you see in the data. What could explain such trends?
+
+**From the plots above, the general trends about age groups observed are:**
+
+- Regions with smaller populations have a greater variety of ratios from no older people, to over 8 times more than younger people.
+- Regions with populations greater than 200 have a greater proportion of younger people.
+- Regions with populations greater than 5000 are likely to have two to four times more young people than old. 
+- For larger populations there is a degree of negative correlation to the ratio of older to younger age groups.
+
+**Explanations for these trends for more young people in regions of larger population could be:**
+
+- Education institutions of all levels more likely to be in larger regions, where greater numbers can facilitate more options and resources.
+- Greater number and variety of work opportunities in more densely populated regions, which can have lower unemployment rates than regional areas.
+- Greater access to hospitals/health services - important for all age groups, including families, 
+- Migrants tend to settle in urban areas, and according to Australian Bureau of Statistics (2018) the majority of migrants to Australia are aged between 18 and 34 years (ABS 2018).
+
+---
+
+## **Task 5**
+
+### **5. Once again consider all regions:**
+
+### 5.1 For each region, calculate the ratio of males to females.
+
+```{r}
+
+region_gender_stats <- df_groups %>% group_by(region) %>% 
+  summarise(population = n(),
+            female = sum(gender == "F"),
+            male = sum(gender == "M"),
+            ratio_male_to_female = male/female)
+region_gender_stats %>%  head(5)
+
+```
+
+### 5.2 Plot the ratio of gender for each region against its population size.
+
+```{r fig.height = 2.9, fig.width=5, fig.align = "center"}
+
+region_gender_stats %>% ggplot(aes(x = population, y = ratio_male_to_female)) + 
+  geom_point(alpha=0.3) +
+  geom_hline(aes(yintercept = 1), alpha = 0.6, color = 'red', linetype = 'dashed', size = 0.4) +
+  labs(x = "Population", y = "Ratio", title = "Ratio of Gender per Region by Population size")
+
+```
+
+
+### 5.3 Comment on any trends you see in the data. What could explain such trends?
+
+
+**From the plot above, the general trends on gender observed are:**
+
+- Regions with smaller populations have a greater variety of gender ratios from having no males, to approximately 6 times more males than females.
+- Regions with populations greater than approximately 1500-2000 are likely to be close to parity
+
+**Explanations for these trends on gender could be:**
+
+- For regions with populations greater than approximately 1000, where gender ratios tend to be close to parity, this is likely to be due to greater and more equal access to resources, facilities and opportunities. 
+- Regions with smaller populations may be more significantly impacted by factors such as work type opportunities, immigration and culture/social norms, which in turn may impact the gender makeup. 
+
+---
+
+## **Task 6**
+
+### **6. Imagine you have enough financial resources for launching a new energy drink in any two regions:**
+
+### 6.1 Select a gender and age group which spans 3 to 5 years as primary target market.
+
+**Selection for target market:**
+
+- female
+- 18-23
+
+The choice for this market is to establish brand awareness in a cohort that are likely to be engaged in social and physical activities, forming habits that may be long-lasting, and to benefit from increasing female-bias in population as age increases.
+
+
+### 6.2 Which two regions would you choose? Explain your reasoning.
+
+The preferred regions will have the largest population of females for the target age bracket. Let's look at the top 5 regions based on that criteria.
+
+```{r}
+
+# Get top 2 regions by filtering on selection criteria (age and gender)
+top_5_regions <- 
+  df_groups %>% 
+  group_by(region) %>% 
+  filter(age >= 18 & age < 23) %>% 
+  summarise(population = n(),
+            female = sum(gender == "F"),
+            male = sum(gender == "M"),
+            ratio_male_to_female = male/female) %>% 
+  arrange(desc(population)) %>% head(5)
+
+top_5_regions
+
+```
+**The two regions that will be targeted are:**
+
+- `r top_5_regions[[1, "region"]]`
+- `r top_5_regions[[2, "region"]]`
+
+These two regions have been selected as they have the largest female populations for the selected age group, `r top_5_regions[[1, "female"]]` and `r top_5_regions[[2, "female"]]` respectively. 
+
+An unexpected bonus is that the gender ratio of the target age bracket is in favour of females in both regions, which may help potential flow-on to the general population.   
+
+
+### 6.3 Estimating attendance numbers and likelihood
+
+Task exercise: _In planning each region's campaign launch, you believe that 15% of your primary target market in the region will attend the launch. Use this assumption to estimate the number of the primary target market that you expect to attend in each region. Also estimate the likelihood that at least 30% of the primary target market will attend in each region. Explain your reasoning for both estimates._
+
+**Calculating expected attendance for each region**
+
+```{r}
+
+# Calculate expected attendance based on 15% attendance
+target <- top_5_regions %>% 
+  select("region", "female") %>% 
+  rename(target_population = female) %>% 
+  mutate(expected_attendance = round(target_population * 0.15),
+         double_attendance = round(target_population * 0.3)) %>% 
+  arrange(desc(target_population)) %>% head(2)
+target
+
+```
+
+
+**Expected attendance numbers for each region calculated at 15% of the total number of females in the target age bracket:**
+
+- `r target[[1, "expected_attendance"]]` in Region `r top_5_regions[[1, "region"]]`
+- `r target[[2, "expected_attendance"]]` in Region `r top_5_regions[[2, "region"]]`
+
+
+**Calculating probability of 30% attendance for each region**
+
+To calculate the possibility of achieving 30% attendance of the target population, a binomial distribution will be used to estimate this likelihood.
+
+The binomial distribution has been selected based on there being:
+
+- two mutually exclusive outcomes - attending yes/no
+- defined number of trials (target population)
+- probability for each person (trial) is fixed at 15% 
+
+``` {r}
+
+# Probability - 15%
+p <- 0.15
+
+# Region 1 parameters
+target_region1 <- target$double_attendance[1]
+n1 <- target$target_population[1]
+
+# Calculate Region 1 probability
+p_region1 <- pbinom(target_region1, size = n1, prob = p, lower.tail = FALSE)
+
+# Region 2 parameters
+target_region2 <- target$double_attendance[2]
+n2 <- target$target_population[2]
+
+# Calculate Region 1 probability
+p_region2 <- pbinom(target_region2, size = n2, prob = p, lower.tail = FALSE)
+```
+
+``` {r}
+
+# Probability of achieving 30% attendance in Region 1
+p_region1 
+
+# Probability of achieving 30% attendance in Region 2
+p_region2
+
+```
+
+<br>
+
+**The probability of achieving 30% attendance in either region is close to 0% in both cases.**
+
+<br>
+
+#### **Conclusion**
+
+Given the premise of expecting only 15% success from the expected number of trials of a yes/no outcome, achieving the expected outcome is a 50% probability. To double the attendance to 30% would require double the expected number of successes, which is more than the 15% probability rate allows for - hence the negligible likelihood of doing so.
+
+<br>
+
+___
+
+## References
+
+<br>
+
+ABS (Australian Bureau of Statistics) (2018) _FEATURE ARTICLE 2: SPOTLIGHT ON NET OVERSEAS MIGRATION_, ABS website, accessed 17 May 2023. <https://www.abs.gov.au/ausstats/abs@.nsf/featurearticlesbyCatalogue/7A40A407211F35F4CA257A2200120EAA>
+
+cmdlinetips (9 May 2019) _How To Highlight Select Data Points with ggplot2 in R?_, Python and R Tips website, accessed 21 May 2023. <https://cmdlinetips.com/2019/05/how-to-highlight-select-data-points-with-ggplot2-in-r/>
+
+Dragićević M (19 February 2018) _changing ggplot2::facet_wrap title from the default_, Stack Overflow website, accessed 20 May 2023. <https://stackoverflow.com/questions/48860158/changing-ggplot2facet-wrap-title-from-the-default>
+
+Holtz Y (2018) _Histogram with several groups - ggplot2_, The R Graph Gallery website, accessed 18 May 2023. <https://r-graph-gallery.com/histogram_several_group.html>
+
+Hyndman R (2 December 2017) _NOTE or WARNING from package check when README.md includes images_, Stack Overflow website, accessed 19 May 2023. <https://stackoverflow.com/questions/44113759/note-or-warning-from-package-check-when-readme-md-includes-images>
+
+Kassambara A (1 September 2017) _ggplot2 - Easy Way to Mix Multiple Graphs on The Same Page_, STHDA (Statistical tools for high-throughput data analysis) website, accessed 20 May 2023. <http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page>
+
+Kassambara A (n.d.) _ggplot2 axis ticks : A guide to customize tick marks and labels_, STHDA, accessed 19 May 2023. <http://www.sthda.com/english/wiki/ggplot2-axis-ticks-a-guide-to-customize-tick-marks-and-labels>
+
+Ritchie H and Roser M (2019) _Gender Ratio_, Our World in Data website, accessed 17 May 2023. <https://ourworldindata.org/gender-ratio>
+
+Schork J (n.d.) _Draw Histogram with Percentages Instead of Frequency Counts in Base R_, Statistics Globe website, accessed 19 May 2023. <https://statisticsglobe.com/draw-histogram-with-percentages-in-base-r>
+
+Wickham H (2016) _Histograms and frequency polygons_, ggplot2 website, accessed 19 May 2023. <https://ggplot2.tidyverse.org/reference/geom_histogram.html#computed-variables>
+
+Yihue X, Dervieux C and Riederer E (2022) _10.1 The function knitr::kable()_, R Markdown Cookbook website, accessed 19 May 2023. <https://bookdown.org/yihui/rmarkdown-cookbook/kable.html>
+
+<br>
+<br>
+<br>
+
+**R packages**
+
+Müller K (2020) _here: A Simpler Way to Find Your Files_, R package version 1.0.1. <https://CRAN.R-project.org/package=here>
+
+Bache S, Wickham H (2022) _magrittr: A Forward-Pipe Operator for R_, R package version 2.0.3. <https://CRAN.R-project.org/package=magrittr>
+
+Wickham H (2023) _forcats: Tools for Working with Categorical Variables (Factors)_ R package version 1.0.0. <https://CRAN.R-project.org/package=forcats>
+
+Wickham H. (2016) _ggplot2: Elegant Graphics for Data Analysis_, Springer-Verlag New York.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023) _dplyr: A Grammar of Data Manipulation_, R package version 1.1.0. <https://CRAN.R-project.org/package=dplyr>
+
+Wickham H, Hester J, Bryan J (2023) _readr: Read Rectangular Text Data_, R package version 2.1.4. <https://CRAN.R-project.org/package=readr>
+
+Wickham H, Seidel D (2022). _scales: Scale Functions for Visualization_. R package version 1.2.1. <https://CRAN.R-project.org/package=scales>.
+
+Wickham H, Vaughan D, Girlich M (2023) _tidyr: Tidy Messy Data_, R package version 1.3.0. <https://CRAN.R-project.org/package=tidyr>
+
+Yihui X (2023) *knitr: A General-Purpose Package for Dynamic Report Generation in R*, R package version 1.42.
+
