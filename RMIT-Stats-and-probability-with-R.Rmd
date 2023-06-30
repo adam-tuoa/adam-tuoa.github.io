@@ -84,15 +84,16 @@ labels = c("Did not contract the flu", "Contracted the flu")
 # Group A
 total_num = 100
 p = 0.10
+
 grp_a <- data.frame(condition = rbinom(total_num, 1 , p)) %>% 
   mutate(condition = factor(condition, levels = c(0, 1), labels = labels))
-grp_a_flu <- count(grp_a, condition=condition)
+grp_a_flu <- count(grp_a, vars="condition")
 # Group B
 total_num = 100
 p = 0.30
 grp_b <- data.frame(condition = rbinom(total_num, 1 , p)) %>% 
   mutate(condition = factor(condition, levels = c(0, 1), labels = labels))
-grp_b_flu <- count(grp_b, condition=condition)
+grp_b_flu <- count(grp_b, vars="condition")
 # merge into one dataset
 table <- merge(grp_a_flu, grp_b_flu, by = "condition")
 colnames(table) <- c("Condition", "Group A", "Group B")

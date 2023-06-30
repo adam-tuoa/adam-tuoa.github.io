@@ -10,6 +10,8 @@ navbar:
     href: RMIT-Stats-and-probability-with-R.html
   - text: "Shiny app - Tolling Customer Ombudsman"
     href: shiny-tco-app.html
+  - test: "RMIT - A/B testing"
+    href: RMIT-AB-testing.html
 output:
   html_document:
     theme: cosmo

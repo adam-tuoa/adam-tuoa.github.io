@@ -251,6 +251,9 @@ $(document).ready(function () {
 <li>
   <a href="shiny-tco-app.html">Shiny app - Tolling Customer Ombudsman</a>
 </li>
+<li>
+  <a href="RMIT-AB-testing.html"></a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -340,15 +343,16 @@ labels = c(&quot;Did not contract the flu&quot;, &quot;Contracted the flu&quot;)
 # Group A
 total_num = 100
 p = 0.10
+
 grp_a &lt;- data.frame(condition = rbinom(total_num, 1 , p)) %&gt;% 
   mutate(condition = factor(condition, levels = c(0, 1), labels = labels))
-grp_a_flu &lt;- count(grp_a, condition=condition)
+grp_a_flu &lt;- count(grp_a, vars=&quot;condition&quot;)
 # Group B
 total_num = 100
 p = 0.30
 grp_b &lt;- data.frame(condition = rbinom(total_num, 1 , p)) %&gt;% 
   mutate(condition = factor(condition, levels = c(0, 1), labels = labels))
-grp_b_flu &lt;- count(grp_b, condition=condition)
+grp_b_flu &lt;- count(grp_b, vars=&quot;condition&quot;)
 # merge into one dataset
 table &lt;- merge(grp_a_flu, grp_b_flu, by = &quot;condition&quot;)
 colnames(table) &lt;- c(&quot;Condition&quot;, &quot;Group A&quot;, &quot;Group B&quot;)</code></pre>
@@ -1368,7 +1372,6 @@ df_a %&gt;% head(5) %&gt;% kable(align = &quot;clc&quot;)</code></pre>
 <caption>Compare Scenario summary stats</caption>
 <thead>
 <tr class="header">
-<th align="left">scenario</th>
 <th align="right">mean</th>
 <th align="right">median</th>
 <th align="right">standard deviation</th>
@@ -1377,25 +1380,10 @@ df_a %&gt;% head(5) %&gt;% kable(align = &quot;clc&quot;)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">scenario_1</td>
-<td align="right">49.66667</td>
-<td align="right">38.5</td>
-<td align="right">50.23810</td>
-<td align="right">298</td>
-</tr>
-<tr class="even">
-<td align="left">scenario_2</td>
-<td align="right">49.16667</td>
-<td align="right">58.0</td>
-<td align="right">34.56250</td>
-<td align="right">295</td>
-</tr>
-<tr class="odd">
-<td align="left">scenario_3</td>
-<td align="right">63.00000</td>
-<td align="right">68.0</td>
-<td align="right">22.54773</td>
-<td align="right">378</td>
+<td align="right">53.94444</td>
+<td align="right">64</td>
+<td align="right">35.86982</td>
+<td align="right">971</td>
 </tr>
 </tbody>
 </table>
@@ -1615,7 +1603,6 @@ df_b %&gt;% head(5) %&gt;% kable(align = &quot;clc&quot;)</code></pre>
 <caption>Compare Scenario summary stats</caption>
 <thead>
 <tr class="header">
-<th align="left">scenario</th>
 <th align="right">mean</th>
 <th align="right">median</th>
 <th align="right">standard deviation</th>
@@ -1624,25 +1611,10 @@ df_b %&gt;% head(5) %&gt;% kable(align = &quot;clc&quot;)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">scenario_1</td>
-<td align="right">49.50000</td>
-<td align="right">40.0</td>
-<td align="right">41.72649</td>
-<td align="right">297</td>
-</tr>
-<tr class="even">
-<td align="left">scenario_2</td>
-<td align="right">50.33333</td>
-<td align="right">57.5</td>
-<td align="right">28.86289</td>
-<td align="right">302</td>
-</tr>
-<tr class="odd">
-<td align="left">scenario_3</td>
-<td align="right">62.66667</td>
-<td align="right">67.0</td>
-<td align="right">18.68333</td>
-<td align="right">376</td>
+<td align="right">54.16667</td>
+<td align="right">62</td>
+<td align="right">29.9691</td>
+<td align="right">975</td>
 </tr>
 </tbody>
 </table>
