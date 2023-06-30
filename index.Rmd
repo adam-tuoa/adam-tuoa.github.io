@@ -2,27 +2,46 @@
 title: "Adam Simmons"
 ---
 
-Here are a few of the projects I've been doing this year.  
+I've always been into numbers and problem-solving, which has been used in bookkeeping, grant writing, social network research and arts administration. Since 2021, I've been developing technical data skills in Excel, SQL, Python, R and Tableau - and a little in NVivo and Power BI.
 
-I'm just completed my Grad Cert of Data Science at RMIT Online, which has involved both Python (Jupyter Notebook) and R (RStudio):  
-- Data Science with Python
+It's been an exciting and stimulating time as the tools are just getting better and better, though there is still the need for people with data literacy skills
 
-- Data Visualisation
+I've just completed my Grad Cert of Data Science at RMIT Online (June 2023), which involved Python (Jupyter Notebook) and R (RStudio) with a good smattering of PowerPoint along the way:
 
-- Data Wrangling
+-   Data Science with Python
 
-- Applied Analytics  
+-   Data Visualisation
+
+-   Data Wrangling
+
+-   Applied Analytics
 
 <br>
 
-It has been a good mix:  
+It has been a good mix:
 
-- applying statistical theory and methods involving understanding distributions, linear regression, hypothesis testing.
+-   applying statistical theory and methods involving understanding distributions, linear regression, hypothesis testing.
 
-- plenty of data wrangling using Tidy Data principles
+-   plenty of data wrangling using Tidy Data principles
 
-- a text analysis of two 17th century plays, Macbeth and The Tragedie of Mariam
+-   a text analysis of two 17th century plays, Macbeth and The Tragedie of Mariam
 
-- creating data visualisation with Matplotlib, Seaborn, Plotly and ggplot
+-   creating data visualisation with Matplotlib, Seaborn, Plotly and ggplot
 
-- building my first interactive Shiny app
+-   building my first interactive Shiny app
+
+<br>
+
+#### Links
+
+[LinkedIn](https://www.linkedin/in/adamsimmonsjazz)
+[Github](https://github.com/adam-tuoa)
+[Tableau Public](https://public.tableau.com/app/profile/adam.simmons6405)
+[RPubs](https://rpubs.com/adam_simmons)
+
+[The Usefulness of Art](https://www.tuoa.com.au) - arts consultancy/advocacy/research
+[Dingo - Australian Jazz Journal](https://www.dingojazz.com) - editor, national magazine
+
+[Contact me](mailto:adam@tuoa.com.au)
+
+
