@@ -4,7 +4,7 @@ title: "Adam Simmons"
 
 I've always been into numbers and problem-solving, which has been used in bookkeeping, grant writing, social network research and arts administration. Since 2021, I've been developing technical data skills in Excel, SQL, Python, R and Tableau - and a little in NVivo and Power BI.
 
-It's been an exciting and stimulating time as the tools are just getting better and better, though there is still the need for people with data literacy skills
+It is an exciting and stimulating time as the tools are just getting better and better, though there's still the need for people with data literacy skills.
 
 I've just completed my Grad Cert of Data Science at RMIT Online (June 2023), which involved Python (Jupyter Notebook) and R (RStudio) with a good smattering of PowerPoint along the way:
 
@@ -16,7 +16,6 @@ I've just completed my Grad Cert of Data Science at RMIT Online (June 2023), whi
 
 -   Applied Analytics
 
-<br>
 
 It has been a good mix:
 
@@ -34,14 +33,14 @@ It has been a good mix:
 
 #### Links
 
-[LinkedIn](https://www.linkedin/in/adamsimmonsjazz)
-[Github](https://github.com/adam-tuoa)
-[Tableau Public](https://public.tableau.com/app/profile/adam.simmons6405)
-[RPubs](https://rpubs.com/adam_simmons)
+- [LinkedIn](https://www.linkedin/in/adamsimmonsjazz)  
+- [Github](https://github.com/adam-tuoa)  
+- [Tableau Public](https://public.tableau.com/app/profile/adam.simmons6405)  
+- [RPubs](https://rpubs.com/adam_simmons)  
 
-[The Usefulness of Art](https://www.tuoa.com.au) - arts consultancy/advocacy/research
-[Dingo - Australian Jazz Journal](https://www.dingojazz.com) - editor, national magazine
+- [The Usefulness of Art](https://www.tuoa.com.au) - arts consultancy/advocacy/research
+- [Dingo - Australian Jazz Journal](https://www.dingojazz.com) - editor, national magazine
 
-[Contact me](mailto:adam@tuoa.com.au)
+- [Contact me](mailto:adam@tuoa.com.au)
 
 
