@@ -6,7 +6,15 @@ title: "RMIT Applied Analytics - Assignment 1"
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 ```
 
+May 21, 2023
+
+Data and statistical analysis of ABS data based on regional population demographics - gender, age, region (by code, not specified). Comparing regions by summary statistics and looking at distributions to understand whether normal or not. And then using the binomial distribution to help predict event attendnace numbers. 
+
+At this stage of my course I was feeling comfortably with R, the main thing was more to understand the statistical and distribution theory. It was an interesting analysis to do as with relatively little context accompanying the data, trying to come up with rationale for the trends and observations based only on looking at the data and the resultant statistics, it is possible to find more than one might initially think!
+
 <br>
+
+
 
 ## **Setup**
 

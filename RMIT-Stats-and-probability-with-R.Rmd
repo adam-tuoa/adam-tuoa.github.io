@@ -2,6 +2,13 @@
 title: "RMIT Stats and probability with R"
 ---
 
+June 4, 2023
+
+This one had me working hard to get my head around t- and z-tests, paired two-sample, one-tailed, one-eyed or legged tests, and trying to work out how to compare two groups when I only have three values to work with and no other details. Again, another good learning experience, exploring more about centrality and normality of data distributions and how much can be actually be inferred through statistical understanding/reasoning. 
+
+Five different questions, requiring generation of synthetic data, covering both theoretical and practical situations, along with hypothesis testing, checking for normality and comparing means and variance to help answer business questions. It was good having time to get into each question as slowly each one was not so much a test, but more an opportunity to deepen one's understanding through the process of comparing and repeating with different values. 
+
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
@@ -43,7 +50,7 @@ Topics include
 - hypothesis testing
 - ANOVA
 
-Synthetic data and values
+Synthetic data and values  
 The random seed is reset at the beginning of a section. This means for a couple of the questions that have sections that are repeated with different variables, the "random" values are also repeated. Analysis has been conducted on the basis of the data being "real".
 
 All calculated values referred to in the text are dynamic as inline code. In the event of changing any parameters or the random seed value, the report's findings may require revision.
@@ -101,6 +108,7 @@ colnames(table) <- c("Condition", "Group A", "Group B")
 ```
 
 ```{r}
+
 # Add totals row and print table
 table %>%
   add_row(Condition = "TOTAL", 
