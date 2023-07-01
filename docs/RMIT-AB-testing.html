@@ -58,6 +58,7 @@ if (window.hljs) {
 
 
 
+<link rel="stylesheet" href="styles.css" type="text/css" />
 
 
 
@@ -242,21 +243,77 @@ $(document).ready(function () {
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="RMIT-Statistical-Data-Analysis.html">RMIT - Statistical Data Analysis</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    R programming
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="RMIT-Statistical-Data-Analysis.html">RMIT - Statistical Data Analysis</a>
+    </li>
+    <li>
+      <a href="RMIT-Stats-and-probability-with-R.html">RMIT - Stats and probability with R</a>
+    </li>
+    <li>
+      <a href="shiny-tco-app.html">Shiny app - Tolling Customer Ombudsman</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Python programming
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="RMIT-employee-retention.html">RMIT - Employee retention analysis</a>
+    </li>
+    <li>
+      <a href="RMIT-employee-retention.html">RMIT - next one</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Presentation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="RMIT-AB-testing.html">RMIT - A/B testing</a>
+    </li>
+    <li>
+      <a href="rise-slide-of-python.html">Rise and Slide of Python</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Other
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="tableau.html">Tableau</a>
+    </li>
+    <li>
+      <a href="excel.html">Excel</a>
+    </li>
+  </ul>
 </li>
 <li>
-  <a href="RMIT-Stats-and-probability-with-R.html">RMIT - Stats and probability with R</a>
-</li>
-<li>
-  <a href="shiny-tco-app.html">Shiny app - Tolling Customer Ombudsman</a>
-</li>
-<li>
-  <a href="RMIT-AB-testing.html">RMIT - A/B testing</a>
+  <a href="resume.html">Resume</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="contact-links.html">Contact/Links</a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -273,16 +330,18 @@ $(document).ready(function () {
 
 <p>June 15, 2023</p>
 <center>
-<iframe src="https://player.vimeo.com/video/836475768?h=5fb92b17ca&amp;title=0&amp;byline=0&amp;portrait=0&amp;speed=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="RMIT Applied Analytics - A-B Testing analysis">
+<div style="padding:40% 0 0 0;position:relative;">
+<iframe src="https://player.vimeo.com/video/836475768?h=5fb92b17ca&amp;title=0&amp;byline=0&amp;portrait=0&amp;speed=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;" title="RMIT Applied Analytics - A-B Testing analysis">
 </iframe>
 </center>
-<p><br> This is a PowerPoint presentation based on analysis of A/B
-testing of a new recommendation engine for a hypothetical streaming
-service, <em>Why Not Watch</em>. For the analysis, I had to clean the
-data, ascertain what some of the variables were (i.e. demographic and
-social metric), check for outliers and errors. Then in order to check
-for linear relationshops and any differences between the A/B groups, I
-ran several hypothesis tests using linear regression methods, ANOVA and
+<p><br></p>
+<p>This is a PowerPoint presentation based on analysis of A/B testing of
+a new recommendation engine for a hypothetical streaming service,
+<em>Why Not Watch</em>. For the analysis, I had to clean the data,
+ascertain what some of the variables were (i.e. demographic and social
+metric), check for outliers and errors. Then in order to check for
+linear relationshops and any differences between the A/B groups, I ran
+several hypothesis tests using linear regression methods, ANOVA and
 Z-tests.</p>
 <p>The data pre-processing and analysis was all done with R in RStudio.
 The text and plots were all output from RStudio directly to PowerPoint,
@@ -416,6 +475,11 @@ marks either.</p>
 </div>
 </center>
 
+<br>
+<br>
+<h6>
+<p style="text-align:right;">Copyright &copy; 2023 Adam Simmons, Inc. All rights reserved.</p>
+</h6>
 
 
 

@@ -1,0 +1,24 @@
+---
+title: "The Rise and Slide of Python"
+---
+
+March 19, 2023
+
+<center>
+
+<div style="padding:40% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/809419262?badge=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;speed=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;" title="The Rise and Slide of Python - RMIT Data Visualisation - Assignment 1"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+
+</center>
+
+<br>
+
+Considering why Python has become the world’s most popular programming language - this storytelling project required use of PowerPoint, including techniques such as animation, transitions and recording of the presentation itself. 
+
+For this RMIT Data Visualisation initial assignment, we had to use public data visualisations to tell a story of insights. I thought I might look at comparing Python and R as a way to learn more about their relationship, when I found [PYPL (PopularitY of Python Language Index)](https://pypl.github.io/PYPL.html). While it was interesting to learn just how different the stories of the two programming languages are, it was particularly Python's period of strong growth over the past decade that I thought would be interesting to explore in more detail.
+
+This project seriously helped up my game with PowerPoint, which until this point I had considered as a static slideshow only and a dumbed down version of Indesign (partly due to my KPMG experience). Learning about the flexibility and ease of adding animations, transitions and recording helped open up different creative possibilities.
+
+One problem I discovered during the recording process was that certain slide transitions pause the audio recording until finished - I had been trying to flow across transitions, but finding my audio was cut off. This would not be an issue for a live presentation, but for a pre-recorded version like this, it is necessary to allow for these pauses - or use different transitions. 
+
+I may or may not have deduced all of the contributing factors for Python's ascendancy, but aside from developing presentation skills, it was a great project for learning to look outward from the immediate data to help understand what insights might be gained.
+

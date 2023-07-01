@@ -2,16 +2,44 @@ name: "Adam Simmons"
 output_dir: "docs"
 navbar:
   title: "Adam Simmons"
+  icon: fa-home
   href: index.html
   left:
-  - text: "RMIT - Statistical Data Analysis"
-    href: RMIT-Statistical-Data-Analysis.html 
-  - text: "RMIT - Stats and probability with R"
-    href: RMIT-Stats-and-probability-with-R.html
-  - text: "Shiny app - Tolling Customer Ombudsman"
-    href: shiny-tco-app.html
-  - text: "RMIT - A/B testing"
-    href: RMIT-AB-testing.html
+  - text: R programming
+    menu:
+    - text: "RMIT - Statistical Data Analysis"
+      href: RMIT-Statistical-Data-Analysis.html 
+    - text: "RMIT - Stats and probability with R"
+      href: RMIT-Stats-and-probability-with-R.html
+    - text: "Shiny app - Tolling Customer Ombudsman"
+      href: shiny-tco-app.html
+  - text: "Python programming"
+    menu:
+    - text: "RMIT - Employee retention analysis"
+      href: RMIT-employee-retention.html
+    - text: "RMIT - next one"
+      href: RMIT-employee-retention.html
+  - text: "Presentation"
+    menu:
+    - text: "RMIT - A/B testing"
+      href: RMIT-AB-testing.html
+    - text: "Rise and Slide of Python"
+      href: rise-slide-of-python.html
+  - text: "Other"
+    menu:
+    - text: "Tableau"
+      href: tableau.html
+    - text: "Excel"
+      href: excel.html
+  - text: "Resume"
+    href: resume.html
+  right:
+  - text: "Contact/Links"
+    href: contact-links.html
+  
 output:
   html_document:
     theme: cosmo
+    include:
+      after_body: footer.html
+    css: styles.css

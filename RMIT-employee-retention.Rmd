@@ -1,0 +1,75 @@
+---
+title: "RMIT - Employee retention analysis"
+---
+
+
+January 25, 2023
+
+This was my first project for my RMIT Grad Cert of Data Science, doing data pre-processing, initial analysis and visualisation (Matplotlob, Seaborn). The premise was that a consultancy firm was feeling a decline in work quality, possibly due to high turnover of their more senior consultants. This report was to conduct an initial analysis for any insights that might inform next steps to addressing these issues.
+
+I knew that my second assignment was going to follow on from this, with a view to applying machine-learning/clustering techniques - so there was no need to go too deep with this first stage. Though, I enjoyed being able to identify likely clusters of relevance, even at this first stage.   
+
+For the full Python code, [click here](images/RMIT-employee-retention-python.html){target="_blank"} - this shows all of the data wrangling/preparation and exploratory analysis and visualisation that informed the final report. There is much more in the Jupyter Notebook than ended up in the report, but this was largely intentional for two reasons:  
+
+1. Wide exploration was helpful in getting an overview from which the specific insights were drawn; and
+2. To stretch my Python skills and make the most of the learning opportunity. 
+
+
+<br>
+
+Below are images from the final report, prepared in Word with all plots output with Python:
+
+<center>
+
+
+![1/12](images/RMIT-employee-retention-report-page_01.jpeg)
+
+<br>
+
+![2/12](images/RMIT-employee-retention-report-page_02.jpeg)
+
+<br>
+
+![3/12](images/RMIT-employee-retention-report-page_03.jpeg)
+
+<br>
+
+![4/12](images/RMIT-employee-retention-report-page_04.jpeg)
+
+<br>
+
+![5/12](images/RMIT-employee-retention-report-page_05.jpeg)
+
+<br>
+
+![6/12](images/RMIT-employee-retention-report-page_06.jpeg)
+
+<br>
+
+![7/12](images/RMIT-employee-retention-report-page_07.jpeg)
+
+<br>
+
+![8/12](images/RMIT-employee-retention-report-page_08.jpeg)
+
+<br>
+
+![9/12](images/RMIT-employee-retention-report-page_09.jpeg)
+
+<br>
+
+![10/12](images/RMIT-employee-retention-report-page_10.jpeg)
+
+<br>
+
+![11/12](images/RMIT-employee-retention-report-page_11.jpeg)
+
+<br>
+
+![12/12](images/RMIT-employee-retention-report-page_12.jpeg)
+
+
+
+
+</center>
+

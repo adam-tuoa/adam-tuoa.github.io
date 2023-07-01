@@ -1,0 +1,55 @@
+.navbar {
+    background-color:DarkKhaki;
+    color:white;
+}
+
+      
+.navbar .navbar-nav > li > a:hover, .nav > li > a:focus {
+    background-color: black;
+}
+      
+.dropdown-menu>li>a:hover,
+.dropdown-menu>li>a:focus {
+    color: white;
+    background-color: DarkKhaki;
+}
+
+.select:focus > option:checked { 
+    background: #000 !important;
+}
+
+
+
+/*-- change navbar dropdown color --*/
+.navbar .navbar-nav .open .dropdown-menu > li > a ,
+.navbar .navbar-nav .open .dropdown-menu {
+    color:#black;
+}
+/*
+.navbar .navbar-nav > li > a,
+.navbar .navbar-nav > .active > a,
+.navbar-default .navbar-nav .open .dropdown-menu > li > a >, .navbar-default .navbar-nav .open .dropdown-menu {
+    color: black;
+}
+
+.navbar .navbar-nav .navbar-nav-item > li > a:hover,
+.navbar .navbar-nav .navbar-nav-item > li > a:focus,
+.navbar .navbar-nav .navbar-nav-item > .active > a:hover,
+.navbar .navbar-nav .navbar-nav-item > .active > a:focus {
+    color: red;
+}
+*/
+
+/* for dropdowns only 
+ .navbar-default .navbar-nav .open .dropdown-menu>li>a, .navbar-default .navbar-nav .open .dropdown-menu {
+    background-color: #3344ff;
+    color:#ffffff;
+  }*/
+
+
+/* Nav Bar Border*/ 
+.navbar {
+border-top: 0px solid #000;
+border-bottom: 0px solid #000;
+}
+
