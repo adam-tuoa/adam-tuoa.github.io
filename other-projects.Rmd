@@ -44,7 +44,7 @@ And here's an excerpt from another Excel dashboard - almost a year later than th
 
 <tr>
 <td align="center" width="45%">
-[![](images/melbourne-musos-02.png)](https://http://www.100251.com.au){target="_blank"}
+[![](images/melbourne-musos-02.png)](https://www.100251.com.au){target="_blank"}
 </td>
 <td width="10%">
 </td>
