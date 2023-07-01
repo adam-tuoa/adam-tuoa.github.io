@@ -2,14 +2,12 @@
 title: "Tableau projects"
 ---
 
-<br>
 
 A collection of my early Tableau stories - it is a fun and powerful data viz tool!
 
 Click on an image to visit a project hosted on Tableau Public - best viewed on desktop as full screen view. 
 
 
-<br>
 
 <br>
 
