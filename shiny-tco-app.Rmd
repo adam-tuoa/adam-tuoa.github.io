@@ -6,7 +6,7 @@ April 16, 2023
 
 This was the final Data Visualisation assignment for my RMIT Grad Cert. We had various options from a slide deck through to creating a Shiny app - which I chose to do given I had been curious for some time about how to extend into interactive apps in either Python or R. 
 
-I chose this data set as I had recently had an interview for a role at Transurban and as part of my research I had come across the Tolling Customer Ombudsman, who helps resolve complaints in regard to Transurban's Australian-based toll roads. It had struck me that the original reports, which appear to utilise Excel for its charts, could do with a contemporary and dynamic makeover. 
+I chose this data set as I had recently had an interview for a role at Transurban and as part of my research I had come across the [Tolling Customer Ombudsman](https://www.tollingombudsman.com.au){target="_blank}, who helps resolve complaints in regard to Transurban's Australian-based toll roads. It had struck me that the original reports, which appear to utilise Excel for its charts, could do with a contemporary and dynamic makeover. 
 
 The data required quite a bit of wrangling, and I'm grateful for having done the Data Wrangling course concurrently to this, as learning about tidy data formatting was crucial in preparing the data for the ggplot visualisations. The formatting of each report had small differences, so it was a bit of a job to create flexible functions to extract and clean the data. That in itself is a whole other project that I could share!
 
