@@ -60,7 +60,7 @@ A hypothetical client is looking for advice about where to invest in short-term 
 <td valign="top">
 November 14, 2021
 
-For my third and final porject for RMIT Future Skills, I used Australian Cultural Funding data from the Office of the Arts (Australian Bureau of Stasitics data). Given the audience were intended to be creatively minded, I pushed into the "d-art-a" side of things. I had an agenda, but I wwanted this to be a non-partisan tool to explore and learn from.
+For my third and final project for RMIT Future Skills, I used Australian Cultural Funding data from the Office of the Arts (Australian Bureau of Statistics data). Given the audience were intended to be creatively minded, I pushed into the "d-art-a" side of things. I had an agenda, but I wanted this to be a non-partisan tool to explore and learn from.
 </td>
 
 <td>

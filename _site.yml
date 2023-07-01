@@ -16,8 +16,8 @@ navbar:
     menu:
     - text: "RMIT - Employee retention analysis"
       href: RMIT-employee-retention.html
-    - text: "RMIT - next one"
-      href: RMIT-employee-retention.html
+    - text: "RMIT - VISTA survey analysis"
+      href: vista-analysis.html
   - text: "Tableau"
     href: tableau.html
   - text: "Presentation"
@@ -28,8 +28,8 @@ navbar:
       href: rise-slide-of-python.html
   - text: "Other"
     menu:
-    - text: "Excel"
-      href: excel.html
+    - text: "Other projects"
+      href: other-projects.html
   - text: "Resume"
     href: resume.html
   right:

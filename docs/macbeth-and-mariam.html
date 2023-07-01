@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Wrangling with Macbeth and Mariam</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Adam Simmons</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    R programming
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="RMIT-Statistical-Data-Analysis.html">RMIT - Statistical Data Analysis</a>
+    </li>
+    <li>
+      <a href="RMIT-Stats-and-probability-with-R.html">RMIT - Stats and probability with R</a>
+    </li>
+    <li>
+      <a href="shiny-tco-app.html">Shiny app - Tolling Customer Ombudsman</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Python programming
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="RMIT-employee-retention.html">RMIT - Employee retention analysis</a>
+    </li>
+    <li>
+      <a href="vista-analysis.html">RMIT - VISTA survey analysis</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="tableau.html">Tableau</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Presentation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="RMIT-AB-testing.html">RMIT - A/B testing</a>
+    </li>
+    <li>
+      <a href="rise-slide-of-python.html">Rise and Slide of Python</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Other
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="other-projects.html">Other projects</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resume.html">Resume</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="contact-links.html">Contact/Links</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Wrangling with Macbeth and Mariam</h1>
+
+</div>
+
+
+<p>April 20, 2023</p>
+<center>
+<div style="padding:40% 0 0 0;position:relative;">
+<iframe src="https://player.vimeo.com/video/819290988?badge=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;speed=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;" title="RMIT Data Wrangling Ass3 - s4001341">
+</iframe>
+</div>
+<script src="https://player.vimeo.com/api/player.js"></script>
+</center>
+<p><br></p>
+<p>For my third and final RMIT Data Wrangling assignment, we had to
+compare two datasets with some exploratory analysis. Having done a
+little mixed-methods research at KPMG with NVivo, but no text analysis
+in Python or R as yet,I chose two texts as my datasets. Or to be
+specific, two plays: <em>Macbeth</em> by William Shakespeare and <em>The
+Tragedie of Mariam, faire queene of Jewry</em> by Elizabeth Carey, both
+16-17th century contemporaries.</p>
+<p>Approaching it from the place of the play being a “dataset” and how
+to fit it to Tidy Data principles, helped identify variables, values
+(words) and factors, such as title, gender, characters and acts/scenes
+(which were out of my scope here due to time and space). I’m
+increasingly thinking of how things would be broken down similarly in
+other everyday situations.</p>
+<p>One challenge I identify is that the language of both writers is
+quite different in spelling - to progress beyond the scope of this
+report would require this to be addressed for proper comparison. Though
+even in this preliminary form, I believe there are some potentially
+interesting insights. Overall, it was a fascinating shift of thinking,
+applying familiar skills with a different approach.</p>
+<p><br></p>
+<p>Below is the R code used for the data wrangling, transformation,
+analysis and visualisations.</p>
+<div id="data-wrangling-assessment-task-3-dataset-challenge"
+class="section level2">
+<h2>Data Wrangling Assessment Task 3: Dataset challenge</h2>
+</div>
+<div id="setup" class="section level2">
+<h2>Setup</h2>
+<pre class="r"><code># load all required packages 
+library(gutenbergr)
+library (readr)
+library(here)</code></pre>
+<pre><code>## here() starts at /Users/adam/data/R/Github Projects/adam-tuoa.github.io</code></pre>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(magrittr)
+library(tidyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;tidyr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:magrittr&#39;:
+## 
+##     extract</code></pre>
+<pre class="r"><code>library(tidytext)
+library(stringr)
+library(ggplot2)
+library(scales)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;scales&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:readr&#39;:
+## 
+##     col_factor</code></pre>
+<pre class="r"><code># Set maximum number for printing
+options(max.print=50)</code></pre>
+<hr />
+<p><br></p>
+</div>
+<div id="data-description" class="section level2">
+<h2>1. Data Description</h2>
+<p>For this project, two texts will be processed in preparation for a
+comparative text analysis with consideration of gender. The two plays
+are by 17th century contemporaries. One is considered “the greatest
+dramatist of all time as well as the most influential writer in the
+history of the English language” (EB 2020), while the other never saw
+her play performed in her lifetime, she does have the distinction of
+having written the first known play published by a woman (Braganza
+2022). And both plays happen to involve murderous royalty.</p>
+<ul>
+<li><em>Macbeth</em> - William Shakespeare (1623)*</li>
+<li><em>The Tragedie of Mariam, faire queene of Jewry</em> - Elizabeth
+Carey (1613)</li>
+</ul>
+<p>The intended result of this process will be a dataset that combines
+the text from both plays in a Tidy Data format, ready for exploratory
+data analysis.</p>
+<p>The preparation will identify variables for extraction, creation or
+transformation. With gender as a key focus, the variables will be
+selected for aiding the focus of the analysis.</p>
+<ul>
+<li>Macbeth is said to have been written around 1606 (EB 2022), though
+was first published in 1623 (Mowat and Werstine n.d.)</li>
+</ul>
+<div id="macbeth" class="section level3">
+<h3>1.1 Macbeth</h3>
+<p>Use Project Gutenberger R library to identify and access Macbeth:
+<br></p>
+<pre class="r"><code># Find Project Gutenberger ID for Macbeth
+
+gutenberg_works() %&gt;%
+  filter(title == &quot;Macbeth&quot;)</code></pre>
+<pre><code>## # A tibble: 1 × 8
+##   gutenberg_id title   author   gutenberg_author_id language gutenberg_bookshelf
+##          &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;                  &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;              
+## 1         1533 Macbeth Shakesp…                  65 en       Opera              
+## # ℹ 2 more variables: rights &lt;chr&gt;, has_text &lt;lgl&gt;</code></pre>
+<pre class="r"><code># Download MacBeth
+macbeth &lt;-gutenberg_download(1533, mirror = &quot;http://aleph.gutenberg.org&quot;)
+# Check dataset
+macbeth %&gt;% head()</code></pre>
+<pre><code>## # A tibble: 6 × 2
+##   gutenberg_id text     
+##          &lt;int&gt; &lt;chr&gt;    
+## 1         1533 &quot;cover &quot; 
+## 2         1533 &quot;&quot;       
+## 3         1533 &quot;&quot;       
+## 4         1533 &quot;&quot;       
+## 5         1533 &quot;&quot;       
+## 6         1533 &quot;MACBETH&quot;</code></pre>
+<p>This is just the beginning of the play’s text, so let’s check further
+down:</p>
+<pre class="r"><code># View random six rows
+macbeth[2001:2006, ]</code></pre>
+<pre><code>## # A tibble: 6 × 2
+##   gutenberg_id text                                
+##          &lt;int&gt; &lt;chr&gt;                               
+## 1         1533 &quot;But who did bid thee join with us?&quot;
+## 2         1533 &quot;&quot;                                  
+## 3         1533 &quot;THIRD MURDERER.&quot;                   
+## 4         1533 &quot;Macbeth.&quot;                          
+## 5         1533 &quot;&quot;                                  
+## 6         1533 &quot;SECOND MURDERER.&quot;</code></pre>
+<p><br></p>
+</div>
+<div id="the-tragedie-of-mariam-the-faire-queene-of-jewry"
+class="section level3">
+<h3>1.2 The Tragedie of Mariam, the faire queene of Jewry</h3>
+<p>“The Tragedie of Mariam, the faire queene of Jewry” - let’s use
+<em>Mariam</em> - check Project Gutenberger access:</p>
+<pre class="r"><code># Find Project Gutenberger ID for Mariam
+gutenberg_works() %&gt;%
+  filter(title == &quot;The Tragedie of Mariam, the faire queene of Jewry&quot;)</code></pre>
+<pre><code>## # A tibble: 0 × 8
+## # ℹ 8 variables: gutenberg_id &lt;int&gt;, title &lt;chr&gt;, author &lt;chr&gt;,
+## #   gutenberg_author_id &lt;int&gt;, language &lt;chr&gt;, gutenberg_bookshelf &lt;chr&gt;,
+## #   rights &lt;chr&gt;, has_text &lt;lgl&gt;</code></pre>
+<p>So, that confirms it is not in the Project Gutenberger library.</p>
+<p>Fortunately, it is publicly available on the web courtesy of <em>A
+Celebration of Women Writers</em>, the result of work by Laura June
+Dziuban and Mary Mark Ockerbloom. From this site, I copied and pasted
+the entire text into a plain text document (CSV).</p>
+<pre class="r"><code># Load Mariam
+mariam &lt;- read_csv(&quot;The Tragedie of Mariam.csv&quot;, show_col_types = FALSE)</code></pre>
+<pre><code>## Warning: One or more parsing issues, call `problems()` on your data frame for details,
+## e.g.:
+##   dat &lt;- vroom(...)
+##   problems(dat)</code></pre>
+<pre class="r"><code># Check dataset
+mariam %&gt;%  head()</code></pre>
+<pre><code>## # A tibble: 6 × 1
+##   `A Celebration of Women Writers`                                              
+##   &lt;chr&gt;                                                                         
+## 1 The tragedie of Mariam, the faire queene of Jewry: written by that learned, v…
+## 2 THE                                                                           
+## 3 TRAGEDIE                                                                      
+## 4 OF MARIAM,                                                                    
+## 5 THE FAIRE                                                                     
+## 6 Queene of Jewry.</code></pre>
+<p>Ignoring that warning for now, which is likely identified later,
+let’s have a look further down the text:</p>
+<pre class="r"><code># View random six rows
+mariam[2001:2006, ]</code></pre>
+<pre><code>## # A tibble: 6 × 1
+##   `A Celebration of Women Writers`                    
+##   &lt;chr&gt;                                               
+## 1 In base revenge there is no honor wonne.            
+## 2 Who would a worthy courage overthrow,               
+## 3 And who would wrastle with a worthles foe?          
+## 4 We say our hearts are great and cannot yeeld,       
+## 5 Because they cannot yeeld it proves them poore:     
+## 6 Great hearts are task&#39;t beyond their power, but feld</code></pre>
+<p>Now the plays are loaded, before merging them it will be necessary to
+inspect each dataset more carefully and ensure that data from each play
+will be identifiable as such.</p>
+<hr />
+<p><br></p>
+</div>
+</div>
+<div id="understand" class="section level2">
+<h2>2. Understand</h2>
+<p>To start, let’s look at the overall dimensions and structure in terms
+of variables and data types.</p>
+<p>From here on, <em>Macbeth</em> and <em>Mariam</em> will refer to the
+plays; <code>macbeth</code> and <code>mariam</code> for their respective
+datasets.</p>
+<pre class="r"><code># Dimensions of each dataset
+cat(&quot;macbeth:\n&quot;)</code></pre>
+<pre><code>## macbeth:</code></pre>
+<pre class="r"><code>macbeth %&gt;% dim()</code></pre>
+<pre><code>## [1] 4168    2</code></pre>
+<pre class="r"><code>cat(&quot;\nmariam:\n&quot;)</code></pre>
+<pre><code>## 
+## mariam:</code></pre>
+<pre class="r"><code>mariam %&gt;% dim()</code></pre>
+<pre><code>## [1] 2335    1</code></pre>
+<pre class="r"><code># Structure of each dataset
+cat(&quot;macbeth:\n&quot;)</code></pre>
+<pre><code>## macbeth:</code></pre>
+<pre class="r"><code>macbeth %&gt;% str()</code></pre>
+<pre><code>## tibble [4,168 × 2] (S3: tbl_df/tbl/data.frame)
+##  $ gutenberg_id: int [1:4168] 1533 1533 1533 1533 1533 1533 1533 1533 1533 1533 ...
+##  $ text        : chr [1:4168] &quot;cover &quot; &quot;&quot; &quot;&quot; &quot;&quot; ...</code></pre>
+<pre class="r"><code>cat(&quot;\nmariam:\n&quot;)</code></pre>
+<pre><code>## 
+## mariam:</code></pre>
+<pre class="r"><code>mariam %&gt;% str()</code></pre>
+<pre><code>## spc_tbl_ [2,335 × 1] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ A Celebration of Women Writers: chr [1:2335] &quot;The tragedie of Mariam, the faire queene of Jewry: written by that learned, vertuous, and truly noble ladie, E.&quot;| __truncated__ &quot;THE&quot; &quot;TRAGEDIE&quot; &quot;OF MARIAM,&quot; ...
+##  - attr(*, &quot;spec&quot;)=
+##   .. cols(
+##   ..   `A Celebration of Women Writers` = col_character()
+##   .. )
+##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<p>That’s an initial overview - now for a look at each in turn in more
+detail.</p>
+<div id="macbeth-clean" class="section level3">
+<h3>2.1 Macbeth clean</h3>
+<div id="variables-and-structure" class="section level4">
+<h4>Variables and structure</h4>
+<p>From above, we can see that <code>macbeth</code> has two
+variables:</p>
+<ul>
+<li><code>gutenberg_id</code> - numerical (integer)</li>
+<li><code>text</code> - character/string</li>
+</ul>
+<p>The first identifies the play, while the second is the play’s text
+split by line into 4168 rows.</p>
+</div>
+<div id="attributes" class="section level4">
+<h4>Attributes</h4>
+<p>Here are the attributes of the <code>macbeth</code> dataset,
+confirming we are working with a tibble class dataframe</p>
+<pre class="r"><code>macbeth %&gt;% attributes()</code></pre>
+<pre><code>## $class
+## [1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;
+## 
+## $row.names
+##  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+## [26] 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
+##  [ reached getOption(&quot;max.print&quot;) -- omitted 4118 entries ]
+## 
+## $names
+## [1] &quot;gutenberg_id&quot; &quot;text&quot;</code></pre>
+</div>
+</div>
+<div id="mariam-clean" class="section level3">
+<h3>2.2 Mariam clean</h3>
+<div id="variables-and-structure-1" class="section level4">
+<h4>Variables and structure</h4>
+<p>From above (2.0), we can see that Mariam has one variable:</p>
+<ul>
+<li><code>A Celebration of Women Writers</code> - character/string
+type</li>
+</ul>
+<p>This single column contains the play’s text split by line into 2335
+rows.</p>
+</div>
+<div id="attributes-1" class="section level4">
+<h4>Attributes</h4>
+<p>Here are the attributes of the <code>macbeth</code> dataset. As it
+has been created by <code>readr::read_csv</code>, it is a
+<code>spec_tbl_df</code> which has additional specification. For all
+intents and purposes this has no impact on our use of this tibble
+subclass. It will become moot upon merging of the two datasets anyway.
+And we will get to that problem.</p>
+<pre class="r"><code>mariam %&gt;% attributes()</code></pre>
+<pre><code>## $row.names
+##  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+## [26] 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
+##  [ reached getOption(&quot;max.print&quot;) -- omitted 2285 entries ]
+## 
+## $names
+## [1] &quot;A Celebration of Women Writers&quot;
+## 
+## $spec
+## cols(
+##   `A Celebration of Women Writers` = col_character()
+## )
+## 
+## $problems
+## &lt;pointer: 0x7fc154765610&gt;
+## 
+## $class
+## [1] &quot;spec_tbl_df&quot; &quot;tbl_df&quot;      &quot;tbl&quot;         &quot;data.frame&quot;</code></pre>
+<p>From these outputs on <code>macbeth</code> and <code>mariam</code>,
+it confirms the above in terms of size, variable names and that they are
+indeed of dataframe format, more specifically a tibble and tibble
+subclass (<code>spec_tbl_df</code>) respectively. Though
+<code>mariam</code> is lacking an identifier column, as well as column
+names/headers.</p>
+</div>
+</div>
+<div id="create-character-variable" class="section level3">
+<h3>2.2.1 Create Character variable</h3>
+<p>Curiously, this section was added later in the process, but is a
+necessary step right now in the process, in order to make things easier
+later on.</p>
+<p>For the purposes of ascribing gender to the use of each word, a
+variable based on the character’s names will be created. The initial
+formatting - uppercase and punctuation - of both works makes it possible
+to differentiate speakers/characters from the use of their names in
+speech.</p>
+<pre class="r"><code># Character names
+macbeth_names = c(&quot;DUNCAN&quot;, &quot;MALCOLM&quot;, &quot;DONALBAIN&quot;,&quot;MACBETH&quot;, &quot;BANQUO&quot;, &quot;MACDUFF&quot;,&quot;LENNOX&quot;, &quot;ROSS&quot;, &quot;MENTEITH&quot;, &quot;ANGUS&quot;, &quot;CAITHNESS&quot;, &quot;FLEANCE&quot;, &quot;SIWARD&quot;, &quot;YOUNG SIWARD&quot;, &quot;SEYTON&quot;, &quot;BOY&quot;, &quot;DOCTOR&quot;, &quot;SOLDIER&quot;, &quot;PORTER&quot;, &quot;OLD MAN&quot;, &quot;MESSENGER&quot;, &quot;FIRST MESSENGER&quot;, &quot;SECOND MESSENGER&quot;,&quot;LORDS&quot;, &quot;LADY MACBETH&quot;, &quot;LADY MACDUFF&quot;, &quot;GENTLEWOMAN&quot;, &quot;HECATE&quot;, &quot;FIRST WITCH&quot;, &quot;SECOND WITCH&quot;, &quot;THIRD WITCH&quot;)
+
+# For Mariam&#39;s characters, I opted for this route on this occasion, though I see how regex would excel here - next time!
+mariam_names = list(c(&quot;Herod\\.&quot;, &quot;Her\\.&quot;),
+        c(&quot;Doris\\.&quot;, &quot;Dor\\.&quot;),
+        c(&quot;Mariam\\.&quot;,&quot;Ma\\.&quot;, &quot;Mar\\.&quot;),
+        c(&quot;Salome\\.&quot;, &quot;Sal\\.&quot;, &quot;Salom\\.&quot;, &quot;Salo\\.&quot;),
+        c(&quot;Antipater\\.&quot;, &quot;Antipat\\.&quot;),
+        c(&quot;Alexander\\.&quot;, &quot;Alex\\.&quot;),
+        c(&quot;Sillius\\.&quot;, &quot;Sil\\.&quot;, &quot;Sille\\.&quot;),
+        c(&quot;Constabarus\\.&quot;, &quot;Con\\.&quot;),
+        c(&quot;Pheroras\\.&quot;, &quot;Phero\\.&quot;, &quot;Pheror\\.&quot;),
+        c(&quot;Graphina\\.&quot;, &quot;Graph\\.&quot;),
+        c(&quot;Babus first Sonne\\.&quot;, &quot;Babus\\. I\\. Sonne\\.&quot;, &quot;Ba\\. 1\\. Sonne&quot;),
+        c(&quot;Babus second Sonne\\.&quot;, &quot;Babus 2\\. Sonne\\.&quot;, &quot;Ba\\. 2\\. Sonne&quot;),
+        c(&quot;Annanell\\.&quot;, &quot;Ananell\\.&quot;, &quot;Ana\\.&quot;),
+        c(&quot;Sohemus\\.&quot;, &quot;Sohem\\.&quot;),
+        c(&quot;Nuntio\\.&quot;, &quot;Nunti\\.&quot;, &quot;Nun\\.&quot;),
+        c(&quot;Bu\\.&quot;),
+        c(&quot;Chorus\\.&quot;))</code></pre>
+<pre class="r"><code># Function to add character name for Macbeth
+add_macbeth_character &lt;- function(dataframe, names)
+{ dataframe$character &lt;- NA
+  for(name in names)
+  { dataframe$character[grepl(name, dataframe$text)] &lt;- name }
+dataframe }
+
+# Function to add character name for Mariam - Loops through the variations present, filling with the full name.
+add_mariam_character &lt;- function(dataframe, names_vector)
+{ dataframe$character &lt;- NA
+  for (element in names_vector)
+  { for (names in element)
+    { dataframe$character[grepl(names, dataframe[[1]])] &lt;- element[1] } }
+dataframe }</code></pre>
+<pre class="r"><code># Create new column with character names corresponding to any line (row) they appear in
+macbeth &lt;- add_macbeth_character(macbeth, macbeth_names)   
+mariam &lt;- add_mariam_character(mariam, mariam_names)</code></pre>
+<p>What has just been done is the creation of a new
+<code>character</code> name column, corresponding to any row where the
+correctly formatted character name has been added. Now, what remains to
+be done is “fill down” for each name found in this new column - with
+some cleaning required of the character names in
+<code>mariam</code>.</p>
+<pre class="r"><code>macbeth %&lt;&gt;% fill(character)
+mariam %&lt;&gt;% fill(character) 
+
+#remove unwanted characters - ie &quot;\.&quot;
+mariam[[2]] %&lt;&gt;% str_remove_all(&quot;[:punct:]&quot;)</code></pre>
+<p>Please note, due to the method I have used, there is a small degree
+of inaccuracy introduced due to incorrect attribution of a speaker to
+general transitional instructions, scene changes, personnel and the
+like. For this project it was deemed prudent to focus on the core
+priorities. This can be easily addressed as required in the future.</p>
+</div>
+<div id="merge-datasets" class="section level3">
+<h3>2.3 Merge datasets</h3>
+<p>To merge the files, all text will be combined into a single column,
+or variable. Though for comparative analysis after pre-processing, the
+ability to identify the two plays will be required through assignment to
+a new categorical variable</p>
+<p>In <code>macbeth</code> the <code>gutenberg_id</code> variable is
+currently numerical, but is only significant as an identifier. A quick
+check of unique values for the variable shows this to be the case.</p>
+<pre class="r"><code>macbeth$gutenberg_id %&gt;% unique()</code></pre>
+<pre><code>## [1] 1533</code></pre>
+<p>What is required is for either this column to be replicated in
+<code>mariam</code> or to remove it and create a new identifier variable
+for both datasets. In the end, the result will be the same: a new column
+with two values corresponding to the title of each play.</p>
+<p>To be clean about it - let’s remove the <code>gutenberg_id</code>
+column and create a new column for each dataset. Then a straightforward
+join by stacking one dataset on top of the other (row binding) will
+result in our merged dataset.</p>
+<p>An added <code>line_number</code> column will be added so that
+cross-referencing with the original text sources can be easily done.</p>
+<p>From 2.2, it was noted <code>mariam</code> requires a column name
+change. This will be rectified now also.</p>
+<pre class="r"><code># Remove unnecessary column (by &quot;unselecting&quot; it)
+macbeth %&lt;&gt;% select (-1)
+
+# Add new columns with titles and line numbers for values
+macbeth$title &lt;- &quot;Macbeth&quot;
+mariam$title &lt;- &quot;The Tragedie of Mariam&quot;
+macbeth %&lt;&gt;% mutate(line_number = row_number())
+mariam %&lt;&gt;% mutate(line_number = row_number())
+
+# Rename column name
+mariam %&lt;&gt;% rename(&quot;text&quot;=&quot;A Celebration of Women Writers&quot;)</code></pre>
+<p>And now joining the two datasets together:</p>
+<pre class="r"><code>df &lt;- rbind(macbeth, mariam) %&gt;% select(&quot;title&quot;, &quot;text&quot;, &quot;character&quot;, &quot;line_number&quot;)</code></pre>
+<p>A quick check of the top and and tail of the dataset should show text
+from both plays:</p>
+<pre class="r"><code># show top and tail of the merged dataset
+df %&gt;% head()</code></pre>
+<pre><code>## # A tibble: 6 × 4
+##   title   text      character line_number
+##   &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;           &lt;int&gt;
+## 1 Macbeth &quot;cover &quot;  &lt;NA&gt;                1
+## 2 Macbeth &quot;&quot;        &lt;NA&gt;                2
+## 3 Macbeth &quot;&quot;        &lt;NA&gt;                3
+## 4 Macbeth &quot;&quot;        &lt;NA&gt;                4
+## 5 Macbeth &quot;&quot;        &lt;NA&gt;                5
+## 6 Macbeth &quot;MACBETH&quot; MACBETH             6</code></pre>
+<pre class="r"><code>df %&gt;% tail()</code></pre>
+<pre><code>## # A tibble: 6 × 4
+##   title                  text                              character line_number
+##   &lt;chr&gt;                  &lt;chr&gt;                             &lt;chr&gt;           &lt;int&gt;
+## 1 The Tragedie of Mariam &quot;In after times the schoole of w… Chorus           2330
+## 2 The Tragedie of Mariam &quot;FINIS.&quot;                          Chorus           2331
+## 3 The Tragedie of Mariam &quot;About This Edition&quot;              Chorus           2332
+## 4 The Tragedie of Mariam &quot;The original spelling of the te… Chorus           2333
+## 5 The Tragedie of Mariam &quot;This book has been put on-line … Chorus           2334
+## 6 The Tragedie of Mariam &quot;Edited by Mary Mark Ockerbloom&quot;  Chorus           2335</code></pre>
+<p>NOTE - it is not visible in the PDF report, but rest assured the tail
+shows two columns also.</p>
+<p>From manual inspection, there is extraneous text data before and
+after the actual play text. For purposes of expediency and given it is
+only four points to identify, this identification was done manually to
+obtain the row numbers for deletion.</p>
+<pre class="r"><code># Remove Macbeth intro
+df &lt;- df[-(1:92),]
+# Remove Mariam outro
+df &lt;- df[-(6388:6391),]
+# Remove Macbeth end and Mariam intro
+df &lt;- df[-(4057:4197),]</code></pre>
+<p>We have our merged dataset containing the complete texts of
+<em>Macbeth</em> and <em>The Tragedie of Mariam</em>, a tibble of 4
+columns and 6266 rows.</p>
+<p>Now, let’s begin the real fun!</p>
+<hr />
+<p><br></p>
+</div>
+</div>
+<div id="tidy-manipulate-data-i" class="section level2">
+<h2>3. Tidy &amp; Manipulate Data I</h2>
+<p>The dataset requires further manipulation to obtain the desired
+result.</p>
+<p>Firstly, we need to conform the data to Tidy Data principles as it
+fails to comply in its current state. Only one of the three principles
+are satisfied:</p>
+<ul>
+<li>each variable has its own column - play title, text, character and
+line number</li>
+</ul>
+<p>But, the <code>text</code> column contains combinations of values
+rather than each having their own cell. Each value needs to be a single
+word only, corresponding to the observation of said value.</p>
+<p><em>[NOTE: I did get this wrong in the video - this has been updated
+since that recording]</em></p>
+<p>Tokenisation will be the method used to achieve this.</p>
+<pre class="r"><code># Tokenise the text column and return a new dataframe with each word in its own cell 
+df_token &lt;- df %&gt;% unnest_tokens(word, text)
+
+# convert character to lower case
+df_token$character %&lt;&gt;% str_to_lower() 
+
+df_token %&gt;%  str()</code></pre>
+<pre><code>## tibble [35,469 × 4] (S3: tbl_df/tbl/data.frame)
+##  $ title      : chr [1:35469] &quot;Macbeth&quot; &quot;Macbeth&quot; &quot;Macbeth&quot; &quot;Macbeth&quot; ...
+##  $ character  : chr [1:35469] &quot;hecate&quot; &quot;hecate&quot; &quot;hecate&quot; &quot;hecate&quot; ...
+##  $ line_number: int [1:35469] 94 94 94 94 94 94 94 94 94 94 ...
+##  $ word       : chr [1:35469] &quot;scene&quot; &quot;in&quot; &quot;the&quot; &quot;end&quot; ...</code></pre>
+<pre class="r"><code>df_token %&gt;% head()</code></pre>
+<pre><code>## # A tibble: 6 × 4
+##   title   character line_number word 
+##   &lt;chr&gt;   &lt;chr&gt;           &lt;int&gt; &lt;chr&gt;
+## 1 Macbeth hecate             94 scene
+## 2 Macbeth hecate             94 in   
+## 3 Macbeth hecate             94 the  
+## 4 Macbeth hecate             94 end  
+## 5 Macbeth hecate             94 of   
+## 6 Macbeth hecate             94 the</code></pre>
+<pre class="r"><code>df_token %&gt;% tail()</code></pre>
+<pre><code>## # A tibble: 6 × 4
+##   title                  character line_number word      
+##   &lt;chr&gt;                  &lt;chr&gt;           &lt;int&gt; &lt;chr&gt;     
+## 1 The Tragedie of Mariam chorus           2334 ockerbloom
+## 2 The Tragedie of Mariam chorus           2335 edited    
+## 3 The Tragedie of Mariam chorus           2335 by        
+## 4 The Tragedie of Mariam chorus           2335 mary      
+## 5 The Tragedie of Mariam chorus           2335 mark      
+## 6 The Tragedie of Mariam chorus           2335 ockerbloom</code></pre>
+<p>We have a tidy tibble with 35469 words, complete with removal of all
+additional punctuation and conversion of all words to lower case.</p>
+<hr />
+<p><br></p>
+</div>
+<div id="tidy-manipulate-data-ii" class="section level2">
+<h2>4. Tidy &amp; Manipulate Data II</h2>
+<p>Now to create additional variables by extracting them from data
+variable we have so far - and we’ve done one already!</p>
+<div id="characters-and-gender" class="section level3">
+<h3>Characters and Gender</h3>
+<p>The endpoint of this pre-processing is being able to ascribe gender
+to each observation. For this it will be necessary to identify the
+speaker. It was at this point I realised that generating the character
+variable would be far easier prior to tokenisation and even before
+joining the two initial datasets. Section 2.2.1 is where I travelled
+back in time to insert the creation of the character variable into this
+process.</p>
+<p>Creating the gender category is based on indications from the
+introduction for each play. Without intent to offend or exclude, a
+binary approach has been taken for this report’s categorisation.</p>
+<pre class="r"><code># Identify characters
+male_chars &lt;- c(&quot;duncan&quot;, &quot;malcolm&quot;, &quot; donalbain&quot;, &quot; macbeth&quot;, &quot; banquo&quot;, &quot; macduff&quot;, &quot;lennox&quot;, &quot;ross&quot;, &quot; menteith&quot;, &quot;angus&quot;, &quot;caithness&quot;, &quot;fleance&quot;, &quot;siward&quot;, &quot;young siward&quot;, &quot;seyton&quot;, &quot;boy&quot;, &quot;doctor&quot;, &quot;soldier&quot;, &quot;porter&quot;, &quot;old man&quot;, &quot;messenger&quot;, &quot;first messenger&quot;, &quot;second messenger&quot;, &quot;lords&quot;, &quot;herod&quot;, &quot;antipater&quot;, &quot;sillius&quot;, &quot;constabarus&quot;, &quot;pheroras&quot;, &quot;babus first sonne&quot;, &quot;babus second sonne&quot;, &quot;annanell&quot;, &quot;sohemus&quot;, &quot;nuntio&quot;, &quot;bu&quot;)
+
+female_chars &lt;- c(&quot;lady macbeth&quot;, &quot;lady macduff&quot;, &quot;gentlewoman&quot;, &quot;hecate&quot;, &quot;first witch&quot;, &quot;second witch&quot;, &quot;third witch&quot;, &quot;doris&quot;, &quot;mariam&quot;, &quot;salome&quot;, &quot;alexander&quot;, &quot;graphina&quot;)
+
+undefined &lt;- c(&quot;chorus&quot;)
+
+# Create a new column and fill when matches with character name 
+df_token %&lt;&gt;% mutate(gender = case_when(character %in% male_chars ~ &quot;male&quot;,
+                                 character %in% female_chars ~ &quot;female&quot;,
+                                 TRUE ~ &quot;undefined&quot;)) %&gt;% 
+              select(&quot;title&quot;, &quot;word&quot;, &quot;character&quot;, &quot;gender&quot;, &quot;line_number&quot;)</code></pre>
+</div>
+<div id="create-factors" class="section level3">
+<h3>Create Factors</h3>
+<p>For the categorical variables - <code>title</code>,
+<code>character</code>, <code>gender</code> - these will be converted to
+factors, which will aid further analysis and visualisation.</p>
+<pre class="r"><code>#Convert to factors
+df_token$title &lt;- as.factor(df_token$title) 
+df_token$character &lt;- as.factor(df_token$character) 
+df_token$gender &lt;- as.factor(df_token$gender)</code></pre>
+<hr />
+<p><br></p>
+</div>
+</div>
+<div id="scan-i" class="section level2">
+<h2>5. Scan I</h2>
+<p>Things are now in a Tidy Data format with primary variables sorted as
+correct data types. Next to check the values themselves.</p>
+<div id="missing-values" class="section level4">
+<h4>Missing values</h4>
+<p>A check for NA values shows no missing values.</p>
+<pre class="r"><code># Check for NA values
+colSums(is.na(df_token))</code></pre>
+<pre><code>##       title        word   character      gender line_number 
+##           0           0           0           0           0</code></pre>
+</div>
+<div id="inconsistenceserrors" class="section level4">
+<h4>Inconsistences/Errors</h4>
+<p>Double-checking factors are correct:</p>
+<pre class="r"><code>for (variable in c(&quot;title&quot;, &quot;character&quot;, &quot;gender&quot;))
+{
+ cat(paste(variable, &quot;:\n&quot;))
+ cat(levels(df_token[[variable]]))
+ cat(&quot;\n\n&quot;)
+}</code></pre>
+<pre><code>## title :
+## Macbeth The Tragedie of Mariam
+## 
+## character :
+## alexander angus annanell antipater babus first sonne babus second sonne banquo bu caithness chorus constabarus doctor donalbain doris duncan first witch fleance gentlewoman graphina hecate herod lady macbeth lady macduff lennox lords macbeth macduff malcolm mariam menteith messenger nuntio old man pheroras porter ross salome second witch seyton sillius siward sohemus soldier third witch young siward
+## 
+## gender :
+## female male undefined</code></pre>
+<p>There will be no great benefit in checking for spelling errors given
+the nature of the old style of English, especially with <em>Mariam</em>,
+which also has a “flexible” approach to spelling anyway. This difference
+in language will impact some conventional text analysis techniques
+without further transformation of the data, such as lemmatisation, or
+converting to modern spelling, both of which are beyond the scope of
+this report.</p>
+<hr />
+<p><br></p>
+</div>
+</div>
+<div id="scan-ii" class="section level2">
+<h2>6. Scan II</h2>
+<p>A final scan to remove noise in the way of removing whitespace,
+removal/replacement of unnecessary characters/outliers.</p>
+<pre class="r"><code># Remove whitespace (it changes to a Large list, so convert back to tibble)
+df_token %&lt;&gt;% lapply(str_trim) %&gt;% as_tibble()
+
+# Checking for any words that begin and/or end with non alphanumeric characters
+df_check_start &lt;- df_token[str_detect(df_token$word, &quot;^[^A-Za-z]|^[^A-Za-z]$|^[A-Za-z]$&quot;), ] %&gt;% select(&quot;word&quot;)
+df_check_end &lt;- df_token[str_detect(df_token$word, &quot;$[^A-Za-z]$&quot;), ] %&gt;% select(&quot;word&quot;)
+
+# print list of relevant values
+cat(paste(&quot;Begins/ends with non-alpha:\n&quot;, unique(df_check_start)))</code></pre>
+<pre><code>## Begins/ends with non-alpha:
+##  c(&quot;i&quot;, &quot;_exeunt&quot;, &quot;a&quot;, &quot;o&quot;, &quot;_exit&quot;, &quot;_tiger&quot;, &quot;_drum&quot;, &quot;_witches&quot;, &quot;_aside&quot;, &quot;_to&quot;, &quot;_flourish&quot;, &quot;v&quot;, &quot;_a&quot;, &quot;_within&quot;, &quot;_looking&quot;, &quot;_knocking&quot;, &quot;_opens&quot;, &quot;_alarum&quot;, &quot;_lady&quot;, &quot;c&quot;, &quot;_assaults&quot;, &quot;_dies&quot;, &quot;_ghost&quot;, &quot;_music&quot;, &quot;t&quot;, &quot;_thunder&quot;, &quot;_descends&quot;, &quot;_hautboys&quot;, &quot;_stabbing&quot;, &quot;_they&quot;, &quot;2&quot;, &quot;1&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;æthiopian&quot;, &quot;s&quot;, &quot;j&quot;, &quot;u&quot;, &quot;w&quot;)</code></pre>
+<p>A few things to address:</p>
+<ul>
+<li>remove preceding underscore character (“_“)</li>
+<li>replace unusual “æ” character - and here we are: I believe this is
+the culprit behind the “problems” warning with
+<code>read_csv</code>.</li>
+<li>remove all digits - numbers are not useful in this kind of text
+analysis and are largely line numbers from the source</li>
+<li>single letters - this should be addressed by the following
+“stopwords” step.</li>
+</ul>
+<pre class="r"><code># Remove &quot;_&quot;
+df_token$word %&lt;&gt;% str_remove_all(&quot;[:punct:]&quot;)
+# Standardise spelling to avoid possible confusion
+df_token$word %&lt;&gt;% str_replace_all(&quot;æthiopian&quot;, &quot;ethiopian&quot;)
+# Remove numbers
+df_token$word %&lt;&gt;% str_remove_all(&quot;^[:digit:]$&quot;)</code></pre>
+<hr />
+<p><br></p>
+</div>
+<div id="transform" class="section level2">
+<h2>7. Transform</h2>
+<div id="remove-stopwords-word-frequency" class="section level3">
+<h3>7.1 Remove stopwords / Word frequency</h3>
+<p>For considering word frequency, a good practice is to remove
+“stopwords”, which are a group of commonly used words - “a”, “the”,
+“but”, “about” - that when removed can help reduce the level of noise to
+reveal those more meaningful words.</p>
+<p>At this step, stopwords will be removed and then the dataframe
+regrouped to get the frequency for each word:</p>
+<pre class="r"><code>df_no_stopwords &lt;- 
+  df_token %&gt;% 
+  filter(!df_token$word %in% stop_words$word) %&gt;% 
+  count(title, word, gender, character) %&gt;% 
+  arrange(desc(n)) 
+
+df_no_stopwords</code></pre>
+<pre><code>## # A tibble: 10,210 × 5
+##    title                  word    gender    character        n
+##    &lt;chr&gt;                  &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;        &lt;int&gt;
+##  1 Macbeth                macbeth undefined macbeth        158
+##  2 Macbeth                macbeth female    lady macbeth    63
+##  3 Macbeth                macduff undefined macduff         62
+##  4 Macbeth                lady    female    lady macbeth    59
+##  5 The Tragedie of Mariam herod   male      herod           58
+##  6 The Tragedie of Mariam thou    male      herod           54
+##  7 Macbeth                thou    undefined macbeth         40
+##  8 The Tragedie of Mariam thy     male      herod           40
+##  9 Macbeth                malcolm male      malcolm         39
+## 10 The Tragedie of Mariam mariam  male      herod           39
+## # ℹ 10,200 more rows</code></pre>
+<p>This has reduced the overall number of rows to 10210 though keep in
+mind a word may be in more than one row in this dataframe relating to
+different instances of title, gender and character.</p>
+<p>The most frequent word in this list is “Macbeth” connected to
+“Macbeth. This highlights a flaw in my methodology for creating the
+<code>character</code> variable based on the appearance of the
+character’s name in the text (albeit in capitalised form in the first
+instance). This number (n) will include all of the matched instances
+referring to Macbeth’s lines.</p>
+<p>Another issue of note is the presence of Old English words like
+“thou” and “thy”. In modern English, “you” and “your” would be removed
+by a regular stopwords list, but they do not account for Old English.
+Compounding the issue, is the fact that Cary’s approach to spelling
+might be described as flexible at best. Further work could be undertaken
+to address these issues to standardise the texts (as one option).</p>
+<p>So, irrespective of these foreseeable and rectifiable flaws, the
+dataset is prepared for exploring word frequency in regard to comparison
+by title, gender and/or character.</p>
+<pre class="r"><code># Function - plot word freq, with argument to vary minimum number
+barplot_word_freq &lt;- function (dataframe, num=30)
+{  dataframe %&gt;% filter(n &gt; num) %&gt;%
+    mutate(word = reorder(word, n)) %&gt;%
+    ggplot(aes(n, word)) +
+    geom_col() +
+    labs(y = NULL)  }</code></pre>
+<p><br></p>
+<div id="word-frequency-bar-plots-for-both-titles"
+class="section level4">
+<h4>Word frequency bar plots for both titles</h4>
+<pre class="r"><code>df_no_stopwords %&gt;% 
+  filter (title == &quot;Macbeth&quot;) %&gt;%
+  barplot_word_freq(22)</code></pre>
+<p><img src="macbeth-and-mariam_files/figure-html/unnamed-chunk-30-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>df_no_stopwords %&gt;% 
+  filter (title == &quot;The Tragedie of Mariam&quot;) %&gt;%
+  barplot_word_freq(16)</code></pre>
+<p><img src="macbeth-and-mariam_files/figure-html/unnamed-chunk-30-2.png" width="576" style="display: block; margin: auto;" /></p>
+<p><br></p>
+</div>
+<div id="word-frequency-bar-plots-for-gender-malefemale"
+class="section level4">
+<h4>Word frequency bar plots for gender (male/female):</h4>
+<pre class="r"><code>df_no_stopwords %&gt;% 
+  filter (gender == &quot;male&quot;) %&gt;%
+  barplot_word_freq(18)</code></pre>
+<p><img src="macbeth-and-mariam_files/figure-html/unnamed-chunk-31-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>df_no_stopwords %&gt;% 
+  filter (gender == &quot;female&quot;) %&gt;%
+  barplot_word_freq(15)</code></pre>
+<p><img src="macbeth-and-mariam_files/figure-html/unnamed-chunk-31-2.png" width="576" style="display: block; margin: auto;" /></p>
+<p>Now, considering the potential to compare word frequency by
+proportion</p>
+<p>Creating functions for creating table and scatter plotting:</p>
+<pre class="r"><code>#compare_character_word_freq &lt;- function(characters)
+word_frequency_compare &lt;- function (dataframe, characters)
+{ frequency &lt;- dataframe %&gt;% 
+  filter (character %in% characters) %&gt;% 
+  mutate(word = str_extract(word, &quot;[a-z&#39;]+&quot;)) %&gt;%
+  count(character, word) %&gt;%
+  group_by(character) %&gt;%
+  mutate(proportion = n / sum(n)) %&gt;% 
+  select(-n) %&gt;% 
+  pivot_wider(names_from = character, values_from = proportion) %&gt;% 
+  pivot_longer(pivot_pair[1]:pivot_pair[2],
+               names_to = &quot;character&quot;, values_to = &quot;proportion&quot;)
+}</code></pre>
+<pre class="r"><code>plot_frequency_compare &lt;- function (dataframe, y_character, pivot_pair)
+{ ggplot(dataframe, aes(x = proportion, y = dataframe[[y_character]], 
+                      color = abs(dataframe[[y_character]] - proportion))) +
+  geom_abline(color = &quot;gray40&quot;, lty = 2) +
+  geom_jitter(alpha = 0.1, size = 2.5, width = 0.3, height = 0.3) +
+  geom_text(aes(label = word), check_overlap = TRUE, vjust = 1.5) +
+  scale_x_log10(labels = percent_format()) +
+  scale_y_log10(labels = percent_format()) +
+  scale_color_gradient(limits = c(0, 0.001), 
+                       low = &quot;darkslategray4&quot;, high = &quot;gray75&quot;) +
+  facet_wrap(~ character, ncol = 2) +
+  theme(legend.position=&quot;none&quot;) +
+  labs(y = &quot;Macbeth&quot;, x = NULL)
+}</code></pre>
+</div>
+<div
+id="word-frequency-scatter-plots-for-comparison-of-character-word-usage"
+class="section level4">
+<h4>Word frequency scatter plots for comparison of character word
+usage:</h4>
+<p><strong>All words (including stopwords)</strong></p>
+<pre class="r"><code>characters &lt;- c(&quot;lady macbeth&quot;, &quot;doris&quot;, &quot;macbeth&quot;, &quot;herod&quot;)
+y_character &lt;- c(&quot;macbeth&quot;)
+pivot_pair &lt;- c(&quot;lady macbeth&quot;, &quot;doris&quot;)
+
+df_token %&gt;% 
+  word_frequency_compare(characters) %&gt;% 
+  plot_frequency_compare(y_character, pivot_pair)</code></pre>
+<pre><code>## Warning: Use of `dataframe[[y_character]]` is discouraged.
+## ℹ Use `.data[[y_character]]` instead.
+## Use of `dataframe[[y_character]]` is discouraged.
+## ℹ Use `.data[[y_character]]` instead.
+## Use of `dataframe[[y_character]]` is discouraged.
+## ℹ Use `.data[[y_character]]` instead.
+## Use of `dataframe[[y_character]]` is discouraged.
+## ℹ Use `.data[[y_character]]` instead.</code></pre>
+<pre><code>## Warning: Removed 7786 rows containing missing values (`geom_point()`).</code></pre>
+<pre><code>## Warning: Removed 7786 rows containing missing values (`geom_text()`).</code></pre>
+<p><img src="macbeth-and-mariam_files/figure-html/unnamed-chunk-34-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><br></p>
+<p><strong>With stopwords removed</strong></p>
+<pre class="r"><code>characters &lt;- c(&quot;lady macbeth&quot;, &quot;doris&quot;, &quot;macbeth&quot;, &quot;herod&quot;, &quot;banquo&quot;)
+y_character &lt;- c(&quot;macbeth&quot;)
+pivot_pair &lt;- c(&quot;lady macbeth&quot;, &quot;doris&quot;)
+
+
+df_no_stopwords %&gt;% 
+  word_frequency_compare(characters) %&gt;% 
+  plot_frequency_compare(y_character, pivot_pair)</code></pre>
+<pre><code>## Warning: Use of `dataframe[[y_character]]` is discouraged.
+## ℹ Use `.data[[y_character]]` instead.
+## Use of `dataframe[[y_character]]` is discouraged.
+## ℹ Use `.data[[y_character]]` instead.
+## Use of `dataframe[[y_character]]` is discouraged.
+## ℹ Use `.data[[y_character]]` instead.
+## Use of `dataframe[[y_character]]` is discouraged.
+## ℹ Use `.data[[y_character]]` instead.</code></pre>
+<pre><code>## Warning: Removed 7552 rows containing missing values (`geom_point()`).</code></pre>
+<pre><code>## Warning: Removed 7552 rows containing missing values (`geom_text()`).</code></pre>
+<p><img src="macbeth-and-mariam_files/figure-html/unnamed-chunk-35-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><br></p>
+</div>
+<div id="bigramngrams" class="section level4">
+<h4>Bigram/ngrams</h4>
+<p>An example of the dataset being used for generating ngrams - groups
+of <em>n</em> words appearing together. Here is a function to generate
+them based on <em>n</em> words:</p>
+<pre class="r"><code>#Function - create ngram of different numbers 
+create_ngrams &lt;- function (dataframe, n=2)
+ { dataframe %&gt;% unnest_tokens(output = &quot;words&quot;, 
+                 input = text, 
+                 token = &quot;ngrams&quot;, 
+                 n = n) } </code></pre>
+<p><strong>Creating bigrams (words in pairs):</strong></p>
+<pre class="r"><code>df_bigrams &lt;- create_ngrams(df, 2)
+df_bigrams %&gt;% head()</code></pre>
+<pre><code>## # A tibble: 6 × 4
+##   title   character line_number words   
+##   &lt;chr&gt;   &lt;chr&gt;           &lt;int&gt; &lt;chr&gt;   
+## 1 Macbeth HECATE             93 &lt;NA&gt;    
+## 2 Macbeth HECATE             94 scene in
+## 3 Macbeth HECATE             94 in the  
+## 4 Macbeth HECATE             94 the end 
+## 5 Macbeth HECATE             94 end of  
+## 6 Macbeth HECATE             94 of the</code></pre>
+<p><strong>Frequency of bigrams for <em>Macbeth</em>:</strong></p>
+<pre class="r"><code>df_bigrams %&gt;% 
+  filter(!df_bigrams$words %in% stop_words$word) %&gt;% 
+  filter (title == &quot;Macbeth&quot;) %&gt;% 
+  count(title, words) %&gt;% 
+  arrange(desc(n)) %&gt;% 
+  head()</code></pre>
+<pre><code>## # A tibble: 6 × 3
+##   title   words            n
+##   &lt;chr&gt;   &lt;chr&gt;        &lt;int&gt;
+## 1 Macbeth &lt;NA&gt;          1433
+## 2 Macbeth lady macbeth    70
+## 3 Macbeth i have          40
+## 4 Macbeth in the          36
+## 5 Macbeth to the          35
+## 6 Macbeth of the          30</code></pre>
+<p><strong>Frequency of bigrams for <em>Mariam</em>:</strong></p>
+<pre class="r"><code>df_bigrams %&gt;% 
+  filter(!df_bigrams$words %in% stop_words$word) %&gt;% 
+  filter (title == &quot;The Tragedie of Mariam&quot;) %&gt;% 
+  count(title, words) %&gt;% 
+  arrange(desc(n)) %&gt;% 
+  head()</code></pre>
+<pre><code>## # A tibble: 6 × 3
+##   title                  words        n
+##   &lt;chr&gt;                  &lt;chr&gt;    &lt;int&gt;
+## 1 The Tragedie of Mariam to be       37
+## 2 The Tragedie of Mariam i will      20
+## 3 The Tragedie of Mariam i am        19
+## 4 The Tragedie of Mariam it is       19
+## 5 The Tragedie of Mariam my heart    19
+## 6 The Tragedie of Mariam &lt;NA&gt;        18</code></pre>
+<p>Note - these are tested with the pre-tokenised dataframe
+(<code>df</code>), which explains the null values, as well as the
+outlier value for “lady macbeth”. To address this, the dataframe will
+need to be processed slightly differently, though largely a matter of
+changing the order, not the methods.</p>
+<hr />
+<p><br></p>
+</div>
+</div>
+</div>
+<div id="reflective-journal" class="section level2">
+<h2>8. Reflective journal</h2>
+<div id="concept" class="section level3">
+<h3>Concept</h3>
+<p>I went into this project with the intention of presenting myself a
+challenge but was unsure of the direction to go. Two things helped
+clarify my decision to undertake this text-based project:</p>
+<ul>
+<li>a job application I undertook that required a critical response to a
+massive collection of structured, but seemingly chaotic data with long
+strings of unknown codes, symbols, URLS, names and places</li>
+<li>the opportunity to delve into something to complement and expand on
+the more numerical/date-focused wrangling skills developed in this
+subject and that I have applied in my final Data Visualisation
+assignment during this same teaching period.</li>
+</ul>
+<p>I started with Shakespeare’s <em>Macbeth</em> as a seemingly obvious
+start - available, significant and a work I am familiar with in a range
+of variations, including an Australian rock opera and Akira Kurosawa’s
+adaptation in <em>Throne of Blood</em>. I had thought to do another of
+Shakespeare’s works, but then I wondered: might there be a female author
+who was a contemporary of Shakespeare’s? And certainly, there was:
+Elizabeth Cary, who may be less well-known but not without her own
+significance as the first known published female playwright, with a work
+coincidentally with similar themes to Macbeth. This helped meaningfully
+underpin the project’s concept to be the foundation for a gender-focused
+comparative text analysis of the two works.</p>
+</div>
+<div id="getting-started" class="section level3">
+<h3>Getting started</h3>
+<p>At first, I scribbled and sketched out possibilities for different
+features and how they could be used for analytical purposes, with
+consideration for the assignment’s requirements. The latter was helpful
+in pushing me in directions I may have not explored otherwise.</p>
+<p>I’m learning that RMarkdown offers an easy way to create a framework
+for a project with flexibility to adapt - Jupyter Notebook also, though
+with differences. Starting with the template as a helpful base, I
+populated the document with my questions, aims, tasks and ideas which
+helped give focus and direction when straying down coding tunnels.</p>
+</div>
+<div id="cleaningtidying" class="section level3">
+<h3>Cleaning/Tidying</h3>
+<p>This was a good example of the 80/20 rule - I’m sure I spent all of
+that 80% and more on the cleaning/wrangling side of things, though the
+focus here is on the pre-processing anyway. At first, it felt it may be
+on the easy side in some ways; how hard can it be to start with only two
+columns in the beginning? But yes, it’s all about what features are
+waiting to be extracted from the data.</p>
+<p>I was confused by the <code>spec_tbl_df</code> subclass of tibble
+generated by reading in <em>Mariam</em>, and unsure of what problem
+there might be from the CSV file reading. It was all fine in the end,
+but it showed the importance of checking not just shape and size, but
+also the nature of R objects. A problem did pop up after I used
+<code>str_trim</code> which converted the tibble into a Large list,
+though easily converted back again.</p>
+</div>
+<div id="creationtransformation" class="section level3">
+<h3>Creation/Transformation</h3>
+<p>One thing I got stuck on was how to create the new character variable
+and matching by name, especially for the <code>mariam</code> dataset. I
+am unsure of why it was so difficult - I tried a range of functions and
+approaches using <code>group_by, mutate, filter, case_when</code>,
+various stringr functions such as <code>str_detect, str_match</code> and
+so on, until finally finding a solution I could work with. One issue was
+the need to deal with periods (“.”) but I wonder if it was the
+<code>spec_tbl_df</code> subclass also? Anyway, I got there. A positive
+learning outcome is that having a mindset based on knowing there
+<em>will</em> be a solution makes it easier to keep looking for it.</p>
+<p>My method of variable creation is unfortunately flawed by design. As
+Iused the mention of each speaker from the original text to assign a new
+variable in the same row, that means those mentions are included also as
+words spoken by the speaker, incorrectly skewing their frequency of use.
+With the limits of time for this report, I have not yet addressed this
+issue, though I have considered potential solutions such as at the time
+of creating the <code>character</code> variable, the corresponding
+<code>text</code> value would be assigned a null value, making removal
+easy through a filter process, using <code>is.na</code> for
+instance.</p>
+<p>My original design included extracting features based on the play
+structure also, i.e. Acts and Scenes. Using something based on the
+<code>character</code> variable extraction method, variables would be
+created for both <code>act</code> and <code>scene</code>. This would
+allow for a kind of time-based analysis for presence and participation
+by character, and to consider the development or otherwise of language
+as the play develops. And so on. Again, the scope on this occasion in
+time and size meant curtailing my aspirations in order to present a
+timely and focused report. But I’m excited for the possibilities of
+these approaches to data that I am being opened up to.</p>
+</div>
+<div id="learnings" class="section level3">
+<h3>Learnings</h3>
+<p>Many and varied!! Trying to distill them into a few points:</p>
+<ul>
+<li><strong>Organisation/Planning</strong>
+<ul>
+<li>I am enjoying developing better habits for organising my work, which
+is coming from different impetuses. The assignments and their
+requirements are helping lead by example, and also working with
+RStudio/RMarkdown as tools that streamline and support workflow has been
+a positive contribution towards my work during this teaching
+period.</li>
+</ul></li>
+<li><strong>Conceptual</strong>
+<ul>
+<li>Learning about Tidy Data principles has been invaluable in how to
+conceive approaching a dataset such as a play, to consider from first
+principles on how to identify features and create a structural framework
+upon which to build. Seeing how this is applied in practice through my
+recent and final Data Visualisation assignment has helped to clarify how
+this conceptual approach feeds directly into practical application.</li>
+</ul></li>
+<li><strong>Adaptability</strong>
+<ul>
+<li>There is no one way - but there will be a way. As I’m
+problem-solving, I’m always remembering that there is a good chance
+someone has probably faced a similar issue and I can see from the
+Tidyverse tools that there is a strong commitment to supporting the R
+community. It is also about the adaptability of the skills we are
+learning that I’m enjoying - approaching numerical or text datasets with
+similar skillsets and principles is helping me to go into a new project
+with a greater feeling of having a foundation to build from.</li>
+<li>In the instance of extracting character and gender variables, it
+became obvious I needed to adapt my plan and do this prior to merging
+the data sets. Fortunately, it was easy to insert this into my pipeline
+without undoing other work I had done. Aiming for a methodical approach
+that allows for flexibility when change becomes necessary has helped me
+in this case. And not being afraid to change tack when required!</li>
+</ul></li>
+</ul>
+</div>
+<div id="finally" class="section level3">
+<h3>Finally</h3>
+<p>At the end of this report, there is still work to be done,
+namely:</p>
+<ul>
+<li>removal of non-spoken words from the word list to eliminate skewing
+the data due to unnecessary presence of character names</li>
+<li>address difference in spelling through transformational methods such
+as lemmatisation and modernisation</li>
+<li>adjust stopwords list to account for Old English usage</li>
+</ul>
+<p>Though, I trust this project works as a “proof of concept”, offering
+the foundation for a gender-focused comparative analysis of the works by
+Shakespeare and Cary.</p>
+<hr />
+<p><br></p>
+</div>
+</div>
+<div id="presentation-link" class="section level2">
+<h2>9.Presentation link</h2>
+<p>The video link of my walkthrough of this report is:</p>
+<ul>
+<li><a href="https://vimeo.com/819290988"
+class="uri">https://vimeo.com/819290988</a></li>
+</ul>
+<hr />
+<hr />
+<p><br></p>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<p><strong>Main data source</strong></p>
+<p>Shakespeare W (1623) , <em>Macbeth</em>, Project Gutenberg. <a
+href="https://www.gutenberg.org/ebooks/1533"
+class="uri">https://www.gutenberg.org/ebooks/1533</a></p>
+<p>Cary E (1613) <em>The Tragedie of Mariam, the faire queene of
+Jewry</em>, A Celebration of Women Writers website, accessed 17 April
+2023. <a
+href="https://digital.library.upenn.edu/women/cary/mariam/mariam.html"
+class="uri">https://digital.library.upenn.edu/women/cary/mariam/mariam.html</a></p>
+<p><strong>References</strong></p>
+<p>Agrawal R (14 June 2021) <em>Must Known Techniques for text
+preprocessing in NLP</em>, Analytics Vidhya website, accessed 18 April
+2023. <a
+href="https://www.analyticsvidhya.com/blog/2021/06/must-known-techniques-for-text-preprocessing-in-nlp/"
+class="uri">https://www.analyticsvidhya.com/blog/2021/06/must-known-techniques-for-text-preprocessing-in-nlp/</a></p>
+<p>Braganza V (22 June 2022) <em>10 Women Writing in the Time of
+Shakespeare</em>, website, accessed 17 April 2023. <a
+href="https://www.mentalfloss.com/posts/women-writers-contemporary-with-shakespeare"
+class="uri">https://www.mentalfloss.com/posts/women-writers-contemporary-with-shakespeare</a></p>
+<p>Dempsey M (7 May 2010) <em>Regular expression “^[a-zA-Z]” or
+“[^a-zA-Z]”</em>, Stack Overflow website, accessed 18 April 2023. <a
+href="https://stackoverflow.com/questions/2790813/regular-expression-a-za-z-or-a-za-z"
+class="uri">https://stackoverflow.com/questions/2790813/regular-expression-a-za-z-or-a-za-z</a></p>
+<p>Mowat B and Werstine P (n.d.) <em>An Introduction to This Text:
+Macbeth</em>, Folger Shakespeare Library website, accessed 17 April
+2023. <a
+href="https://www.folger.edu/explore/shakespeares-works/macbeth/an-introduction-to-this-text"
+class="uri">https://www.folger.edu/explore/shakespeares-works/macbeth/an-introduction-to-this-text</a></p>
+<p>Silge J and Robinson S (2022) <em>Text Mining with R</em>, Text
+Mining with R website, accessed 17 April 2023. <a
+href="https://www.tidytextmining.com"
+class="uri">https://www.tidytextmining.com</a></p>
+<p>Rydberg-Cox J (n.d.) <em>Statistical Methods for Studying Literature
+Using R</em>, Daedalus: Projects in Digital Humanities website, accessed
+17 April 2023. <a
+href="https://www.chlt.org/StatisticalMethods/analyzing-literary-data.html"
+class="uri">https://www.chlt.org/StatisticalMethods/analyzing-literary-data.html</a></p>
+<p>UQ (The University of Queensland) (6 April 2023) <em>Text mining
+&amp; text analysis</em>, UQ website, accessed 17 April 2023. <a
+href="https://guides.library.uq.edu.au/research-techniques/text-mining-analysis/preparing-text-for-analysis"
+class="uri">https://guides.library.uq.edu.au/research-techniques/text-mining-analysis/preparing-text-for-analysis</a></p>
+<p>Tidyverse (27 December 2018) <em>readr 1.3.1</em>, Tidyverse website,
+accessed 17 April 2023. <a
+href="https://www.tidyverse.org/blog/2018/12/readr-1-3-1/"
+class="uri">https://www.tidyverse.org/blog/2018/12/readr-1-3-1/</a></p>
+<p>EB (Encyclopedia Britannica) (2020) (2 October 2020) <em>William
+Shakespeare’s Important Works</em>, EB website, accessed 18 April 2023.
+<a
+href="https://www.britannica.com/summary/William-Shakespeares-Important-Works"
+class="uri">https://www.britannica.com/summary/William-Shakespeares-Important-Works</a></p>
+<p><br></p>
+<p><strong>R packages</strong></p>
+<p>Johnston M, Robinson D (2022). <em>gutenbergr: Download and Process
+Public Domain Works from Project Gutenberg</em>. R package version
+0.2.3. <a href="https://CRAN.R-project.org/package=gutenbergr"
+class="uri">https://CRAN.R-project.org/package=gutenbergr</a>.</p>
+<p>Müller K (2020) <em>here: A Simpler Way to Find Your Files</em>, R
+package version 1.0.1. <a href="https://CRAN.R-project.org/package=here"
+class="uri">https://CRAN.R-project.org/package=here</a></p>
+<p>Bache S, Wickham H (2022) <em>magrittr: A Forward-Pipe Operator for
+R</em>, R package version 2.0.3. <a
+href="https://CRAN.R-project.org/package=magrittr"
+class="uri">https://CRAN.R-project.org/package=magrittr</a></p>
+<p>Silge J, Robinson D (2016) <em>tidytext: Text Mining and Analysis
+Using Tidy Data Principles in R.</em> JOSS, 1(3). <a
+href="doi:10.21105/joss.00037" class="uri">doi:10.21105/joss.00037</a>
+<a href="https://doi.org/10.21105/joss.00037"
+class="uri">https://doi.org/10.21105/joss.00037</a></p>
+<p>Wickham H (2022). <em>stringr: Simple, Consistent Wrappers for Common
+String Operations</em>, R package version 1.5.0. <a
+href="https://CRAN.R-project.org/package=stringr"
+class="uri">https://CRAN.R-project.org/package=stringr</a></p>
+<p>Wickham H, François R, Henry L, Müller K, Vaughan D (2023) <em>dplyr:
+A Grammar of Data Manipulation</em>, R package version 1.1.0. <a
+href="https://CRAN.R-project.org/package=dplyr"
+class="uri">https://CRAN.R-project.org/package=dplyr</a></p>
+<p>Wickham H, Hester J, Bryan J (2023) <em>readr: Read Rectangular Text
+Data</em>, R package version 2.1.4. <a
+href="https://CRAN.R-project.org/package=readr"
+class="uri">https://CRAN.R-project.org/package=readr</a></p>
+<p>Wickham H, Seidel D (2022) <em>scales: Scale Functions for
+Visualization</em>. R package version 1.2.1. <a
+href="https://CRAN.R-project.org/package=scales"
+class="uri">https://CRAN.R-project.org/package=scales</a>.</p>
+<p>Wickham H, Vaughan D, Girlich M (2023) <em>tidyr: Tidy Messy
+Data</em>, R package version 1.3.0. <a
+href="https://CRAN.R-project.org/package=tidyr"
+class="uri">https://CRAN.R-project.org/package=tidyr</a></p>
+<p>Wickham H. (2016) <em>ggplot2: Elegant Graphics for Data
+Analysis</em>, Springer-Verlag New York.</p>
+<p>Yihui X (2023) <em>knitr: A General-Purpose Package for Dynamic
+Report Generation in R</em>, R package version 1.42.</p>
+<p></font></p>
+</div>
+
+<br>
+<br>
+<h6>
+<p style="text-align:right;">Copyright &copy; 2023 Adam Simmons, Inc. All rights reserved.</p>
+</h6>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

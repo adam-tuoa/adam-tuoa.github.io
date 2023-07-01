@@ -13,8 +13,9 @@ There was a lot of data wrangling, string cleaning and transformation of data, s
 
 I wanted to push myself with both SQL and Python - and I did... I had to ask my tutor how to upload the dataset into the RMIT's virtual MySQL, but apparently I was the first student my tutor had known who sourced their own dataset and she didn't know if it was possible. So, it meant I had to install everything locally, create my SQL database and prepare my main dataset. The fact I got stuck in COVID isolation (waiting for a test result during the post-Christmas fiasco, that ultimately was negative) meant I just had more time to explore. 
 
+<br>
 
-Below are the slides used for my final PowerPoint presentation with all plots output with Python:
+Below are the slides used for my final PowerPoint presentation with a couple of Python code blocks at the end:
 
 <br>
 
@@ -63,9 +64,20 @@ Below are the slides used for my final PowerPoint presentation with all plots ou
 
 ![11/12](images/vista_analysis_11.jpeg)
 
+</center>
+
+<br>
+<br>
+
+And a couple of examples of my Python coding in Jupyter Notebook:
+
+<center>
+<br>
+![](images/vista_python_01.png)
 
 <br>
 
+![](images/vista_python_02.png)
 
 </center>
 
