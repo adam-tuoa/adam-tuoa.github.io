@@ -14,7 +14,7 @@ March 19, 2023
 
 Considering why Python has become the world’s most popular programming language - this storytelling project required use of PowerPoint, including techniques such as animation, transitions and recording of the presentation itself. 
 
-For this RMIT Data Visualisation initial assignment, we had to use public data visualisations to tell a story of insights. I thought I might look at comparing Python and R as a way to learn more about their relationship, when I found [PYPL (PopularitY of Python Language Index)](https://pypl.github.io/PYPL.html). While it was interesting to learn just how different the stories of the two programming languages are, it was particularly Python's period of strong growth over the past decade that I thought would be interesting to explore in more detail.
+For this RMIT Data Visualisation initial assignment, we had to use public data visualisations to tell a story of insights. I thought I might look at comparing Python and R as a way to learn more about their relationship, when I found [PYPL (PopularitY of Python Language Index)](https://pypl.github.io/PYPL.html){target="_blank"}. While it was interesting to learn just how different the stories of the two programming languages are, it was particularly Python's period of strong growth over the past decade that I thought would be interesting to explore in more detail.
 
 This project seriously helped up my game with PowerPoint, which until this point I had considered as a static slideshow only and a dumbed down version of Indesign (partly due to my KPMG experience). Learning about the flexibility and ease of adding animations, transitions and recording helped open up different creative possibilities.
 

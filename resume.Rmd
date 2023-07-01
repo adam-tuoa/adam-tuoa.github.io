@@ -1,0 +1,78 @@
+---
+title: "Resume"
+---
+
+**ADAM SIMMONS** is a Data Analyst with experience in the arts, education and non-profit/community sectors. He has developed strong skills in communication, visualisation, database management, relational databases, qualitative and quantitative analysis, statistical testing and machine learning methods. He is a creative thinker and problem solver, with a commitment to excellence and a spirit of generosity.
+
+**KEY SKILLS**
+
+- Critical thinking & Problem solving
+- Stakeholder Engagement
+- Documentation and writing skills
+- Data Analytics and Visualisation
+
+**EDUCATION**  
+
+- 2023-2023  RMIT - Graduate Certificate of Data Science
+- 2021-2021  RMIT - Business Analytics
+- 2020-2021  CLOCK Your Skills - Prof Development Award in Creative/Cultural Industries
+- 1990-1992  Victorian College of the Arts - Bachelor of Music Performance (Improvisation)	
+
+**EMPLOYMENT**  
+
+- 2022 - current &nbsp; &nbsp;                  Data Analyst&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; The Music Place
+- 2022 - 2022&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Digital Intern/Consultant&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;KPMG
+- 2020 - current &nbsp; &nbsp;                  Editor/Co-founder&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Dingo Jazz 
+- 2019 - current &nbsp; &nbsp;                  Director&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;The Usefulness of Art 
+- 2017 - 2019&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Lead Co-Artistic Director&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Wangaratta Festival of Jazz & Blues
+- 2013 - 2015&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Artistic Director/Founder&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Festival of Slow Music
+- 2011 - 2021&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Lecturer (shakuhachi)&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;University of Melbourne 
+- 2003 - 2011&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bookkeeper&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Melbourne Jazz Co-operative 
+- 1993 - 2022&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Performer/Composer/Musical Director&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Leader/Various
+
+**LANGUAGES, SYSTEMS & APPLICATIONS**  
+
+- Python
+- R 
+- SQL
+- Excel
+- Tableau
+- Microsoft Office 365 - Word, PowerPoint, Outlook, Teams
+- NVivo
+- Power BI
+- Adobe InDesign/Photoshop
+- MYOB
+- HTML/CSS 
+
+**Responsibilities include:**
+  data management/extraction
+- data cleaning/wrangling
+- qualitative and quantitative data analysis
+- data visualisation
+- data migration
+- creating Excel dashboards
+- automating emails
+- website design
+- public consultations
+- internal organisational reports
+- strategic planning
+- consultancy
+- advocacy
+- mentoring/teaching 
+- social network analysis
+- communication and marketing
+- grant writing
+- peer assessing
+- festival production
+- tour management 
+
+**Just a few achievements:**
+
+- a 50% success rate from over 85 funding applications
+- built and designed websites, including for [Stop EACOP](https://www.stopeacop.net){target="_blank"} and [Forestone Japan](https://www.forestone.com.au){target="_blank}
+- performed and recorded [100 duets in one month](https://www.100251.com.au){target="_blank"}, including social network analysis
+- contributed to the report on the review of Queensland's Public Records Act
+- responsible for the [Wangaratta Horns of Death with Spiderbait](https://fb.watch/lv-oPf-qyM/){target="_blank}
+- helped refine KPMG's querying method in NVivo to get obtain results
+
+
