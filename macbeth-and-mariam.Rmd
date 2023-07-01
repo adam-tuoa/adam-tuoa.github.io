@@ -23,6 +23,7 @@ One challenge I identify is that the language of both writers is quite different
 
 Below is the R code used for the data wrangling, transformation, analysis and visualisations. 
 
+<br>
 
 ## Data Wrangling Assessment Task 3: Dataset challenge
 
