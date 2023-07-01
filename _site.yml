@@ -26,6 +26,8 @@ navbar:
       href: RMIT-AB-testing.html
     - text: "Rise and Slide of Python"
       href: rise-slide-of-python.html
+    - text: "Macbeth and Mariam - text comparison"
+      href: macbeth-and-mariam.html
   - text: "Other"
     menu:
     - text: "Other projects"
