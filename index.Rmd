@@ -19,7 +19,7 @@ It has been a good mix:
 
 -   applying statistical theory and methods: distributions, synthetic data, linear regression, hypothesis testing, forecasting, machine learning 
 -   plenty of data wrangling using Tidy Data principles and associated R libraries
--   a text analysis of two 17th century plays, Macbeth and The Tragedie of Mariam
+-   a text analysis of two 17th century plays, _Macbeth_ and _The Tragedie of Mariam_
 -   creating data visualisation with Matplotlib, Seaborn, Plotly and ggplot
 -   building my first interactive Shiny app
 
