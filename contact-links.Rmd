@@ -6,7 +6,7 @@ title: "Contact Links"
 
 ## Links  
 
--   [LinkedIn](https://www.linkedin/in/adamsimmonsjazz)  
+-   [LinkedIn](https://www.linkedin.com/in/adamsimmonsjazz)  
 -   [Github](https://github.com/adam-tuoa)  
 -   [Tableau Public](https://public.tableau.com/app/profile/adam.simmons6405)  
 -   [RPubs](https://rpubs.com/adam_simmons)  
