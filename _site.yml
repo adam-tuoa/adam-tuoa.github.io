@@ -18,6 +18,8 @@ navbar:
       href: RMIT-employee-retention.html
     - text: "RMIT - next one"
       href: RMIT-employee-retention.html
+  - text: "Tableau"
+    href: tableau.html
   - text: "Presentation"
     menu:
     - text: "RMIT - A/B testing"
@@ -26,8 +28,6 @@ navbar:
       href: rise-slide-of-python.html
   - text: "Other"
     menu:
-    - text: "Tableau"
-      href: tableau.html
     - text: "Excel"
       href: excel.html
   - text: "Resume"

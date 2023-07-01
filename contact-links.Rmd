@@ -1,25 +1,30 @@
 ---
-title: "Contact Links"
+title: "Contact/Links"
 ---
 
 <br>
 
 ## Links  
 
--   [LinkedIn](https://www.linkedin.com/in/adamsimmonsjazz)  
--   [Github](https://github.com/adam-tuoa)  
--   [Tableau Public](https://public.tableau.com/app/profile/adam.simmons6405)  
--   [RPubs](https://rpubs.com/adam_simmons)  
+-   [LinkedIn](https://www.linkedin.com/in/adamsimmonsjazz){target="_blank"}
+-   [Github](https://github.com/adam-tuoa){target="_blank"}  
+-   [Tableau Public](https://public.tableau.com/app/profile/adam.simmons6405){target="_blank"}  
+-   [RPubs](https://rpubs.com/adam_simmons){target="_blank"}  
 
 <br>
 
 ## Things I do  
 
--   [The Usefulness of Art](https://www.tuoa.com.au) - arts consultancy/advocacy/research
--   [Dingo - Australian Jazz Journal](https://www.dingojazz.com) - editor, national magazine
--   [Artist website - www.adamsimmons.com](https://www.adamsimmons.com) - things I used to do... 
+-   [The Usefulness of Art](https://www.tuoa.com.au){target="_blank"} - arts consultancy/advocacy/research
+-   [Dingo - Australian Jazz Journal](https://www.dingojazz.com){target="_blank"} - editor, national magazine
+-   [Artist website - www.adamsimmons.com](https://www.adamsimmons.com){target="_blank"} - things I used to do... 
 
 <br>
 
 ## Contact
 -   [Email me](mailto:adam@tuoa.com.au)
+
+<br>
+<br>
+<br>
+<br>
