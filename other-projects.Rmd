@@ -12,7 +12,7 @@ Here are some other examples of my data exploits over the years.
 
 <tr>
 <td align="center" width="45%">
-![](images/excel-example-03.png)]
+![](images/excel-example-03.png)
 </td>
 <td width="10%">
 </td>
