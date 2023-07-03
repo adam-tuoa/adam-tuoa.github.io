@@ -297,17 +297,8 @@ $(document).ready(function () {
     </li>
   </ul>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Other
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="other-projects.html">Other projects</a>
-    </li>
-  </ul>
+<li>
+  <a href="other-projects.html">Other</a>
 </li>
 <li>
   <a href="resume.html">Resume</a>
@@ -336,12 +327,12 @@ $(document).ready(function () {
 <table cellpadding="40" cellspacing="20">
 <tr>
 <td align="center" width="45%">
-<img src="images/excel-example-03.png" />
+<img src="images/excel-example-03.png" id="puri" />
 </td>
 <td width="10%">
 </td>
 <td align="center" width="45%">
-<img src="images/excel-example-01.jpeg" />
+<img src="images/excel-example-01.jpeg" id="excel-dashboard" />
 </td>
 </tr>
 <tr>
@@ -360,7 +351,7 @@ what I did a couple of weeks later in the Tableau projects
 And here’s an excerpt from another Excel dashboard - almost a year later
 than the Puri Stores one. This is looking at retail sales data, gathered
 via API from a Python script I created, which also appends the data to a
-SQL database before running the main query (using SQLalchemy), going
+SQL database before running the main query (using SQLAlchemy), going
 through a cleaning pipeline to produce a final master Excel file - and
 then its just a matter of hitting refresh in the dashboard file to get
 the latest reports.
@@ -373,33 +364,36 @@ the latest reports.
 </tr>
 <tr>
 <td align="center" width="45%">
-<a href="https://www.100251.com.au" target="_blank"><img
-src="images/melbourne-musos-02.png" /></a>
+<a href="https://www.100251.com.au" id="socialnetwork"
+target="_blank"><img src="images/melbourne-musos-02.png" /></a>
 </td>
 <td width="10%">
 </td>
 <td align="center" width="45%">
 <a
 href="https://www.tuoa.com.au/blog/survey-results-australian-jazz-amp-covid-19"
-target="_blank"><img src="images/tuoa-covid-01.png" /></a>
+id="jazz-survey" target="_blank"><img
+src="images/tuoa-covid-01.png" /></a>
 </td>
 </tr>
 <tr>
 <td valign="top">
 <p>November 2-30, 2015</p>
-<p>In 2015, Ass. Professor John Fitzgerald and I collaborated on a
-somewhat crazy project involving me playing duets with 100 different
-Melbourne artists, gathering data along the way for social network
-analysis across the cohort which spanned rock, jazz, classical, world,
-folk, blue, experimental styles. We used Gephi platform for our
-analysis, which elicited some interesting insights on nature of idenity
-amongst other things. Our research was presented at The 1st Australian
-Social Network Analysis Conference at Swinburne University (2016) and
-has drawn diverse interest from the likes of the Australian Music Vault
-and the Singapore Government. Click on the pic to go to the event or <a
+<p>In 2015, Ass. Professor John Fitzgerald and I collaborated on <a
+href="(https://www.100251.com.au)%7Btarget=%22_blank%22%7D"><em>100:25:1</em></a>,
+a somewhat crazy project with me playing duets with 100 different
+Melbourne artists, and gathering data for social network analysis across
+the cohort spanning rock, jazz, classical, world, folk, blue and
+experimental styles. We used <a href="https://gephi.org"
+target="_blank">Gephi</a> for our analysis, which elicited interesting
+insights on the nature of identity, amongst other things. Our research
+was presented at <a href="https://www.ansna.org.au/asnac-2016"
+target="_blank">The 1st Australian Social Network Analysis
+Conference</a> at Swinburne University (2016) and has drawn diverse
+interest from the likes of the Australian Music Vault and the Singapore
+Government. Check out <a
 href="https://www.tuoa.com.au/blog/fit-for-purpose-funding-the-creative-economy-beyond-venues-and-stars"
-target="&quot;_blank">check out this article</a> on some of our
-insights.</p>
+target="&quot;_blank">this article</a> on some of our insights.</p>
 </td>
 <td>
 </td>
@@ -412,10 +406,12 @@ the deadline was end of May 2020!). Given the way the arts was impacted
 by COVID and the lack of Government support, I wanted to do something
 for my community. I knew that data would be more impactful than just
 anecdotal evidence, so I conducted a national survey using Survey Monkey
-and worked with Celsius Design to create the visualisation/infographic.
-Of particular concern was the reported total disconnect between the jazz
-community and all through levels of government - something that has not
-been addressed as yet by the new National Cultural Policy. <a
+and worked with <a href="https://www.celsiusdesign.com.au"
+target="_blank">Celsius Design</a> to create the
+visualisation/infographic. Of particular concern was the reported total
+disconnect between the jazz community and all through levels of
+government - something that has not been addressed as yet by the new
+National Cultural Policy. <a
 href="https://www.tuoa.com.au/blog/survey-results-australian-jazz-amp-covid-19"
 target="_blank">Have a read…</a></p>
 </td>

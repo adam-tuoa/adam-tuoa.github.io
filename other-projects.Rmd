@@ -12,12 +12,12 @@ Here are some other examples of my data exploits over the years.
 
 <tr>
 <td align="center" width="45%">
-![](images/excel-example-03.png)
+![](images/excel-example-03.png){#puri}
 </td>
 <td width="10%">
 </td>
 <td align="center" width="45%">
-![](images/excel-example-01.jpeg)
+![](images/excel-example-01.jpeg){#excel-dashboard}
 </td>
 </tr>
 
@@ -32,7 +32,7 @@ My first Excel dashboard, built on lots of data cleaning, pivot tables, filters.
 <td valign="top">
 October 13, 2022
 
-And here's an excerpt from another Excel dashboard - almost a year later than the Puri Stores one. This is looking at retail sales data, gathered via API from a Python script I created, which also appends the data to a SQL database before running the main query (using SQLalchemy), going through a cleaning pipeline to produce a final master Excel file - and then its just a matter of hitting refresh in the dashboard file to get the latest reports.
+And here's an excerpt from another Excel dashboard - almost a year later than the Puri Stores one. This is looking at retail sales data, gathered via API from a Python script I created, which also appends the data to a SQL database before running the main query (using SQLAlchemy), going through a cleaning pipeline to produce a final master Excel file - and then its just a matter of hitting refresh in the dashboard file to get the latest reports.
 </td>
 </tr>
 
@@ -44,12 +44,12 @@ And here's an excerpt from another Excel dashboard - almost a year later than th
 
 <tr>
 <td align="center" width="45%">
-[![](images/melbourne-musos-02.png)](https://www.100251.com.au){target="_blank"}
+[![](images/melbourne-musos-02.png)](https://www.100251.com.au){#socialnetwork target="_blank"}
 </td>
 <td width="10%">
 </td>
 <td align="center" width="45%">
-[![](images/tuoa-covid-01.png)](https://www.tuoa.com.au/blog/survey-results-australian-jazz-amp-covid-19){target="_blank"}
+[![](images/tuoa-covid-01.png)](https://www.tuoa.com.au/blog/survey-results-australian-jazz-amp-covid-19){#jazz-survey target="_blank"}
 </td>
 </tr>
 
@@ -57,7 +57,7 @@ And here's an excerpt from another Excel dashboard - almost a year later than th
 <td valign="top">
 November 2-30, 2015
 
-In 2015, Ass. Professor John Fitzgerald and I collaborated on a somewhat crazy project involving me playing duets with 100 different Melbourne artists, gathering data along the way for social network analysis across the cohort which spanned rock, jazz, classical, world, folk, blue, experimental styles. We used Gephi platform for our analysis, which elicited some interesting insights on nature of idenity amongst other things. Our research was presented at The 1st Australian Social Network Analysis Conference at Swinburne University (2016) and has drawn diverse interest from the likes of the Australian Music Vault and the Singapore Government. Click on the pic to go to the event or [check out this article](https://www.tuoa.com.au/blog/fit-for-purpose-funding-the-creative-economy-beyond-venues-and-stars){target="_blank} on some of our insights.
+In 2015, Ass. Professor John Fitzgerald and I collaborated on [_100:25:1_]((https://www.100251.com.au){target="_blank"}), a somewhat crazy project with me playing duets with 100 different Melbourne artists, and gathering data for social network analysis across the cohort spanning rock, jazz, classical, world, folk, blue and experimental styles. We used [Gephi](https://gephi.org){target="_blank"} for our analysis, which elicited interesting insights on the nature of identity, amongst other things. Our research was presented at [The 1st Australian Social Network Analysis Conference](https://www.ansna.org.au/asnac-2016){target="_blank"} at Swinburne University (2016) and has drawn diverse interest from the likes of the Australian Music Vault and the Singapore Government. Check out [this article](https://www.tuoa.com.au/blog/fit-for-purpose-funding-the-creative-economy-beyond-venues-and-stars){target="_blank} on some of our insights.
 
 </td>
 
@@ -67,7 +67,7 @@ In 2015, Ass. Professor John Fitzgerald and I collaborated on a somewhat crazy p
 <td valign="top">
 May 28 - August 20, 2020
 
-Another example of how involved I've been with data prior to my more formal data study, is my submission to the Senate Inquiry into the impact of the Government's response to COVID-19 (which seems crazy that the deadline was end of May 2020!). Given the way the arts was impacted by COVID and the lack of Government support, I wanted to do something for my community. I knew that data would be more impactful than just anecdotal evidence, so I conducted a national survey using Survey Monkey and worked with Celsius Design to create the visualisation/infographic. Of particular concern was the reported total disconnect between the jazz community and all through levels of government - something that has not been addressed as yet by the new National Cultural Policy. [Have a read...](https://www.tuoa.com.au/blog/survey-results-australian-jazz-amp-covid-19){target="_blank"}
+Another example of how involved I've been with data prior to my more formal data study, is my submission to the Senate Inquiry into the impact of the Government's response to COVID-19 (which seems crazy that the deadline was end of May 2020!). Given the way the arts was impacted by COVID and the lack of Government support, I wanted to do something for my community. I knew that data would be more impactful than just anecdotal evidence, so I conducted a national survey using Survey Monkey and worked with [Celsius Design](https://www.celsiusdesign.com.au){target="_blank"} to create the visualisation/infographic. Of particular concern was the reported total disconnect between the jazz community and all through levels of government - something that has not been addressed as yet by the new National Cultural Policy. [Have a read...](https://www.tuoa.com.au/blog/survey-results-australian-jazz-amp-covid-19){target="_blank"}
 
 
 </td>

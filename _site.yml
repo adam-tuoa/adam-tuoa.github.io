@@ -29,9 +29,7 @@ navbar:
     - text: "Macbeth and Mariam - text comparison"
       href: macbeth-and-mariam.html
   - text: "Other"
-    menu:
-    - text: "Other projects"
-      href: other-projects.html
+    href: other-projects.html
   - text: "Resume"
     href: resume.html
   right:

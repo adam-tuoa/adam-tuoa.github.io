@@ -15,12 +15,12 @@ Click on an image to visit a project hosted on Tableau Public - best viewed on d
 
 <tr>
 <td align="center" width="45%">
-[![](images/tableau_puri_stores.png)](https://public.tableau.com/app/profile/adam.simmons6405/viz/PuriStoresProject-FINAL-AdamSimmons/PuriSalesStory#1){target="_blank"}
+[![](images/tableau_puri_stores.png)](https://public.tableau.com/app/profile/adam.simmons6405/viz/PuriStoresProject-FINAL-AdamSimmons/PuriSalesStory#1){#puri target="_blank"}
 </td>
 <td width="10%">
 </td>
 <td align="center" width="45%">
-[![](images/tableau_aircom.png)](https://public.tableau.com/app/profile/adam.simmons6405/viz/Aircom-RMITBusinessAnalyticsproject/AircomOptions){target="_blank"}
+[![](images/tableau_aircom.png)](https://public.tableau.com/app/profile/adam.simmons6405/viz/Aircom-RMITBusinessAnalyticsproject/AircomOptions){#aircom target="_blank"}
 </td>
 </tr>
 
@@ -47,12 +47,12 @@ A hypothetical client is looking for advice about where to invest in short-term 
 
 <tr>
 <td align="center" width="45%">
-[![](images/tableau_cultural.png)](https://public.tableau.com/app/profile/adam.simmons6405/viz/AustralianCulturalFunding2016-20-TUoA/AustralianCulturalFunding){target="_blank"}
+[![](images/tableau_cultural.png)](https://public.tableau.com/app/profile/adam.simmons6405/viz/AustralianCulturalFunding2016-20-TUoA/AustralianCulturalFunding){#govt-arts target="_blank"}
 </td>
 <td width="10%">
 </td>
 <td align="center" width="45%">
-[![](images/tableau_spotify.png)](https://public.tableau.com/app/profile/adam.simmons6405/viz/SPOTIFYGLOBALTOP100JAZZTRACKS/SPOTIFYGLOBALTOP100JAZZTRACKS){target="_blank"}
+[![](images/tableau_spotify.png)](https://public.tableau.com/app/profile/adam.simmons6405/viz/SPOTIFYGLOBALTOP100JAZZTRACKS/SPOTIFYGLOBALTOP100JAZZTRACKS){#spotify target="_blank"}
 </td>
 </tr>
 
