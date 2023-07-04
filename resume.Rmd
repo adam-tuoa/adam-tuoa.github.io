@@ -6,7 +6,7 @@ title: "Resume"
 
 **EDUCATION**  
 
-- 2023-2023  RMIT - Graduate Certificate of Data Science
+- 2023-2023  RMIT - Graduate Certificate of Data Science with Distinction
 - 2021-2021  RMIT - Business Analytics
 - 2020-2021  CLOCK Your Skills - Prof Development Award in Creative/Cultural Industries
 - 1990-1992  Victorian College of the Arts - Bachelor of Music Performance (Improvisation)	
