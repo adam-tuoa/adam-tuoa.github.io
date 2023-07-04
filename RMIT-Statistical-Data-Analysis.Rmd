@@ -59,7 +59,7 @@ df %>% head()
 
 **Unique variables**
 
-All unique values were originally generated for investigation, thoiugh for purposes of this report, only up to the first 10 values are being shown.
+All unique values were originally generated for investigation, though for purposes of this report, only up to the first 10 values are being shown.
 
 ```{r}
 # Generate unique values and view first 10
