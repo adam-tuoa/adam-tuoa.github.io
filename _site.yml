@@ -26,6 +26,8 @@ navbar:
     menu:
     - text: "RMIT - Spam Classification"
       href: RMIT-spam.html
+    - text: "ChapGPT & DALL-E 2 with Python"
+      href: chapgpt_dalle2.html
   - text: "Presentation"
     menu:
     - text: "A/B testing"
