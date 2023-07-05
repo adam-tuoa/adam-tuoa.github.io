@@ -12,7 +12,7 @@ June 15, 2023
 
 <br>
 
-This is a PowerPoint presentation based on analysis of A/B testing of a new recommendation engine for a hypothetical streaming service, *Why Not Watch*. For the analysis, I had to clean the data, ascertain what some of the variables were (i.e. demographic and social metric), check for outliers and errors. Then in order to check for linear relationshops and any differences between the A/B groups, I ran several hypothesis tests using linear regression methods, ANOVA and Z-tests. 
+This is a presentation based on analysis of A/B testing of a new recommendation engine for a hypothetical streaming service, *Why Not Watch*. For the analysis, I had to clean the data, ascertain what some of the variables were (i.e. demographic and social metric), check for outliers and errors. Then in order to check for linear relationships and any differences between the A/B groups, I ran several hypothesis tests using linear regression methods, ANOVA and Z-tests. 
 
 
 The data pre-processing and analysis was all done with R in RStudio. The text and plots were all output from RStudio directly to PowerPoint, where final formatting was applied. This was my final assessment for my RMIT Grad Cert and I was grateful for the learnings from my previous subjects to help with this one, especially Data Wrangling and Data Visualisation, which meant I could focus more on the statistical methods and modelling, rather than the coding/presentation nuts and bolts.

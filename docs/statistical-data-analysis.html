@@ -257,7 +257,7 @@ $(document).ready(function () {
       <a href="shiny-tco-app.html">Shiny app - Tolling Customer Ombudsman</a>
     </li>
     <li>
-      <a href="RMIT-Statistical-Data-Analysis.html">Statistical Analysis - demographic data</a>
+      <a href="statistical-data-analysis.html">Statistical Analysis - demographic data</a>
     </li>
     <li>
       <a href="stats-and-probability-with-r.html">Stats &amp; Probability with R - 5 questions</a>
@@ -290,10 +290,10 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="RMIT-spam.html">RMIT - Spam Classification</a>
+      <a href="spam-classification.html">Spam Classification</a>
     </li>
     <li>
-      <a href="chapgpt_dalle2.html">ChapGPT &amp; DALL-E 2 with Python</a>
+      <a href="chatgpt-dalle2.html">ChapGPT &amp; DALL-E 2 with Python</a>
     </li>
   </ul>
 </li>
@@ -599,7 +599,7 @@ class="section level4">
   ggplot() +
   geom_histogram(aes(mean_age), bins = 11, color = &quot;white&quot;, fill = &quot;steelblue&quot;) +
   labs(x = &quot;Region Mean Age&quot;, y = &#39;Frequency&#39;, title = &quot;Histogram of region means - frequency&quot;)</code></pre>
-<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-16-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="statistical-data-analysis_files/figure-html/unnamed-chunk-16-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div
@@ -612,7 +612,7 @@ percentages on the y axis.</h3>
   labs(title = &quot;Histogram of region means - percentage&quot;, x = &quot;Mean Age&quot;, y = &quot;Percentage&quot;) +
   scale_y_continuous(labels = percent) +
   scale_x_continuous(breaks = seq(0,55,10)) </code></pre>
-<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-17-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="statistical-data-analysis_files/figure-html/unnamed-chunk-17-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
 <div
 id="discuss-whether-the-region-means-exhibit-the-characteristic-shape-of-a-normal-distribution.-include-at-least-two-justifications-in-support-of-your-conclusion."
@@ -640,7 +640,7 @@ that will be checked:</p>
   geom_vline(aes(xintercept = mean(mean_age)), alpha = 0.6, color = &#39;red&#39;, linetype = &#39;dashed&#39;, size = 0.4)
 
 plot_region_means</code></pre>
-<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-18-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="statistical-data-analysis_files/figure-html/unnamed-chunk-18-1.png" width="480" style="display: block; margin: auto;" /></p>
 <p><strong>Observation 1:</strong> From this histogram, it can be seen
 that the distribution of the region means is not symmetrical about the
 mean, nor is it a symmetrical bell shape. It is slightly right-skewed,
@@ -655,7 +655,7 @@ with long tails on either side of the middle.</p>
   stat_qq_line(color=&quot;red&quot;, alpha=0.6) +
   labs(x  = &#39;Theoretical quantiles&#39;, y = &#39;Sample quantiles&#39;, 
        title = &#39;Q-Q Plot for Region means&#39;)</code></pre>
-<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-19-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="statistical-data-analysis_files/figure-html/unnamed-chunk-19-1.png" width="480" style="display: block; margin: auto;" /></p>
 <p><strong>Observation 2:</strong> To be considered as a normal
 distribution, in a QQ plot the data points (blue) should match the
 theoretical line (red), which would indicate the sample and theoretical
@@ -730,7 +730,7 @@ region_population[1:100,] %&gt;%
   annotate(&quot;segment&quot;, x = 7, xend = 3, y = annotation$y-4200, yend = annotation$y - 4200, color = &quot;grey60&quot;, size=0.5, arrow=arrow(angle = 30, length = unit(0.1, &quot;cm&quot;), type = &quot;closed&quot;)) +
   geom_hline(data = region_population, aes(yintercept = mean(population)), alpha = 0.6, color = &quot;red&quot;, linetype = &quot;dashed&quot;, size = 0.4) +
   theme(panel.background = element_rect(NA), axis.ticks = element_blank())</code></pre>
-<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" />
+<p><img src="statistical-data-analysis_files/figure-html/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" />
 As can be seen in the chart above, there is a wide range of population
 values across the first 20% of the 500 regions, with the remaining 80%
 forming a long flat tail. The mean population is 1592.03, though the
@@ -825,7 +825,7 @@ class="section level4">
   labs(x = &quot;Age&quot;, y = &quot;Frequency&quot;, title = paste(&quot;Histogram of age in&quot;, region_max_code)) + scale_x_continuous(breaks = seq(0,55,10)) +
   geom_vline(aes(xintercept = mean(age)), alpha = 0.6, color = &quot;red&quot;, linetype = &quot;dashed&quot;, size = 0.4)
 plot_largest_region</code></pre>
-<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-26-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="statistical-data-analysis_files/figure-html/unnamed-chunk-26-1.png" width="480" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># Combine summary stats
 sum_stats &lt;- data.frame(cbind(t(largest_region_summary), t(region_summary)))
 # View table of summary stats for comparison  
@@ -898,7 +898,7 @@ region shows the frequency across the entire age range, whereas the
 region means are by definition, an indication of the central value
 within each region.</p>
 <pre class="r"><code>ggpubr::ggarrange(plot_largest_region, plot_region_means, ncol = 2, nrow=1)</code></pre>
-<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-28-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p><img src="statistical-data-analysis_files/figure-html/unnamed-chunk-28-1.png" width="864" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="plot-the-distribution-of-age-for-males-in-the-region."
@@ -909,7 +909,7 @@ class="section level3">
   geom_histogram(aes(x = age), color = &quot;white&quot;, alpha = 0.9, fill = &quot;steelblue&quot;, bins=11) +
   scale_x_continuous(breaks = seq(0,55,10)) + 
   labs(x = &quot;Age&quot;, y = &quot;Frequency&quot;, title = paste(&quot;Histogram of age in&quot;, region_max_code,&quot;- Male&quot;))</code></pre>
-<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-29-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="statistical-data-analysis_files/figure-html/unnamed-chunk-29-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
 <div id="plot-the-distribution-of-age-for-females-in-the-region."
 class="section level3">
@@ -919,7 +919,7 @@ class="section level3">
   geom_histogram(color = &quot;white&quot;, alpha = 0.8, fill = &quot;coral1&quot;, bins=11) +
   scale_x_continuous(breaks = seq(0,55,10)) + 
   labs(x = &quot;Age&quot;, y = &quot;Frequency&quot;, title = paste(&quot;Histogram of age in&quot;, region_max_code,&quot;- Female&quot;))</code></pre>
-<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-30-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="statistical-data-analysis_files/figure-html/unnamed-chunk-30-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
 <div
 id="compare-the-distributions-of-task-3.4-and-task-3.5-and-discuss-your-findings."
@@ -933,7 +933,7 @@ your findings.</h3>
   labs(x = &quot;Age&quot;, y = &quot;Frequency&quot;, title = &quot;Histogram of Age - by Gender&quot;) +
   scale_x_continuous(breaks = seq(0,55,10)) +   
   facet_wrap(~gender, labeller = labeller(gender = c(&quot;F&quot; = &quot;Female&quot;, &quot;M&quot; =&quot;Male&quot;)))</code></pre>
-<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-31-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p><img src="statistical-data-analysis_files/figure-html/unnamed-chunk-31-1.png" width="864" style="display: block; margin: auto;" /></p>
 <p><br> <br></p>
 <pre class="r"><code>pop_largest %&gt;%
   ggplot(mapping = aes(x = age, fill = gender), ) +
@@ -941,7 +941,7 @@ your findings.</h3>
   scale_x_continuous(breaks = seq(0,55,10))  +
   scale_fill_manual(values = c(&quot;coral2&quot;, &quot;steelblue3&quot;)) +
   labs(x = &quot;Age&quot;, y = &quot;Frequency&quot;, title = &quot;Histogram of Age - comparing Gender&quot;)</code></pre>
-<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-32-1.png" width="480" style="display: block; margin: auto;" />
+<p><img src="statistical-data-analysis_files/figure-html/unnamed-chunk-32-1.png" width="480" style="display: block; margin: auto;" />
 <br> <br></p>
 <p>The individual and combined histograms above show that while similar
 in overall shape and size, there are discernible differences.</p>
@@ -1020,7 +1020,7 @@ region_age_stats %&gt;%
   geom_point(alpha=0.3) +
   geom_hline(aes(yintercept = 1), alpha = 0.6, color = &#39;red&#39;, linetype = &#39;dashed&#39;, size = 0.4) +
   labs(x = &quot;Population&quot;, y = &quot;Ratio&quot;, title = &quot;Ratio of Older/Younger per Region by Population size&quot;)</code></pre>
-<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-35-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="statistical-data-analysis_files/figure-html/unnamed-chunk-35-1.png" width="480" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># Create plot ratio for populations under 250 
 plot_less_250 &lt;- region_age_stats %&gt;% filter (population &lt; 200) %&gt;% 
   ggplot(aes(x = population, y = ratio_older_to_younger)) + 
@@ -1037,7 +1037,7 @@ plot_over_250 &lt;- region_age_stats %&gt;%
 
 # View plots
 ggpubr::ggarrange(plot_less_250, plot_over_250, ncol = 2, nrow=1)</code></pre>
-<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-37-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p><img src="statistical-data-analysis_files/figure-html/unnamed-chunk-37-1.png" width="864" style="display: block; margin: auto;" /></p>
 </div>
 <div
 id="comment-on-any-trends-you-see-in-the-data.-what-could-explain-such-trends"
@@ -1106,7 +1106,7 @@ size.</h3>
   geom_point(alpha=0.3) +
   geom_hline(aes(yintercept = 1), alpha = 0.6, color = &#39;red&#39;, linetype = &#39;dashed&#39;, size = 0.4) +
   labs(x = &quot;Population&quot;, y = &quot;Ratio&quot;, title = &quot;Ratio of Gender per Region by Population size&quot;)</code></pre>
-<p><img src="RMIT-Statistical-Data-Analysis_files/figure-html/unnamed-chunk-39-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="statistical-data-analysis_files/figure-html/unnamed-chunk-39-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
 <div
 id="comment-on-any-trends-you-see-in-the-data.-what-could-explain-such-trends-1"

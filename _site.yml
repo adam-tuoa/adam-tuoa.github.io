@@ -11,7 +11,7 @@ navbar:
     - text: "Shiny app - Tolling Customer Ombudsman"
       href: shiny-tco-app.html
     - text: "Statistical Analysis - demographic data"
-      href: RMIT-Statistical-Data-Analysis.html 
+      href: statistical-data-analysis.html 
     - text: "Stats & Probability with R - 5 questions"
       href: stats-and-probability-with-r.html
   - text: "Python programming"
@@ -24,10 +24,10 @@ navbar:
     href: tableau.html
   - text: "ML/AI"
     menu:
-    - text: "RMIT - Spam Classification"
-      href: RMIT-spam.html
+    - text: "Spam Classification"
+      href: spam-classification.html
     - text: "ChapGPT & DALL-E 2 with Python"
-      href: chapgpt_dalle2.html
+      href: chatgpt-dalle2.html
   - text: "Presentation"
     menu:
     - text: "A/B testing"

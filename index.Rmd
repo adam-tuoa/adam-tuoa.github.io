@@ -12,9 +12,7 @@ title: "Welcome"
 I've always been into numbers, technology and problem-solving, whether in bookkeeping, grant writing, social network research, music, sculpture or arts administration. 
 
 
-Since 2021, I've been developing technical data skills in Python, R, SQL, Tableau and Excel -- and a little in NVivo and Power BI. This has been assisted gratefully by the Victorian Digital Jobs Program, which gave me 12 weeks training at RMIT Online, followed by a 12-week placement at KPMG in their Policy, Economics and Public Impact group, where I contributed data solutions on a range of projects for my team. 
-
-It is an exciting time  
+Since 2021, I've been developing technical data skills in Python, R, SQL, Tableau and Excel -- and a little in NVivo and Power BI. I was a successful applicant to the Victorian Digital Jobs Program, which gave me 12 weeks training at RMIT Online, followed by a 12-week placement at KPMG in their Policy, Economics and Public Impact group, where I contributed data solutions on a range of projects for my team. 
 
 I've just completed my Grad Cert of Data Science at RMIT Online (June 2023), utilising Python (Jupyter Notebook) and R (RStudio).
 
@@ -24,6 +22,7 @@ Here you'll find examples of my projects:
 - **R** -- [data wrangling and analysis](RMIT-Statistical-Data-Analysis.html), [statistical theory and methods](RMIT-Stats-and-probability-with-R.html), [machine learning, linear regression and forecasting](RMIT-AB-testing.html)
 - **Shiny app** -- [interactive web app](shiny-tco-app.html) built with R
 - **Tableau** -- interactive visualisations of [sales reports/forecasting](tableau.html#puri), [investment advice](tableau.html#aircom), [government cultural funding](tableau.html#govt-arts) and [Spotify metrics](tableau.html#spotify)
+- **ML/AI** -- machine learning for [spam classification](spam-classification.html) and a Python script to access [ChatGPT and DALL-E 2](chatgpt-dalle2.html) in Jupyter Notebook
 - **Presentation** -- examples of telling [data stories](rise-slide-of-python.html), presenting [A/B testing results](rise-slide-of-python.html) and a [text analysis](macbeth-and-mariam.html) of two 17th century plays
 - **Other** -- use of SQL, Excel, Gephi and Survey Monkey for projects such as [mock](other-projects.html#puri) and [real sales dashboards](other-projects.html#excel-dashboard)), [research](other-projects.html#socialnetwork) and [advocacy](other-projects.html#jazz-survey)
 

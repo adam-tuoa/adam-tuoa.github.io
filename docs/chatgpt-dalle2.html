@@ -257,7 +257,7 @@ $(document).ready(function () {
       <a href="shiny-tco-app.html">Shiny app - Tolling Customer Ombudsman</a>
     </li>
     <li>
-      <a href="RMIT-Statistical-Data-Analysis.html">Statistical Analysis - demographic data</a>
+      <a href="statistical-data-analysis.html">Statistical Analysis - demographic data</a>
     </li>
     <li>
       <a href="stats-and-probability-with-r.html">Stats &amp; Probability with R - 5 questions</a>
@@ -290,10 +290,10 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="RMIT-spam.html">RMIT - Spam Classification</a>
+      <a href="spam-classification.html">Spam Classification</a>
     </li>
     <li>
-      <a href="chapgpt_dalle2.html">ChapGPT &amp; DALL-E 2 with Python</a>
+      <a href="chatgpt-dalle2.html">ChapGPT &amp; DALL-E 2 with Python</a>
     </li>
   </ul>
 </li>
@@ -340,29 +340,58 @@ $(document).ready(function () {
 </div>
 
 
-<div id="chatgpt-dall-e-2" class="section level2">
-<h2>ChatGPT &amp; DALL-E 2</h2>
-<p>Basic code comes from Sophia Yang’s article:</p>
-<p><a
+<p>This is a simple Python script to access ChatGPT and DALL-E 2 within
+Jupyter Notebook.</p>
+<p>The inspiration and core code comes from an <a
 href="https://towardsdatascience.com/chatgpt-and-dall-e-2-in-a-panel-app-1c921d7d9021"
-class="uri">https://towardsdatascience.com/chatgpt-and-dall-e-2-in-a-panel-app-1c921d7d9021</a></p>
-<p>I added the query loop, image and conversation saving</p>
-<p>Nothing fancy - just in Jupyter Notebook.</p>
-<p>For saving - create two folders in the directory where script is
-filed</p>
+target="_blank">article by Sophia Yang</a> in Medium.</p>
+<p>My humble additions are to loop the query, opt to do an image prompt
+(see below) and to save images and/or conversations.</p>
+<p>Its been handy to have ChatGPT on call. It is definitely an
+interesting and valuable tool, though I have found it necessary to
+verify responses as errors are common. I’ve had the same answer to
+opposite questions and seen errors in basic arithmetic. A way I look at
+ChatGPT is similar to Wikipedia, in that it can help get you started,
+but you should still go the source for verification.</p>
+<p>Similarly with coding - at times ChatGPT is a great help, and at
+other times is just plain wrong. Though, sometimes the approach to a
+solution can help prompt my own thinking to solve the problem at hand.
+So, another way to think of ChatGPT is like a sounding board or a friend
+who is really trying to help. Used in this way, I’ve found ChatGPT to be
+a useful tool on a few projects to get me thinking about things in a
+different way.</p>
+<div id="getting-ready" class="section level4">
+<h4>Getting ready</h4>
+<p>Get Open AI Key - you’ll need to set up a developer account to access
+the API key:</p>
+<ul>
+<li><a href="https://platform.openai.com/overview"
+target="_blank">https://platform.openai.com/overview</a></li>
+</ul>
+<p>I believe the first month you get US$18 credit and then pay for
+monthly usage. With light to moderate usage, my bills are $1 per month
+or less</p>
+<p>Create two folders in the same directory as the script for saving
+files:</p>
 <ul>
 <li><code>chats</code></li>
 <li><code>images</code></li>
 </ul>
-<p>When chatting:</p>
+</div>
+<div id="prompts" class="section level4">
+<h4>Prompts:</h4>
 <ul>
 <li>ChaptGPT: default - just enter prompt</li>
-<li>DALL-E 2: type <code>image:</code> plus text</li>
+<li>DALL-E 2: type <code>image:</code> plus text prompt</li>
 <li>Save image: after image is generated, type <code>save</code></li>
 <li>To finish: type <code>exit</code></li>
 </ul>
 <p>After you finish a chat, you will be asked if you wish to save the
-conversation</p>
+conversation.</p>
+<p><br></p>
+</div>
+<div id="setup" class="section level2">
+<h2>Setup</h2>
 <pre class="python"><code>from chatgpt import Conversation
 import urllib.request
 import sys
@@ -371,16 +400,18 @@ import openai
 from IPython.display import display, HTML
 from IPython.display import Image
 
-
 import pandas as pd
 
 working_directory = os.getcwd()
 working_directory = &quot;/Users/adam/data/ChatGPT/&quot;
 
-openai.api_key = &quot;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&quot;</code></pre>
+# Enter personal OpenAI key here - see link above
+openai.api_key = &quot;&lt;INSERT OPENAI KEY HERE&gt;&quot;</code></pre>
 </div>
-<div id="a-list-of-models" class="section level1">
-<h1>A list of models</h1>
+<div id="functions" class="section level2">
+<h2>Functions</h2>
+<div id="a-list-of-models" class="section level3">
+<h3>A list of models</h3>
 <p>If you wish to try other models, a list can be obtained with use of
 this code:</p>
 <p><code>models = pd.DataFrame(openai.Model.list()["data"])</code></p>
@@ -415,6 +446,10 @@ def append_strings_to_df(question, response):
     data = pd.DataFrame(dict, index=[0])
     conversation = pd.concat([conversation, data])
     </code></pre>
+</div>
+</div>
+<div id="main-prompt-loop" class="section level2">
+<h2>Main prompt loop</h2>
 <pre class="python"><code># Set up empty conversation df
 conversation = pd.DataFrame(columns=[&quot;Question&quot;, &quot;Response&quot;])
 
