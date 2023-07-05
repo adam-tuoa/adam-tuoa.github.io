@@ -11,7 +11,7 @@
 
 
 
-<title>RMIT Stats and probability with R</title>
+<title>Stats &amp; Probability with R - 5 questions</title>
 
 <script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -243,7 +243,10 @@ $(document).ready(function () {
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li class="dropdown">
+        <li>
+  <a href="about.html">About me</a>
+</li>
+<li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     R programming
      
@@ -251,13 +254,13 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="RMIT-Statistical-Data-Analysis.html">RMIT - Statistical Data Analysis</a>
-    </li>
-    <li>
-      <a href="RMIT-Stats-and-probability-with-R.html">RMIT - Stats and probability with R</a>
-    </li>
-    <li>
       <a href="shiny-tco-app.html">Shiny app - Tolling Customer Ombudsman</a>
+    </li>
+    <li>
+      <a href="RMIT-Statistical-Data-Analysis.html">Statistical Analysis - demographic data</a>
+    </li>
+    <li>
+      <a href="stats-and-probability-with-r.html">Stats &amp; Probability with R - 5 questions</a>
     </li>
   </ul>
 </li>
@@ -269,15 +272,27 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="RMIT-employee-retention.html">RMIT - Employee retention analysis</a>
+      <a href="employee-retention.html">Employee retention analysis</a>
     </li>
     <li>
-      <a href="vista-analysis.html">RMIT - VISTA survey analysis</a>
+      <a href="vista-analysis.html">VISTA survey analysis</a>
     </li>
   </ul>
 </li>
 <li>
   <a href="tableau.html">Tableau</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    ML/AI
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="RMIT-spam.html">RMIT - Spam Classification</a>
+    </li>
+  </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -287,7 +302,7 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="RMIT-AB-testing.html">RMIT - A/B testing</a>
+      <a href="ab-testing.html">A/B testing</a>
     </li>
     <li>
       <a href="rise-slide-of-python.html">Rise and Slide of Python</a>
@@ -317,7 +332,8 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">RMIT Stats and probability with R</h1>
+<h1 class="title toc-ignore">Stats &amp; Probability with R - 5
+questions</h1>
 
 </div>
 
@@ -634,7 +650,7 @@ exp_data &lt;- data.frame(value = rexp(n, 1/lambda))</code></pre>
 # Create charts
 exp_data$value %&gt;% plot(main=&quot;Fig. 2.1 Observed values&quot;, xlab=&quot;Observation&quot;, ylab=&quot;Value&quot;)
 exp_data$value %&gt;% hist(main=&quot;Fig. 2.2 Histogram of values&quot;, xlab = &quot;Value&quot;)</code></pre>
-<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-13-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p><img src="stats-and-probability-with-r_files/figure-html/unnamed-chunk-13-1.png" width="864" style="display: block; margin: auto;" /></p>
 <p><strong>Answer:</strong> 1000 observations have been randomly
 generated as a sample, with the charts above showing the distribution of
 values.</p>
@@ -710,9 +726,9 @@ plot_combined &lt;- exp_data %&gt;% ggplot(aes(x = value)) +
   scale_color_manual(values = line_colours) +
   theme(legend.key.height= unit(0., &#39;cm&#39;), legend.key.width= unit(1, &#39;cm&#39;))</code></pre>
 <pre class="r"><code>ggarrange(p_sample, p_pop, ncol = 2, nrow=1)</code></pre>
-<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-19-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="stats-and-probability-with-r_files/figure-html/unnamed-chunk-19-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot_combined</code></pre>
-<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-20-1.png" width="528" style="display: block; margin: auto;" /></p>
+<p><img src="stats-and-probability-with-r_files/figure-html/unnamed-chunk-20-1.png" width="528" style="display: block; margin: auto;" /></p>
 <p><strong>Answer:</strong><br />
 Above are separate plots for the histogram of the sample values (Fig
 2.1) and the density function for the exponential distribution (2.2),
@@ -758,7 +774,7 @@ characteristics.</h5>
 hist(sample_means2, breaks = 20, main = &quot;Fig. 2.6 Histogram of Sample Means (n=2)&quot;,
      xlab = &quot;Value&quot;)
 abline(v = mean(sample_means2), col = &quot;red&quot;, lty = 2)</code></pre>
-<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-23-1.png" width="528" style="display: block; margin: auto;" /></p>
+<p><img src="stats-and-probability-with-r_files/figure-html/unnamed-chunk-23-1.png" width="528" style="display: block; margin: auto;" /></p>
 <p><strong>Answer:</strong><br />
 The histogram of sample means with sample size 2 is right-skewed. The
 mean of the sample means is <strong>9.868</strong>, while the median is
@@ -789,7 +805,7 @@ characteristics.</h5>
 <pre class="r"><code>hist(sample_means30, breaks = 20, main = &quot;Fig. 2.7 Histogram of Sample Means (n=30)&quot;,
      xlab = &quot;Value&quot;)
 abline(v = mean(sample_means30), col = &quot;red&quot;, lty = 2, lwd = 1.5)</code></pre>
-<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-25-1.png" width="528" style="display: block; margin: auto;" /></p>
+<p><img src="stats-and-probability-with-r_files/figure-html/unnamed-chunk-25-1.png" width="528" style="display: block; margin: auto;" /></p>
 <p><strong>Answer:</strong><br />
 The histogram of sample means with sample size 2 is looking close to a
 normal distribution. The mean and median of the sample means are
@@ -1024,7 +1040,7 @@ calc_cohen_d &lt;- function (dataframe) {
 <pre class="r"><code>pop_10_df &lt;- as.data.frame(pop_10)
 
 pop_10_df %&gt;% plot_scatter(n, title = &quot;Fig. 4.1 Scatterplot - X vs Y&quot;)</code></pre>
-<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-32-1.png" width="432" style="display: block; margin: auto;" /></p>
+<p><img src="stats-and-probability-with-r_files/figure-html/unnamed-chunk-32-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p><br></p>
 </div>
 <div
@@ -1040,11 +1056,11 @@ checked for normality first.</p>
 <p><strong>Histogram</strong> - examine to see if a single peak and
 roughly symmetrical</p>
 <pre class="r"><code>pop_10_df %&gt;% pivot_df_long() %&gt;% plot_histogram_facets(title = &quot;Fig 4.2 Histogram of values - compare X and Y&quot;)</code></pre>
-<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="stats-and-probability-with-r_files/figure-html/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p><strong>Q-Q plot</strong> - checking each variable against normal
 distribution</p>
 <pre class="r"><code>pop_10_df %&gt;% pivot_df_long() %&gt;% plot_qqplot(title=&quot;Fig. 4.3 QQ plot of X and Y&quot;)</code></pre>
-<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="stats-and-probability-with-r_files/figure-html/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p><strong>Shapiro-Wilk’s test</strong> - calculating p-values - if p
 &gt; 0.05 we do not reject null hypothesis that data is normally
 distributed</p>
@@ -1159,7 +1175,7 @@ head(pop_30, 5) # look at first 5 sampled values</code></pre>
 <pre class="r"><code>pop_30_df &lt;- as.data.frame(pop_30)
 
 pop_30_df %&gt;% plot_scatter(n, title = &quot;Fig. 4.4 Scatterplot - X vs Y&quot;)</code></pre>
-<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-39-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="stats-and-probability-with-r_files/figure-html/unnamed-chunk-39-1.png" width="480" style="display: block; margin: auto;" /></p>
 <p><br></p>
 </div>
 <div
@@ -1175,12 +1191,12 @@ choice of test.</p>
 <p><strong>Histogram</strong> - examine to see if a single peak and
 roughly symmetrical</p>
 <pre class="r"><code>pop_30_df %&gt;% pivot_df_long() %&gt;% plot_histogram_facets(title = &quot;Fig 4.5 Histogram of values - compare X and Y&quot;) </code></pre>
-<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="stats-and-probability-with-r_files/figure-html/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div style="page-break-after: always;"></div>
 <p><strong>Q-Q plot</strong> - checking each variable against normal
 distribution</p>
 <pre class="r"><code>pop_30_df %&gt;% pivot_df_long() %&gt;% plot_qqplot(title=&quot;Fig. 4.6 QQ plot of X and Y&quot;)</code></pre>
-<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-41-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="stats-and-probability-with-r_files/figure-html/unnamed-chunk-41-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p><strong>Shapiro-Wilk’s test</strong> - calculating p-values - if p
 &gt; 0.05 we do not reject null hypothesis that data is normally
 distributed</p>
@@ -1454,9 +1470,9 @@ df_a %&gt;% head(5) %&gt;% kable(align = &quot;clc&quot;)</code></pre>
 </tbody>
 </table>
 <pre class="r"><code>df_a %&gt;% plot_scenario_box(title=&quot;Fig. 5.1 Boxplot Sales by Scenario&quot;)</code></pre>
-<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-48-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="stats-and-probability-with-r_files/figure-html/unnamed-chunk-48-1.png" width="576" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>df_a %&gt;% plot_scenario_density(title = &quot;Fig. 5.2 Density of Sales by Scenario&quot;)</code></pre>
-<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-49-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p><img src="stats-and-probability-with-r_files/figure-html/unnamed-chunk-49-1.png" width="864" style="display: block; margin: auto;" /></p>
 <p>The summary statistics for each scenario suggests Scenario 3 has
 performed better with greater total sales. Though scenarios 1 and 2 have
 larger values for standard deviation as seen in their more even spread
@@ -1585,7 +1601,7 @@ summary_aov_a</code></pre>
 <pre class="r"><code>par(mfrow=c(1,2))
 plot(results_a, 1, main = &quot;Fig. 5.3&quot;)
 plot(results_a, 2, main = &quot;Fig. 5.4&quot;)</code></pre>
-<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-54-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p><img src="stats-and-probability-with-r_files/figure-html/unnamed-chunk-54-1.png" width="864" style="display: block; margin: auto;" /></p>
 <p>The results for (a) from ANOVA indicate an F value of
 <strong>0.262</strong> and a p-value of <strong>0.773</strong>. The F
 value is not high, indicating a weak relationship between the variables,
@@ -1685,9 +1701,9 @@ df_b %&gt;% head(5) %&gt;% kable(align = &quot;clc&quot;)</code></pre>
 </tbody>
 </table>
 <pre class="r"><code>df_b %&gt;% plot_scenario_box(title=&quot;Fig. 5.5 Boxplot of Sales by Scenario&quot;)</code></pre>
-<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-57-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="stats-and-probability-with-r_files/figure-html/unnamed-chunk-57-1.png" width="576" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>df_b %&gt;% plot_scenario_density(title = &quot;Fig. 5.6 Density of Sales by Scenario&quot;)</code></pre>
-<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-58-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p><img src="stats-and-probability-with-r_files/figure-html/unnamed-chunk-58-1.png" width="864" style="display: block; margin: auto;" /></p>
 <p>The nature of the summary statistics for (b) is similar to (a) -
 scenario 3 has greater total sales, scenarios 1 and 2 have greater
 variability (Figs. 5.5 and 5.6). No outliers are apparent from visual
@@ -1803,7 +1819,7 @@ summary_aov_b</code></pre>
 <pre class="r"><code>par(mfrow=c(1,2))
 plot(results_b, 1, main = &quot;Fig 5.7&quot;)
 plot(results_b, 2, main = &quot;Fig 5.8&quot;)</code></pre>
-<p><img src="RMIT-Stats-and-probability-with-R_files/figure-html/unnamed-chunk-63-1.png" width="864" style="display: block; margin: auto;" />
+<p><img src="stats-and-probability-with-r_files/figure-html/unnamed-chunk-63-1.png" width="864" style="display: block; margin: auto;" />
 The results for (b) from ANOVA indicate an F value of
 <strong>0.335</strong> and a p-value of <strong>0.721</strong>. The F
 value is not high, indicating a weak relationship between the variables,

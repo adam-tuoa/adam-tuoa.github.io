@@ -1,0 +1,3236 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>RMIT - Spam Classification</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Adam Simmons</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="about.html">About me</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    R programming
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="shiny-tco-app.html">Shiny app - Tolling Customer Ombudsman</a>
+    </li>
+    <li>
+      <a href="RMIT-Statistical-Data-Analysis.html">Statistical Analysis - demographic data</a>
+    </li>
+    <li>
+      <a href="stats-and-probability-with-r.html">Stats &amp; Probability with R - 5 questions</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Python programming
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="employee-retention.html">Employee retention analysis</a>
+    </li>
+    <li>
+      <a href="vista-analysis.html">VISTA survey analysis</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="tableau.html">Tableau</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    ML/AI
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="RMIT-spam.html">RMIT - Spam Classification</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Presentation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="ab-testing.html">A/B testing</a>
+    </li>
+    <li>
+      <a href="rise-slide-of-python.html">Rise and Slide of Python</a>
+    </li>
+    <li>
+      <a href="macbeth-and-mariam.html">Macbeth and Mariam - text comparison</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="other-projects.html">Other</a>
+</li>
+<li>
+  <a href="resume.html">Resume</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="contact-links.html">Contact/Links</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">RMIT - Spam Classification</h1>
+
+</div>
+
+
+<p>February 21, 2023</p>
+<center>
+<div style="padding:75% 0 0 0;position:relative;">
+<iframe src="https://player.vimeo.com/video/842489706?h=57674bf5e3&amp;title=0&amp;byline=0&amp;portrait=0&amp;speed=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;" title="RMIT - Spam Classification">
+</iframe>
+</div>
+<script src="https://player.vimeo.com/api/player.js"></script>
+</center>
+<p><br></p>
+<p>For my third and final RMIT Practical Data Science with Python
+assignment, the task was to help fictitious company, Connect 5G, to
+address a growing spam problem impacting their customers. Two
+machine-learning classification models were built, tested and compared -
+K-means and Decision Tree methods. Recommendations were made based on
+the results, taking prediction time into consideration given the needs
+of their customers.</p>
+<p>An important part of this exercise for me was to understand not just
+how to implement the model, but also the theory behind each method. I
+experimented with a variety of parameter values for each method
+including more extreme values, just to get a feel for how they impacted
+the models which was helpful in learning more about how the models work.
+It is this kind of iterative process that I enjoy about working with
+coding such as Python, as when set up properly, it can all be run again
+with a minimum of fuss.</p>
+<p><br></p>
+<p>Below is the Python code used for the data wrangling including
+tokenisation, removal of stopwords, balancing of data with SMOTE,
+building, test and compare K-means and Decision Tree data models.</p>
+<p><br></p>
+<div
+id="practical-data-science-with-python-assessment-task-3-code-for-data-modelling-presentation"
+class="section level2">
+<h2>Practical Data Science with Python Assessment Task 3: Code for data
+modelling presentation</h2>
+<p><strong>Guiding questions (from case study) to be addressed in
+presentation:</strong></p>
+<ul>
+<li>Is the given dataset balanced or not?
+<ul>
+<li>You’ll need to
+<ul>
+<li>provide evidence of your response and</li>
+<li>propose and</li>
+<li>implement an appropriate solution to solve this potential
+issue.</li>
+</ul></li>
+</ul></li>
+<li>How did you go about creating features from the data?</li>
+<li>How did you go about conducting the evaluation?</li>
+<li>How do both machine learning models compare in terms of their
+performance to the dataset?</li>
+</ul>
+</div>
+<div id="set-up" class="section level1">
+<h1>Set Up</h1>
+<pre class="python"><code>import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+from sklearn.feature_extraction.text import CountVectorizer 
+from sklearn.neighbors import KNeighborsClassifier 
+from sklearn.tree import DecisionTreeClassifier
+from sklearn import tree
+from sklearn.model_selection import train_test_split 
+from sklearn.model_selection import GridSearchCV 
+from sklearn.metrics import accuracy_score,balanced_accuracy_score,confusion_matrix, ConfusionMatrixDisplay, classification_report 
+
+from imblearn.over_sampling import SMOTE 
+
+from collections import Counter
+
+import ssl
+import nltk 
+from nltk.corpus import stopwords 
+from nltk.tokenize import word_tokenize </code></pre>
+<pre class="python"><code>pd.set_option(&quot;display.max_rows&quot;, 100)
+
+
+# set style for plots
+
+plt.style.use(&quot;seaborn-white&quot;)
+
+
+# setting colours for plots
+
+color =&quot;orange&quot;
+color_r = &quot;navajowhite&quot;
+colors = [&quot;orange&quot;, &quot;navajowhite&quot;]
+colors_r = list(reversed(colors))
+</code></pre>
+<pre><code>/var/folders/pb/f8gg2y7w8xjbbn0059bcyddh0000gr/T/ipykernel_47553/681184966.py:6: MatplotlibDeprecationWarning: The seaborn styles shipped by Matplotlib are deprecated since 3.6, as they no longer correspond to the styles shipped by seaborn. However, they will remain available as &#39;seaborn-v0_8-&lt;style&gt;&#39;. Alternatively, directly use the seaborn API instead.
+  plt.style.use(&quot;seaborn-white&quot;)</code></pre>
+</div>
+<div id="load-data" class="section level1">
+<h1>Load Data</h1>
+<pre class="python"><code>df = pd.read_csv(&quot;A3_sms.csv&quot;, encoding=&quot;utf8&quot;)</code></pre>
+<pre class="python"><code>df</code></pre>
+<div>
+<div id="id_80efd91a-ce5f-4d4a-9e61-fb4f2ab3dc07"
+style="display:none; background-color:#9D6CFF; color:white; width:200px; height:30px; padding-left:5px; border-radius:4px; flex-direction:row; justify-content:space-around; align-items:center;"
+onmouseover="this.style.backgroundColor=&#39;#BA9BF8&#39;"
+onmouseout="this.style.backgroundColor=&#39;#9D6CFF&#39;"
+onclick="window.commands?.execute(&#39;create-mitosheet-from-dataframe-output&#39;);">
+See Full Dataframe in Mito
+</div>
+<script> if (window.commands.hasCommand('create-mitosheet-from-dataframe-output')) document.getElementById('80efd91a-ce5f-4d4a-9e61-fb4f2ab3dc07').style.display = 'flex' </script>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Unnamed: 0
+</th>
+<th>
+sms
+</th>
+<th>
+spam
+</th>
+<th>
+Unnamed: 3
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+0
+</td>
+<td>
+<ol style="list-style-type: decimal">
+<li>Tension face 2. Smiling face 3. Waste face 4. Innocent face 5.Terror
+face 6.Cruel face 7.Romantic face 8.Lovable face 9.decent face
+&amp;lt;#&amp;gt; .joker face.
+</td>
+<td>
+False
+</td>
+<td>
+NaN
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+1
+</td>
+<td>
+Hhahhaahahah rofl was leonardo in your room or something
+</td>
+<td>
+False
+</td>
+<td>
+NaN
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+4
+</td>
+<td>
+Oh for sake she’s in like
+</td>
+<td>
+False
+</td>
+<td>
+NaN
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+5
+</td>
+<td>
+No da:)he is stupid da..always sending like this:)don believe any of
+those message.pandy is a :)
+</td>
+<td>
+False
+</td>
+<td>
+NaN
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+6
+</td>
+<td>
+Lul im gettin some juicy gossip at the hospital. Oyea.
+</td>
+<td>
+False
+</td>
+<td>
+NaN
+</td>
+</tr>
+<tr>
+<th>
+…
+</th>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+</tr>
+<tr>
+<th>
+5346
+</th>
+<td>
+5348
+</td>
+<td>
+Congratulations! Thanks to a good friend U have WON the Â£2,000 Xmas
+prize. 2 claim is easy, just call 08718726971 NOW! Only 10p per minute.
+BT-national-rate.
+</td>
+<td>
+True
+</td>
+<td>
+NaN
+</td>
+</tr>
+<tr>
+<th>
+5347
+</th>
+<td>
+5349
+</td>
+<td>
+Congratulations - Thanks to a good friend U have WON the Â£2,000 Xmas
+prize. 2 claim is easy, just call 08712103738 NOW! Only 10p per minute.
+BT-national-rate
+</td>
+<td>
+True
+</td>
+<td>
+NaN
+</td>
+</tr>
+<tr>
+<th>
+5348
+</th>
+<td>
+5350
+</td>
+<td>
+URGENT! Your mobile number *************** WON a Â£2000 Bonus Caller
+prize on 10/06/03! This is the 2nd attempt to reach you! Call
+09066368753 ASAP! Box 97N7QP, 150ppm
+</td>
+<td>
+True
+</td>
+<td>
+NaN
+</td>
+</tr>
+<tr>
+<th>
+5349
+</th>
+<td>
+5351
+</td>
+<td>
+URGENT! Your Mobile No was awarded a Â£2,000 Bonus Caller Prize on
+1/08/03! This is our 2nd attempt to contact YOU! Call 0871-4719-523
+BOX95QU BT National Rate
+</td>
+<td>
+True
+</td>
+<td>
+NaN
+</td>
+</tr>
+<tr>
+<th>
+5350
+</th>
+<td>
+5352
+</td>
+<td>
+Do whatever you want. You know what the rules are. We had a talk earlier
+this week about what had to start happening, you showing responsibility.
+Yet, every week it’s can i bend the rule this way? What about that way?
+Do whatever. I’m tired of having thia same argument with you every week.
+And a &amp;lt;#&amp;gt; movie DOESNT inlude the previews. You’re still
+getting in after 1.
+</td>
+<td>
+False
+</td>
+<td>
+NaN
+</td>
+</tr>
+</tbody>
+</table>
+</div></li>
+</ol>
+<pre class="python"><code>df.info()</code></pre>
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 5351 entries, 0 to 5350
+Data columns (total 4 columns):
+ #   Column      Non-Null Count  Dtype 
+---  ------      --------------  ----- 
+ 0   Unnamed: 0  5351 non-null   int64 
+ 1   sms         5351 non-null   object
+ 2   spam        5351 non-null   bool  
+ 3   Unnamed: 3  49 non-null     object
+dtypes: bool(1), int64(1), object(2)
+memory usage: 130.8+ KB</code></pre>
+<pre class="python"><code>df.shape</code></pre>
+<pre><code>(5351, 4)</code></pre>
+<pre class="python"><code>df.nunique()</code></pre>
+<pre><code>Unnamed: 0    5351
+sms           4948
+spam             2
+Unnamed: 3       2
+dtype: int64</code></pre>
+<pre class="python"><code>#looking at values in each column for any issues
+
+for col in df.columns:
+    print (f&quot;Column \&quot;{col}\&quot; values: &quot;)
+    print (df.loc[:, col].unique(), &quot;\n&quot;)</code></pre>
+<pre><code>Column &quot;Unnamed: 0&quot; values: 
+[   0    1    4 ... 5350 5351 5352] 
+
+Column &quot;sms&quot; values: 
+[&#39;1. Tension face 2. Smiling face 3. Waste face 4. Innocent face 5.Terror face 6.Cruel face 7.Romantic face 8.Lovable face 9.decent face &amp;lt;#&amp;gt; .joker face.&#39;
+ &#39;Hhahhaahahah rofl was leonardo in your room or something&#39;
+ &quot;Oh for  sake she&#39;s in like &quot; ...
+ &#39;URGENT! Your mobile number *************** WON a Â£2000 Bonus Caller prize on 10/06/03! This is the 2nd attempt to reach you! Call 09066368753 ASAP! Box 97N7QP, 150ppm&#39;
+ &#39;URGENT! Your Mobile No was awarded a Â£2,000 Bonus Caller Prize on 1/08/03! This is our 2nd attempt to contact YOU! Call 0871-4719-523 BOX95QU BT National Rate&#39;
+ &quot;Do whatever you want. You know what the rules are. We had a talk earlier this week about what had to start happening, you showing responsibility. Yet, every week it&#39;s can i bend the rule this way? What about that way? Do whatever. I&#39;m tired of having thia same argument with you every week. And a  &amp;lt;#&amp;gt;  movie DOESNT inlude the previews. You&#39;re still getting in after 1.&quot;] 
+
+Column &quot;spam&quot; values: 
+[False  True] 
+
+Column &quot;Unnamed: 3&quot; values: 
+[nan &#39;********&#39; &#39;\\/\\/\\/\\/\\/&#39;] </code></pre>
+<pre class="python"><code># Column 0 - basically an index number - not required for this project
+# Column 1 - sms content - what our models will be using
+# Column 2 - spam marker - target class for evaluating model accuracy
+# Column 3 - unknown - possibly de-indentification of numbers - not required for this project
+
+# No missing values
+# No need to change data types
+# SMS text is what it is, typos and all (especially as typos can be a spam indicator)... just make case consistent (lower)
+# Spam - boolean - fine, no typos</code></pre>
+</div>
+<div id="cleanprepare-data" class="section level1">
+<h1>Clean/prepare data</h1>
+<ul>
+<li>Prepare raw data to ensure it is clean and ready to model as
+follows: Clean the data as appropriate for a textual data source</li>
+</ul>
+<div id="conversion-to-lower-case" class="section level2">
+<h2>Conversion to lower-case</h2>
+<pre class="python"><code>df_preparation = df[&quot;sms&quot;].str.lower()
+df_preparation.head()</code></pre>
+<pre><code>0    1. tension face 2. smiling face 3. waste face ...
+1    hhahhaahahah rofl was leonardo in your room or...
+2                          oh for  sake she&#39;s in like 
+3    no da:)he is stupid da..always sending like th...
+4    lul im gettin some juicy gossip at the hospita...
+Name: sms, dtype: object</code></pre>
+</div>
+<div id="tokenisation-of-emails-into-words" class="section level2">
+<h2>Tokenisation of emails into words:</h2>
+<pre class="python"><code>## disabling SSl check to download the package &quot;punkt&quot;
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass 
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
+    
+# load tokens (words) 
+
+nltk.download(&quot;punkt&quot;) </code></pre>
+<pre><code>[nltk_data] Downloading package punkt to /Users/adam/nltk_data...
+[nltk_data]   Package punkt is already up-to-date!
+
+
+
+
+
+True</code></pre>
+<pre class="python"><code>df_preparation = [word_tokenize(sms) for sms in df_preparation]
+df_preparation[0] #print first list item</code></pre>
+<pre><code>[&#39;1.&#39;,
+ &#39;tension&#39;,
+ &#39;face&#39;,
+ &#39;2.&#39;,
+ &#39;smiling&#39;,
+ &#39;face&#39;,
+ &#39;3.&#39;,
+ &#39;waste&#39;,
+ &#39;face&#39;,
+ &#39;4.&#39;,
+ &#39;innocent&#39;,
+ &#39;face&#39;,
+ &#39;5.terror&#39;,
+ &#39;face&#39;,
+ &#39;6.cruel&#39;,
+ &#39;face&#39;,
+ &#39;7.romantic&#39;,
+ &#39;face&#39;,
+ &#39;8.lovable&#39;,
+ &#39;face&#39;,
+ &#39;9.decent&#39;,
+ &#39;face&#39;,
+ &#39;&amp;&#39;,
+ &#39;lt&#39;,
+ &#39;;&#39;,
+ &#39;#&#39;,
+ &#39;&amp;&#39;,
+ &#39;gt&#39;,
+ &#39;;&#39;,
+ &#39;.joker&#39;,
+ &#39;face&#39;,
+ &#39;.&#39;]</code></pre>
+</div>
+<div id="removing-stopwords" class="section level2">
+<h2>Removing stopwords</h2>
+<pre class="python"><code>nltk.download(&quot;stopwords&quot;) </code></pre>
+<pre><code>[nltk_data] Downloading package stopwords to /Users/adam/nltk_data...
+[nltk_data]   Package stopwords is already up-to-date!
+
+
+
+
+
+True</code></pre>
+<pre class="python"><code>list_stopwords=stopwords.words(&quot;english&quot;) 
+
+list_stopwords[0:10] </code></pre>
+<pre><code>[&#39;i&#39;, &#39;me&#39;, &#39;my&#39;, &#39;myself&#39;, &#39;we&#39;, &#39;our&#39;, &#39;ours&#39;, &#39;ourselves&#39;, &#39;you&#39;, &quot;you&#39;re&quot;]</code></pre>
+<pre class="python"><code>df_preparation= [[word for word in sms if not word in list_stopwords] for sms in df_preparation] 
+
+print(df_preparation[0:4]) </code></pre>
+<pre><code>[[&#39;1.&#39;, &#39;tension&#39;, &#39;face&#39;, &#39;2.&#39;, &#39;smiling&#39;, &#39;face&#39;, &#39;3.&#39;, &#39;waste&#39;, &#39;face&#39;, &#39;4.&#39;, &#39;innocent&#39;, &#39;face&#39;, &#39;5.terror&#39;, &#39;face&#39;, &#39;6.cruel&#39;, &#39;face&#39;, &#39;7.romantic&#39;, &#39;face&#39;, &#39;8.lovable&#39;, &#39;face&#39;, &#39;9.decent&#39;, &#39;face&#39;, &#39;&amp;&#39;, &#39;lt&#39;, &#39;;&#39;, &#39;#&#39;, &#39;&amp;&#39;, &#39;gt&#39;, &#39;;&#39;, &#39;.joker&#39;, &#39;face&#39;, &#39;.&#39;], [&#39;hhahhaahahah&#39;, &#39;rofl&#39;, &#39;leonardo&#39;, &#39;room&#39;, &#39;something&#39;], [&#39;oh&#39;, &#39;sake&#39;, &quot;&#39;s&quot;, &#39;like&#39;], [&#39;da&#39;, &#39;:&#39;, &#39;)&#39;, &#39;stupid&#39;, &#39;da&#39;, &#39;..&#39;, &#39;always&#39;, &#39;sending&#39;, &#39;like&#39;, &#39;:&#39;, &#39;)&#39;, &#39;believe&#39;, &#39;message.pandy&#39;, &#39;:&#39;, &#39;)&#39;]]</code></pre>
+<pre class="python"><code>df_words = df.copy()
+df_words[&quot;words&quot;] = df_preparation
+</code></pre>
+<pre class="python"><code># dataset for checking most frequent words
+
+df_words.head()</code></pre>
+<div>
+<div id="id_19cbe5c3-0649-47df-84cd-9838dbffdb69"
+style="display:none; background-color:#9D6CFF; color:white; width:200px; height:30px; padding-left:5px; border-radius:4px; flex-direction:row; justify-content:space-around; align-items:center;"
+onmouseover="this.style.backgroundColor=&#39;#BA9BF8&#39;"
+onmouseout="this.style.backgroundColor=&#39;#9D6CFF&#39;"
+onclick="window.commands?.execute(&#39;create-mitosheet-from-dataframe-output&#39;);">
+See Full Dataframe in Mito
+</div>
+<script> if (window.commands.hasCommand('create-mitosheet-from-dataframe-output')) document.getElementById('19cbe5c3-0649-47df-84cd-9838dbffdb69').style.display = 'flex' </script>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Unnamed: 0
+</th>
+<th>
+sms
+</th>
+<th>
+spam
+</th>
+<th>
+Unnamed: 3
+</th>
+<th>
+words
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+0
+</td>
+<td>
+<ol style="list-style-type: decimal">
+<li>Tension face 2. Smiling face 3. Waste face 4. Innocent face 5.Terror
+face 6.Cruel face 7.Romantic face 8.Lovable face 9.decent face
+&amp;lt;#&amp;gt; .joker face.
+</td>
+<td>
+False
+</td>
+<td>
+NaN
+</td>
+<td>
+[1., tension, face, 2., smiling, face, 3., waste, face, 4., innocent,
+face, 5.terror, face, 6.cruel, face, 7.romantic, face, 8.lovable, face,
+9.decent, face, &amp;, lt, ;, #, &amp;, gt, ;, .joker, face, .]
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+1
+</td>
+<td>
+Hhahhaahahah rofl was leonardo in your room or something
+</td>
+<td>
+False
+</td>
+<td>
+NaN
+</td>
+<td>
+[hhahhaahahah, rofl, leonardo, room, something]
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+4
+</td>
+<td>
+Oh for sake she’s in like
+</td>
+<td>
+False
+</td>
+<td>
+NaN
+</td>
+<td>
+[oh, sake, ’s, like]
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+5
+</td>
+<td>
+No da:)he is stupid da..always sending like this:)don believe any of
+those message.pandy is a :)
+</td>
+<td>
+False
+</td>
+<td>
+NaN
+</td>
+<td>
+[da, :, ), stupid, da, .., always, sending, like, :, ), believe,
+message.pandy, :, )]
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+6
+</td>
+<td>
+Lul im gettin some juicy gossip at the hospital. Oyea.
+</td>
+<td>
+False
+</td>
+<td>
+NaN
+</td>
+<td>
+[lul, im, gettin, juicy, gossip, hospital, ., oyea, .]
+</td>
+</tr>
+</tbody>
+</table>
+</div></li>
+</ol>
+</div>
+</div>
+<div id="explore-data" class="section level1">
+<h1>Explore Data</h1>
+<ul>
+<li><p>Apply exploratory methods as appropriate to textual data. Marks
+will be awarded as follows:</p>
+<ol style="list-style-type: decimal">
+<li>Explore the dataset to check if the data is balanced (1 pt)</li>
+<li>Extract features from the data using Count Vectorizor (2 pts)</li>
+<li>Identify the most common words for spam and ham sms messages (2
+pts)</li>
+</ol></li>
+</ul>
+<div id="check-if-balanced" class="section level2">
+<h2>Check if balanced</h2>
+<pre class="python"><code>len(df[df[&quot;spam&quot;]==True])/len(df)</code></pre>
+<pre><code>0.13156419360867128</code></pre>
+<pre class="python"><code>df_spam = df[df[&quot;spam&quot;]==True]
+df_ham = df[df[&quot;spam&quot;]==False]
+
+shape_spam = df_spam.shape
+shape_ham = df_ham.shape
+
+total = df.shape[0]
+num_spam = shape_spam[0] 
+num_ham = shape_ham[0]
+
+
+print (f&quot;Spam: {shape_spam[0]} - {round(num_spam/total * 100, 2)}%&quot;)
+print (f&quot;Ham: {shape_ham[0]} - {round(num_ham/total * 100, 2)}%&quot;)
+</code></pre>
+<pre><code>Spam: 704 - 13.16%
+Ham: 4647 - 86.84%</code></pre>
+<p>Unbalanced - Spam 704 - approx 13% - Ham 4647 - approx 87%</p>
+<pre class="python"><code>labels = [&quot;Spam\n (&quot;+str(shape_spam[0])+&quot;)&quot;, &quot;Ham  \n(&quot;+str(shape_ham[0])+&quot;)&quot;]
+counts = [shape_spam[0], shape_ham[0]]
+
+title = &quot;Fig. 1 Spam vs Ham&quot;
+
+    
+plt.pie(counts
+          , labels = labels
+          , colors = colors_r
+          , counterclock = True
+          , startangle = 0
+          , labeldistance = 1.2
+          , pctdistance = 0.65
+          , autopct = lambda p: f&quot;{int(p)}%&quot;
+          , textprops={&quot;fontsize&quot;: 16}  
+       )
+
+plt.title(f&quot;{title}&quot;, fontsize=18, fontweight=&quot;bold&quot;)
+
+
+
+plt.savefig(f&quot;Fig. 1 {title}.png&quot;, dpi=300, transparent=True, bbox_inches = &quot;tight&quot;)
+
+
+
+plt.show()</code></pre>
+<div class="float">
+<img src="images/output_30_0.png" alt="png" />
+<div class="figcaption">png</div>
+</div>
+</div>
+<div id="extract-features---count-vectorizer" class="section level2">
+<h2>Extract features - Count Vectorizer</h2>
+<div id="feature-extraction" class="section level4">
+<h4>Feature extraction</h4>
+<pre class="python"><code># Feature extraction
+
+CountVec = CountVectorizer(lowercase=True,analyzer=&quot;word&quot;,stop_words=&quot;english&quot;) </code></pre>
+<pre class="python"><code># Get feature vectors
+
+feature_vectors = CountVec.fit_transform(df[&quot;sms&quot;]) </code></pre>
+<pre class="python"><code># Prints all strings - commented out for purposes of length
+# for x in CountVec.get_feature_names_out():
+#    print(x, end=&quot;, &quot;)</code></pre>
+<pre class="python"><code>feature_vectors</code></pre>
+<pre><code>&lt;5351x8011 sparse matrix of type &#39;&lt;class &#39;numpy.int64&#39;&gt;&#39;
+    with 40832 stored elements in Compressed Sparse Row format&gt;</code></pre>
+</div>
+</div>
+<div id="identify-most-common-words-for-spam-and-ham-sms-messages"
+class="section level2">
+<h2>Identify most common words for spam and ham SMS messages</h2>
+<pre class="python"><code># Investigate word frequency
+
+# Create &quot;spam&quot; and &quot;ham&quot; subsets (using the dataset with tokenised emails)
+
+#filter
+df_words_spam = df_words[df_words[&quot;spam&quot;]==True]
+df_words_ham = df_words[df_words[&quot;spam&quot;]==False]
+
+
+# Get the most frequent words for each subset
+
+word_counts_spam = df_words_spam[&quot;words&quot;].apply(pd.Series).stack().value_counts()
+word_counts_ham = df_words_ham[&quot;words&quot;].apply(pd.Series).stack().value_counts()</code></pre>
+<pre class="python"><code>word_counts_spam.head(35)</code></pre>
+<pre><code>.             846
+!             508
+,             351
+call          333
+free          209
+&amp;             165
+?             163
+:             161
+2             160
+txt           143
+ur            141
+u             126
+mobile        121
+*             113
+claim         113
+4             110
+text          101
+stop          101
+reply          97
+prize          92
+get            76
+nokia          65
+send           64
+&#39;s             63
+urgent         63
+new            63
+cash           62
+win            60
+)              58
+contact        56
+please         54
+week           52
+-              52
+guaranteed     50
+service        49
+dtype: int64</code></pre>
+<pre class="python"><code>word_counts_ham.head(35)</code></pre>
+<pre><code>.        3644
+,        1457
+?        1307
+...      1067
+u         939
+!         763
+;         745
+&amp;         724
+..        675
+:         537
+)         420
+&#39;s        405
+&#39;m        375
+n&#39;t       310
+gt        309
+lt        309
+2         287
+get       285
+#         275
+go        241
+ok        240
+ur        238
+got       236
+come      227
+call      226
+&#39;ll       223
+good      223
+know      219
+like      215
+time      190
+day       188
+-         171
+love      170
+4         165
+going     164
+dtype: int64</code></pre>
+<pre class="python"><code># checking number of words in spam and ham - 
+
+word_counts_spam.shape, word_counts_ham.shape</code></pre>
+<pre><code>((2808,), (6933,))</code></pre>
+<pre class="python"><code># convert to pandas datasets for joining/filtering
+
+word_counts_spam = pd.DataFrame(word_counts_spam).reset_index()
+word_counts_ham = pd.DataFrame(word_counts_ham).reset_index()
+</code></pre>
+<pre class="python"><code># setting &quot;type&quot; to be able to filter later by &quot;spam&quot; and &quot;ham&quot;
+
+word_counts_spam [&quot;type&quot;] = &quot;spam&quot;
+word_counts_spam</code></pre>
+<div>
+<div id="id_963074f3-8ce9-4e62-966b-26a13996e2bd"
+style="display:none; background-color:#9D6CFF; color:white; width:200px; height:30px; padding-left:5px; border-radius:4px; flex-direction:row; justify-content:space-around; align-items:center;"
+onmouseover="this.style.backgroundColor=&#39;#BA9BF8&#39;"
+onmouseout="this.style.backgroundColor=&#39;#9D6CFF&#39;"
+onclick="window.commands?.execute(&#39;create-mitosheet-from-dataframe-output&#39;);">
+See Full Dataframe in Mito
+</div>
+<script> if (window.commands.hasCommand('create-mitosheet-from-dataframe-output')) document.getElementById('963074f3-8ce9-4e62-966b-26a13996e2bd').style.display = 'flex' </script>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+index
+</th>
+<th>
+0
+</th>
+<th>
+type
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+.
+</td>
+<td>
+846
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+!
+</td>
+<td>
+508
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+,
+</td>
+<td>
+351
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+call
+</td>
+<td>
+333
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+free
+</td>
+<td>
+209
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+…
+</th>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+</tr>
+<tr>
+<th>
+2803
+</th>
+<td>
+08704439680.
+</td>
+<td>
+1
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+2804
+</th>
+<td>
+passes
+</td>
+<td>
+1
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+2805
+</th>
+<td>
+lounge
+</td>
+<td>
+1
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+2806
+</th>
+<td>
+airport
+</td>
+<td>
+1
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+2807
+</th>
+<td>
+0871-4719-523
+</td>
+<td>
+1
+</td>
+<td>
+spam
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="python"><code>word_counts_ham [&quot;type&quot;] = &quot;ham&quot;
+word_counts_ham</code></pre>
+<div>
+<div id="d8b4bb31-dfa7-4d8b-8c93-0cf9caa726ab"
+style="display:none; background-color:#9D6CFF; color:white; width:200px; height:30px; padding-left:5px; border-radius:4px; flex-direction:row; justify-content:space-around; align-items:center;"
+onmouseover="this.style.backgroundColor=&#39;#BA9BF8&#39;"
+onmouseout="this.style.backgroundColor=&#39;#9D6CFF&#39;"
+onclick="window.commands?.execute(&#39;create-mitosheet-from-dataframe-output&#39;);">
+See Full Dataframe in Mito
+</div>
+<script> if (window.commands.hasCommand('create-mitosheet-from-dataframe-output')) document.getElementById('d8b4bb31-dfa7-4d8b-8c93-0cf9caa726ab').style.display = 'flex' </script>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+index
+</th>
+<th>
+0
+</th>
+<th>
+type
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+.
+</td>
+<td>
+3644
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+,
+</td>
+<td>
+1457
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+?
+</td>
+<td>
+1307
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+…
+</td>
+<td>
+1067
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+u
+</td>
+<td>
+939
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+…
+</th>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+</tr>
+<tr>
+<th>
+6928
+</th>
+<td>
+andre
+</td>
+<td>
+1
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+6929
+</th>
+<td>
+virgil
+</td>
+<td>
+1
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+6930
+</th>
+<td>
+dismay
+</td>
+<td>
+1
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+6931
+</th>
+<td>
+enjoying
+</td>
+<td>
+1
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+6932
+</th>
+<td>
+previews
+</td>
+<td>
+1
+</td>
+<td>
+ham
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="python"><code>len(df_words_spam), len(df_words_ham)</code></pre>
+<pre><code>(704, 4647)</code></pre>
+<pre class="python"><code>all_words = pd.concat([word_counts_spam, word_counts_ham], axis=0).rename(columns={&quot;index&quot;: &quot;word&quot;, 0: &quot;count&quot;}).reset_index(drop=True)
+all_words</code></pre>
+<div>
+<div id="b91049e5-83ca-46ee-b5cd-8d018fe49d36"
+style="display:none; background-color:#9D6CFF; color:white; width:200px; height:30px; padding-left:5px; border-radius:4px; flex-direction:row; justify-content:space-around; align-items:center;"
+onmouseover="this.style.backgroundColor=&#39;#BA9BF8&#39;"
+onmouseout="this.style.backgroundColor=&#39;#9D6CFF&#39;"
+onclick="window.commands?.execute(&#39;create-mitosheet-from-dataframe-output&#39;);">
+See Full Dataframe in Mito
+</div>
+<script> if (window.commands.hasCommand('create-mitosheet-from-dataframe-output')) document.getElementById('b91049e5-83ca-46ee-b5cd-8d018fe49d36').style.display = 'flex' </script>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+word
+</th>
+<th>
+count
+</th>
+<th>
+type
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+.
+</td>
+<td>
+846
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+!
+</td>
+<td>
+508
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+,
+</td>
+<td>
+351
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+call
+</td>
+<td>
+333
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+free
+</td>
+<td>
+209
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+…
+</th>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+</tr>
+<tr>
+<th>
+9736
+</th>
+<td>
+andre
+</td>
+<td>
+1
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+9737
+</th>
+<td>
+virgil
+</td>
+<td>
+1
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+9738
+</th>
+<td>
+dismay
+</td>
+<td>
+1
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+9739
+</th>
+<td>
+enjoying
+</td>
+<td>
+1
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+9740
+</th>
+<td>
+previews
+</td>
+<td>
+1
+</td>
+<td>
+ham
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="python"><code>all_words.shape</code></pre>
+<pre><code>(9741, 3)</code></pre>
+<pre class="python"><code>
+#remove all duplicates (keep neither) to keep only unique words
+ham_or_spam = all_words.drop_duplicates(subset=[&quot;word&quot;], keep=False)
+
+#remove all words only found in &quot;ham&quot; - keep &quot;spam&quot;
+spam_words_only = ham_or_spam[ham_or_spam[&quot;type&quot;]==&quot;spam&quot;].reset_index(drop=True)
+
+spam_words_only</code></pre>
+<div>
+<div id="id_7d86a5d6-f0af-4eb8-aeba-e04ef8bbc1e8"
+style="display:none; background-color:#9D6CFF; color:white; width:200px; height:30px; padding-left:5px; border-radius:4px; flex-direction:row; justify-content:space-around; align-items:center;"
+onmouseover="this.style.backgroundColor=&#39;#BA9BF8&#39;"
+onmouseout="this.style.backgroundColor=&#39;#9D6CFF&#39;"
+onclick="window.commands?.execute(&#39;create-mitosheet-from-dataframe-output&#39;);">
+See Full Dataframe in Mito
+</div>
+<script> if (window.commands.hasCommand('create-mitosheet-from-dataframe-output')) document.getElementById('7d86a5d6-f0af-4eb8-aeba-e04ef8bbc1e8').style.display = 'flex' </script>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+word
+</th>
+<th>
+count
+</th>
+<th>
+type
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+claim
+</td>
+<td>
+113
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+prize
+</td>
+<td>
+92
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+guaranteed
+</td>
+<td>
+50
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+tone
+</td>
+<td>
+48
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+cs
+</td>
+<td>
+41
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+…
+</th>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+</tr>
+<tr>
+<th>
+1903
+</th>
+<td>
+villa
+</td>
+<td>
+1
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+1904
+</th>
+<td>
+someonone
+</td>
+<td>
+1
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+1905
+</th>
+<td>
+08704439680.
+</td>
+<td>
+1
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+1906
+</th>
+<td>
+passes
+</td>
+<td>
+1
+</td>
+<td>
+spam
+</td>
+</tr>
+<tr>
+<th>
+1907
+</th>
+<td>
+0871-4719-523
+</td>
+<td>
+1
+</td>
+<td>
+spam
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="python"><code>print (spam_words_only.head(30))</code></pre>
+<pre><code>          word  count  type
+0        claim    113  spam
+1        prize     92  spam
+2   guaranteed     50  spam
+3         tone     48  spam
+4           cs     41  spam
+5      awarded     38  spam
+6       â£1000     35  spam
+7       150ppm     34  spam
+8     ringtone     29  spam
+9   collection     26  spam
+10       tones     26  spam
+11       entry     25  spam
+12         16+     25  spam
+13      weekly     24  spam
+14         mob     23  spam
+15       valid     23  spam
+16         500     23  spam
+17       â£100     22  spam
+18        150p     21  spam
+19         sae     21  spam
+20    delivery     21  spam
+21        8007     21  spam
+22       bonus     21  spam
+23    vouchers     20  spam
+24      â£2000     20  spam
+25      â£5000     20  spam
+26       86688     19  spam
+27          18     19  spam
+28       â£500     19  spam
+29         750     18  spam</code></pre>
+<pre class="python"><code>ham_words_only = ham_or_spam[ham_or_spam[&quot;type&quot;]==&quot;ham&quot;].reset_index(drop=True)
+
+ham_words_only</code></pre>
+<div>
+<div id="id_85f01614-71a0-4f86-bf27-2a7202a92e78"
+style="display:none; background-color:#9D6CFF; color:white; width:200px; height:30px; padding-left:5px; border-radius:4px; flex-direction:row; justify-content:space-around; align-items:center;"
+onmouseover="this.style.backgroundColor=&#39;#BA9BF8&#39;"
+onmouseout="this.style.backgroundColor=&#39;#9D6CFF&#39;"
+onclick="window.commands?.execute(&#39;create-mitosheet-from-dataframe-output&#39;);">
+See Full Dataframe in Mito
+</div>
+<script> if (window.commands.hasCommand('create-mitosheet-from-dataframe-output')) document.getElementById('85f01614-71a0-4f86-bf27-2a7202a92e78').style.display = 'flex' </script>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+word
+</th>
+<th>
+count
+</th>
+<th>
+type
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+gt
+</td>
+<td>
+309
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+lt
+</td>
+<td>
+309
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+lor
+</td>
+<td>
+162
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+da
+</td>
+<td>
+137
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+later
+</td>
+<td>
+130
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+…
+</th>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+</tr>
+<tr>
+<th>
+6028
+</th>
+<td>
+andre
+</td>
+<td>
+1
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+6029
+</th>
+<td>
+virgil
+</td>
+<td>
+1
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+6030
+</th>
+<td>
+dismay
+</td>
+<td>
+1
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+6031
+</th>
+<td>
+enjoying
+</td>
+<td>
+1
+</td>
+<td>
+ham
+</td>
+</tr>
+<tr>
+<th>
+6032
+</th>
+<td>
+previews
+</td>
+<td>
+1
+</td>
+<td>
+ham
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="python"><code>print (ham_words_only.head(30))</code></pre>
+<pre><code>         word  count type
+0          gt    309  ham
+1          lt    309  ham
+2         lor    162  ham
+3          da    137  ham
+4       later    130  ham
+5          ã¼    120  ham
+6       happy    104  ham
+7         amp     88  ham
+8        work     88  ham
+9         ask     88  ham
+10       said     79  ham
+11        lol     74  ham
+12   anything     73  ham
+13        cos     72  ham
+14    morning     71  ham
+15       sure     68  ham
+16  something     65  ham
+17        gud     63  ham
+18      thing     58  ham
+19       feel     56  ham
+20        gon     56  ham
+21        dun     55  ham
+22       went     54  ham
+23      sleep     54  ham
+24     always     54  ham
+25       told     52  ham
+26         ãœ     52  ham
+27       nice     51  ham
+28       haha     51  ham
+29        thk     50  ham</code></pre>
+<pre class="python"><code># Frquency of words in spam
+
+count = Counter()
+for word_list in df_words_spam[&quot;words&quot;]:
+    for word in word_list:
+        count[word] += 1
+        
+# List most common 
+Counter(count).most_common(30)</code></pre>
+<pre><code>[(&#39;.&#39;, 846),
+ (&#39;!&#39;, 508),
+ (&#39;,&#39;, 351),
+ (&#39;call&#39;, 333),
+ (&#39;free&#39;, 209),
+ (&#39;&amp;&#39;, 165),
+ (&#39;?&#39;, 163),
+ (&#39;:&#39;, 161),
+ (&#39;2&#39;, 160),
+ (&#39;txt&#39;, 143),
+ (&#39;ur&#39;, 141),
+ (&#39;u&#39;, 126),
+ (&#39;mobile&#39;, 121),
+ (&#39;*&#39;, 113),
+ (&#39;claim&#39;, 113),
+ (&#39;4&#39;, 110),
+ (&#39;stop&#39;, 101),
+ (&#39;text&#39;, 101),
+ (&#39;reply&#39;, 97),
+ (&#39;prize&#39;, 92),
+ (&#39;get&#39;, 76),
+ (&#39;nokia&#39;, 65),
+ (&#39;send&#39;, 64),
+ (&quot;&#39;s&quot;, 63),
+ (&#39;new&#39;, 63),
+ (&#39;urgent&#39;, 63),
+ (&#39;cash&#39;, 62),
+ (&#39;win&#39;, 60),
+ (&#39;)&#39;, 58),
+ (&#39;contact&#39;, 56)]</code></pre>
+<pre class="python"><code># Getting rid of duplicates within an email, 
+# to get number based on how many emails have a particular word, but no repetition
+
+# Ham
+
+count = Counter()
+
+for word_list in df_words_spam[&quot;words&quot;]:
+    for word in list(set(word_list)):   # this makes a &quot;set&quot; which removes any duplicates within that email before counting
+        count[word] += 1
+
+Counter(count).most_common(40)</code></pre>
+<pre><code>[(&#39;.&#39;, 454),
+ (&#39;!&#39;, 341),
+ (&#39;call&#39;, 311),
+ (&#39;,&#39;, 208),
+ (&#39;free&#39;, 160),
+ (&#39;&amp;&#39;, 138),
+ (&#39;txt&#39;, 137),
+ (&#39;:&#39;, 130),
+ (&#39;2&#39;, 125),
+ (&#39;?&#39;, 123),
+ (&#39;ur&#39;, 111),
+ (&#39;claim&#39;, 108),
+ (&#39;mobile&#39;, 107),
+ (&#39;4&#39;, 101),
+ (&#39;u&#39;, 101),
+ (&#39;text&#39;, 89),
+ (&#39;reply&#39;, 86),
+ (&#39;prize&#39;, 84),
+ (&#39;stop&#39;, 80),
+ (&#39;get&#39;, 75),
+ (&#39;send&#39;, 63),
+ (&#39;new&#39;, 62),
+ (&#39;urgent&#39;, 62),
+ (&#39;cash&#39;, 61),
+ (&#39;win&#39;, 60),
+ (&#39;contact&#39;, 56),
+ (&#39;please&#39;, 54),
+ (&quot;&#39;s&quot;, 51),
+ (&#39;-&#39;, 50),
+ (&#39;guaranteed&#39;, 50),
+ (&#39;customer&#39;, 49),
+ (&#39;nokia&#39;, 49),
+ (&#39;)&#39;, 48),
+ (&#39;service&#39;, 48),
+ (&#39;*&#39;, 47),
+ (&#39;c&#39;, 45),
+ (&#39;week&#39;, 45),
+ (&#39;(&#39;, 44),
+ (&#39;tone&#39;, 41),
+ (&#39;cs&#39;, 41)]</code></pre>
+<div id="top-15-words---spam" class="section level3">
+<h3>Top 15 words - Spam</h3>
+<ul>
+<li>(“call”, 333)</li>
+<li>(“free”, 209),</li>
+<li>(“txt”, 143),</li>
+<li>(“ur”, 141),</li>
+<li>(“u”, 126),</li>
+<li>(“mobile”, 121),</li>
+<li>(“claim”, 113),</li>
+<li>(“stop”, 101),</li>
+<li>(“text”, 101),</li>
+<li>(“reply”, 97),</li>
+<li>(“prize”, 92),</li>
+<li>(“get”, 76),</li>
+<li>(“nokia”, 65),</li>
+<li>(“send”, 64),</li>
+<li>(“new”, 63),</li>
+</ul>
+</div>
+<div id="top-15-words---spam---no-duplicates" class="section level3">
+<h3>Top 15 words - Spam - no duplicates</h3>
+<ul>
+<li>(“call”, 311),</li>
+<li>(“free”, 160),</li>
+<li>(“txt”, 137),</li>
+<li>(“ur”, 111),</li>
+<li>(“claim”, 108),</li>
+<li>(“mobile”, 107),</li>
+<li>(“u”, 101),</li>
+<li>(“text”, 89),</li>
+<li>(“reply”, 86),</li>
+<li>(“prize”, 84),</li>
+<li>(“stop”, 80),</li>
+<li>(“get”, 75),</li>
+<li>(“send”, 63),</li>
+<li>(“new”, 62),</li>
+<li>(“urgent”, 62),</li>
+</ul>
+<pre class="python"><code># I did want to try and put in this information about % of spam that contains a particular word... 
+# but decided to keep focus on the modelling - and knowing that would be hard enough to cover in detail anyway!
+
+top_words_spam = [(&quot;call&quot;, 333),
+ (&quot;free&quot;, 209),
+ (&quot;txt&quot;, 143),
+ (&quot;ur&quot;, 141),
+ (&quot;u&quot;, 126),
+ (&quot;mobile&quot;, 121),
+ (&quot;claim&quot;, 113),
+ (&quot;stop&quot;, 101),
+ (&quot;text&quot;, 101),
+ (&quot;reply&quot;, 97),
+ (&quot;prize&quot;, 92),
+ (&quot;get&quot;, 76),
+ (&quot;nokia&quot;, 65),
+ (&quot;send&quot;, 64),
+ (&quot;new&quot;, 63)]
+
+df_top_words_spam = pd.DataFrame(top_words_spam, columns=[&quot;word&quot;, &quot;count&quot;])
+df_top_words_spam[&quot;% present in Total&quot;] = df_top_words_spam.apply(lambda x: round(x[&quot;count&quot;]/len(df_words_spam)*100, 2), axis=1)
+print(df_top_words_spam)</code></pre>
+<pre><code>      word  count  % present in Total
+0     call    333               47.30
+1     free    209               29.69
+2      txt    143               20.31
+3       ur    141               20.03
+4        u    126               17.90
+5   mobile    121               17.19
+6    claim    113               16.05
+7     stop    101               14.35
+8     text    101               14.35
+9    reply     97               13.78
+10   prize     92               13.07
+11     get     76               10.80
+12   nokia     65                9.23
+13    send     64                9.09
+14     new     63                8.95</code></pre>
+<pre class="python"><code>top_words_spam_unique = [(&quot;call&quot;, 311),
+(&quot;free&quot;, 160),
+(&quot;txt&quot;, 137),
+(&quot;ur&quot;, 111),
+(&quot;claim&quot;, 108),
+(&quot;mobile&quot;, 107),
+(&quot;u&quot;, 101),
+(&quot;text&quot;, 89),
+(&quot;reply&quot;, 86),
+(&quot;prize&quot;, 84),
+(&quot;stop&quot;, 80),
+(&quot;get&quot;, 75),
+(&quot;send&quot;, 63),
+(&quot;new&quot;, 62),
+(&quot;urgent&quot;, 62)]
+
+
+df_top_words_spam_unique = pd.DataFrame(top_words_spam_unique, columns=[&quot;word&quot;, &quot;count&quot;])
+df_top_words_spam_unique[&quot;% present in Total&quot;] = df_top_words_spam_unique.apply(lambda x: round(x[&quot;count&quot;]/len(df_words_spam)*100, 2), axis=1)
+print(df_top_words_spam_unique)</code></pre>
+<pre><code>      word  count  % present in Total
+0     call    311               44.18
+1     free    160               22.73
+2      txt    137               19.46
+3       ur    111               15.77
+4    claim    108               15.34
+5   mobile    107               15.20
+6        u    101               14.35
+7     text     89               12.64
+8    reply     86               12.22
+9    prize     84               11.93
+10    stop     80               11.36
+11     get     75               10.65
+12    send     63                8.95
+13     new     62                8.81
+14  urgent     62                8.81</code></pre>
+<pre class="python"><code># Frquency of words in ham
+
+count = Counter()
+
+for word_list in df_words_ham[&quot;words&quot;]:
+    for word in word_list:
+        count[word] += 1
+
+# List most common ham words
+Counter(count).most_common(30)</code></pre>
+<pre><code>[(&#39;.&#39;, 3644),
+ (&#39;,&#39;, 1457),
+ (&#39;?&#39;, 1307),
+ (&#39;...&#39;, 1067),
+ (&#39;u&#39;, 939),
+ (&#39;!&#39;, 763),
+ (&#39;;&#39;, 745),
+ (&#39;&amp;&#39;, 724),
+ (&#39;..&#39;, 675),
+ (&#39;:&#39;, 537),
+ (&#39;)&#39;, 420),
+ (&quot;&#39;s&quot;, 405),
+ (&quot;&#39;m&quot;, 375),
+ (&quot;n&#39;t&quot;, 310),
+ (&#39;lt&#39;, 309),
+ (&#39;gt&#39;, 309),
+ (&#39;2&#39;, 287),
+ (&#39;get&#39;, 285),
+ (&#39;#&#39;, 275),
+ (&#39;go&#39;, 241),
+ (&#39;ok&#39;, 240),
+ (&#39;ur&#39;, 238),
+ (&#39;got&#39;, 236),
+ (&#39;come&#39;, 227),
+ (&#39;call&#39;, 226),
+ (&#39;good&#39;, 223),
+ (&quot;&#39;ll&quot;, 223),
+ (&#39;know&#39;, 219),
+ (&#39;like&#39;, 215),
+ (&#39;time&#39;, 190)]</code></pre>
+<pre class="python"><code># Getting rid of duplicates within an email
+
+# Ham
+
+count = Counter()
+
+for word_list in df_words_ham[&quot;words&quot;]:
+    for word in list(set(word_list)):
+        count[word] += 1
+
+Counter(count).most_common(40)</code></pre>
+<pre><code>[(&#39;.&#39;, 2026),
+ (&#39;?&#39;, 1046),
+ (&#39;,&#39;, 1022),
+ (&#39;...&#39;, 684),
+ (&#39;u&#39;, 660),
+ (&#39;!&#39;, 508),
+ (&#39;..&#39;, 429),
+ (&#39;:&#39;, 402),
+ (&quot;&#39;s&quot;, 368),
+ (&quot;&#39;m&quot;, 344),
+ (&#39;)&#39;, 334),
+ (&#39;;&#39;, 331),
+ (&#39;&amp;&#39;, 319),
+ (&#39;get&#39;, 265),
+ (&quot;n&#39;t&quot;, 257),
+ (&#39;2&#39;, 239),
+ (&#39;lt&#39;, 235),
+ (&#39;ok&#39;, 234),
+ (&#39;gt&#39;, 233),
+ (&#39;got&#39;, 224),
+ (&#39;go&#39;, 222),
+ (&quot;&#39;ll&quot;, 217),
+ (&#39;call&#39;, 212),
+ (&#39;come&#39;, 212),
+ (&#39;good&#39;, 210),
+ (&#39;#&#39;, 209),
+ (&#39;know&#39;, 209),
+ (&#39;like&#39;, 200),
+ (&#39;ur&#39;, 187),
+ (&#39;time&#39;, 179),
+ (&#39;day&#39;, 176),
+ (&#39;going&#39;, 158),
+ (&#39;4&#39;, 157),
+ (&#39;home&#39;, 154),
+ (&#39;one&#39;, 149),
+ (&#39;want&#39;, 146),
+ (&#39;lor&#39;, 145),
+ (&#39;sorry&#39;, 144),
+ (&#39;-&#39;, 143),
+ (&#39;still&#39;, 143)]</code></pre>
+<p>Top 15 - Ham</p>
+<ul>
+<li>(“u”, 939),</li>
+<li>(“get”, 285),</li>
+<li>(“go”, 241),</li>
+<li>(“ok”, 240),</li>
+<li>(“ur”, 238),</li>
+<li>(“got”, 236),</li>
+<li>(“come”, 227),</li>
+<li>(“call”, 226),</li>
+<li>(“good”, 223),</li>
+<li>(“know”, 219),</li>
+<li>(“like”, 215),</li>
+<li>(“time”, 190),</li>
+<li>(“day”, 188),</li>
+<li>(“love”, 170),</li>
+<li>(“going”, 164),</li>
+</ul>
+<p>Top 15 - no duplicates - (“u”, 660), - (“get”, 265), - (“ok”, 234), -
+(“got”, 224), - (“go”, 222), - (“call”, 212), - (“come”, 212), -
+(“good”, 210), - (“know”, 209), - (“like”, 200), - (“ur”, 187), -
+(“time”, 179), - (“day”, 176), - (“going”, 158), - (“home”, 154)</p>
+<pre class="python"><code>top_words_ham = [(&quot;u&quot;, 939),
+ (&quot;get&quot;, 285),
+ (&quot;go&quot;, 241),
+ (&quot;ok&quot;, 240),
+ (&quot;ur&quot;, 238),
+ (&quot;got&quot;, 236),
+ (&quot;come&quot;, 227),
+ (&quot;call&quot;, 226),
+ (&quot;good&quot;, 223),
+ (&quot;know&quot;, 219),
+ (&quot;like&quot;, 215),
+ (&quot;time&quot;, 190),
+ (&quot;day&quot;, 188),
+ (&quot;love&quot;, 170),
+ (&quot;going&quot;, 164)]
+
+
+df_top_words_ham = pd.DataFrame(top_words_ham, columns=[&quot;word&quot;, &quot;count&quot;])
+df_top_words_ham[&quot;% present in Total&quot;] = df_top_words_ham.apply(lambda x: round(x[&quot;count&quot;]/len(df_words_ham)*100, 2), axis=1)
+print(df_top_words_ham)</code></pre>
+<pre><code>     word  count  % present in Total
+0       u    939               20.21
+1     get    285                6.13
+2      go    241                5.19
+3      ok    240                5.16
+4      ur    238                5.12
+5     got    236                5.08
+6    come    227                4.88
+7    call    226                4.86
+8    good    223                4.80
+9    know    219                4.71
+10   like    215                4.63
+11   time    190                4.09
+12    day    188                4.05
+13   love    170                3.66
+14  going    164                3.53</code></pre>
+<pre class="python"><code>top_words_ham_unique = [(&quot;u&quot;, 660),
+(&quot;get&quot;, 265),
+(&quot;ok&quot;, 234),
+(&quot;got&quot;, 224),
+(&quot;go&quot;, 222),
+(&quot;call&quot;, 212),
+(&quot;come&quot;, 212),
+(&quot;good&quot;, 210),
+(&quot;know&quot;, 209),
+(&quot;like&quot;, 200),
+(&quot;ur&quot;, 187),
+(&quot;time&quot;, 179),
+(&quot;day&quot;, 176),
+(&quot;going&quot;, 158),
+(&quot;home&quot;, 154)]
+
+df_top_words_ham_unique = pd.DataFrame(top_words_ham_unique, columns=[&quot;word&quot;, &quot;count&quot;])
+df_top_words_ham_unique[&quot;% present in Total&quot;] = df_top_words_ham_unique.apply(lambda x: round(x[&quot;count&quot;]/len(df_words_ham)*100, 2), axis=1)
+print(df_top_words_ham_unique)</code></pre>
+<pre><code>     word  count  % present in Total
+0       u    660               14.20
+1     get    265                5.70
+2      ok    234                5.04
+3     got    224                4.82
+4      go    222                4.78
+5    call    212                4.56
+6    come    212                4.56
+7    good    210                4.52
+8    know    209                4.50
+9    like    200                4.30
+10     ur    187                4.02
+11   time    179                3.85
+12    day    176                3.79
+13  going    158                3.40
+14   home    154                3.31</code></pre>
+<pre class="python"><code>def plot_top_15 (dataframe, title=&quot;TBC&quot;, fig_num=&quot;TBC&quot;, color=color, size=3.8, total_freq=False):
+    #create plot for Top 15 words for spam/ham
+    words = dataframe[&quot;word&quot;]
+    counts = dataframe[&quot;count&quot;]
+
+    y_pos = np.arange(len(dataframe[&quot;word&quot;]))  # the label locations
+    width = 0.25  # the width of the bars
+    multiplier = 0
+
+    fig, ax = plt.subplots(figsize=(size,5), constrained_layout=True)
+
+    ax.barh(y_pos, counts, color=color)
+
+    # Add some text for labels, title and custom x-axis tick labels, etc.
+    if total_freq:
+        ax.set_xlabel(&quot;Total Count&quot;)
+    else:
+        ax.set_xlabel(&quot;Count of Emails&quot;)
+    ax.invert_yaxis() 
+    ax.set_title(full_title, fontsize=15, fontweight=&quot;bold&quot;)
+    ax.set_yticks(y_pos, labels = words, fontsize=16)
+
+    #ax.set_ylim(0, 250)
+
+    # Show the plot
+    return fig</code></pre>
+<pre class="python"><code># Selected for report
+# this is based on counting a word only once per email
+
+data = df_top_words_ham_unique
+title = &quot;Ham&quot;
+fig_num = &quot;2&quot;
+
+full_title = f&quot;Fig. {fig_num} Top 15 words - {title}&quot;
+
+fig = plot_top_15 (data, full_title, fig_num, color_r)
+
+plt.savefig(f&quot;{full_title}.png&quot;, dpi=300, transparent=True, bbox_inches = &quot;tight&quot;)
+
+plt.show()
+</code></pre>
+<div class="float">
+<img src="images/output_63_0.png" alt="png" />
+<div class="figcaption">png</div>
+</div>
+<pre class="python"><code># Selected for report
+# this is based on counting a word only once per email
+
+data = df_top_words_spam_unique
+title = &quot;Spam&quot;
+fig_num = &quot;3&quot;
+full_title = f&quot;Fig. {fig_num} Top 15 words - {title}&quot;
+
+fig = plot_top_15 (data, full_title, fig_num, color)
+
+plt.savefig(f&quot;{full_title}.png&quot;, dpi=300, transparent=True, bbox_inches = &quot;tight&quot;)
+
+plt.show()
+</code></pre>
+<div class="float">
+<img src="images/output_64_0.png" alt="png" />
+<div class="figcaption">png</div>
+</div>
+<pre class="python"><code># word Frequency - allows for repetition in an email
+
+data = df_top_words_ham
+title = &quot;Ham&quot;
+fig_num = &quot;1.2&quot;
+
+full_title = f&quot;Fig {fig_num} Top 15 words - {title}&quot;
+
+fig = plot_top_15 (data, full_title, fig_num, color_r, total_freq=True)
+
+plt.savefig(f&quot;{full_title}.png&quot;, dpi=300, transparent=True, bbox_inches = &quot;tight&quot;)
+
+plt.show()
+</code></pre>
+<div class="float">
+<img src="images/output_65_0.png" alt="png" />
+<div class="figcaption">png</div>
+</div>
+<pre class="python"><code># word Frequency - allows for repetition in an email
+
+data = df_top_words_spam
+title = &quot;Spam&quot;
+fig_num = &quot;1.4&quot;
+
+full_title = f&quot;Fig {fig_num} Top 15 words - {title}&quot;
+
+
+fig = plot_top_15 (data, full_title, fig_num, color, total_freq=True)
+
+plt.savefig(f&quot;{full_title}.png&quot;, dpi=300, transparent=True, bbox_inches = &quot;tight&quot;)
+
+plt.show()
+</code></pre>
+<div class="float">
+<img src="images/output_66_0.png" alt="png" />
+<div class="figcaption">png</div>
+</div>
+<pre class="python"><code># Selected for Report
+# based on word frquency... 
+
+data = spam_words_only.head(10)
+title = &quot;Spam-only words&quot;
+fig_num = &quot;4&quot;
+full_title = f&quot;Fig. {fig_num} Top 10 {title}&quot;
+size = 4.3
+
+plt.figure(figsize = (5,4))
+fig = plot_top_15 (data, full_title, fig_num, color=&quot;darkorange&quot;, size=size, total_freq=True)
+
+plt.savefig(f&quot;{full_title}.png&quot;, dpi=300, transparent=True, bbox_inches = &quot;tight&quot;)
+
+plt.show()
+</code></pre>
+<pre><code>&lt;Figure size 500x400 with 0 Axes&gt;</code></pre>
+<div class="float">
+<img src="images/output_67_1.png" alt="png" />
+<div class="figcaption">png</div>
+</div>
+<pre class="python"><code>data = ham_words_only.head(10)
+title = &quot;Ham-only words&quot;
+fig_num = &quot;1.6&quot;
+full_title = f&quot;Fig {fig_num} Top 10 {title}&quot;
+
+fig = plot_top_15 (data, full_title, fig_num, color_r, total_freq=True)
+
+plt.savefig(f&quot;{full_title}.png&quot;, dpi=300, transparent=True, bbox_inches = &quot;tight&quot;)
+
+plt.show()</code></pre>
+<div class="float">
+<img src="images/output_68_0.png" alt="png" />
+<div class="figcaption">png</div>
+</div>
+</div>
+</div>
+</div>
+<div id="data-modelling" class="section level1">
+<h1>Data modelling</h1>
+<ul>
+<li>Apply the correct machine learning/modelling approach to model the
+data appropriately.</li>
+</ul>
+<div id="model-training" class="section level2">
+<h2>Model Training</h2>
+<ul>
+<li>Split the dataset into training and test sets, and ensure the
+training dataset is balanced (using SMOTE)</li>
+</ul>
+<pre class="python"><code># Creates a randomised matrix of dimensions based :
+# - feature_vectors - sms content
+# - df_ham and df_spam - an array based on 0 for ham and 1 for spam
+
+X_train, X_test, y_train, y_test = train_test_split(feature_vectors, [0] * len(df_ham) + [1] * len(df_spam), random_state = 42, test_size=0.2) </code></pre>
+<pre class="python"><code># Balance training set using SMOTE
+
+X_train_smote, y_train_smote = SMOTE(random_state=42).fit_resample(X_train, y_train) 
+
+# Check the ratio of True (1) for y training set in total number of y
+# should end up with 0.5...
+
+print (y_train_smote.count(1), len(y_train_smote))
+print (y_train_smote.count(1)/len(y_train_smote))
+</code></pre>
+<pre><code>3725 7450
+0.5</code></pre>
+</div>
+</div>
+<div id="apply-machine-learningmodel-approaches" class="section level1">
+<h1>Apply machine learning/model approaches</h1>
+<ul>
+<li>Apply two machine learning/modelling approaches to model the data (5
+pts)</li>
+<li>Correctly and completely train both models, including the selection
+of appropriate hyperparameter values (including use of hyperparameter
+tuning using grid search)</li>
+<li>Run the model using the best parameters</li>
+</ul>
+<div id="model-1---knn" class="section level2">
+<h2>Model 1 - KNN</h2>
+<pre class="python"><code># Make instance of KNN model and set hyperparameters
+
+knn = KNeighborsClassifier() 
+</code></pre>
+<pre class="python"><code># Set hyperparameters
+
+hyperparameters = { 
+        &quot;n_neighbors&quot;: [1, 3, 5, 9, 11], 
+        &quot;p&quot;: [1, 2] 
+    } </code></pre>
+<div id="knn---base-unbalanced" class="section level3">
+<h3>KNN - base (unbalanced)</h3>
+<pre class="python"><code>#Grid search
+
+knn_base = GridSearchCV(knn, hyperparameters, scoring=&quot;accuracy&quot;) 
+</code></pre>
+<pre class="python"><code>
+knn_base.fit(X_train, y_train) 
+
+print(&quot;Best p:&quot;, knn_base.best_estimator_.get_params()[&quot;p&quot;]) 
+
+print(&quot;Best n_neighbors:&quot;, knn_base.best_estimator_.get_params()[&quot;n_neighbors&quot;]) </code></pre>
+<pre><code>Best p: 2
+Best n_neighbors: 1</code></pre>
+</div>
+<div id="knn---smote-balanced" class="section level3">
+<h3>KNN - SMOTE (balanced)</h3>
+<pre class="python"><code>knn_smote = GridSearchCV(knn, hyperparameters, scoring=&quot;accuracy&quot;) 
+</code></pre>
+<pre class="python"><code>knn_smote.fit(X_train_smote, y_train_smote) 
+
+print(&quot;Best p:&quot;, knn_smote.best_estimator_.get_params()[&quot;p&quot;]) 
+
+print(&quot;Best n_neighbors:&quot;, knn_smote.best_estimator_.get_params()[&quot;n_neighbors&quot;]) </code></pre>
+<pre><code>Best p: 2
+Best n_neighbors: 1</code></pre>
+</div>
+</div>
+<div id="model-2---decision-tree" class="section level2">
+<h2>Model 2 - Decision Tree</h2>
+<pre class="python"><code># Make instance of Decision Tree model and set hyperparameters
+
+# NOTE - I have removed a number of the values at extremes and in between that were used for testing, 
+# so that it doesn&#39;t take so long to run when reviewing.
+
+dt = DecisionTreeClassifier() 
+
+hyperparameters = { 
+    &quot;min_samples_split&quot;: [2, 3, 5, 10, 15, 20], 
+    &quot;min_samples_leaf&quot;: [3, 4, 5, 6, 8], 
+    &quot;max_depth&quot;: [10, 20, 40, 60, 80, 120] 
+
+} </code></pre>
+<div id="decision-tree---base-unbalanced" class="section level3">
+<h3>Decision Tree - base (unbalanced)</h3>
+<pre class="python"><code># train &amp; evaluate
+
+dt_base = GridSearchCV(dt, hyperparameters, scoring=&quot;accuracy&quot;).fit(X_train, y_train) 
+
+print(&quot;Best max_depth:&quot;, dt_base.best_estimator_.get_params()[&quot;max_depth&quot;]) 
+
+print(&quot;Best min_samples_leaf:&quot;, dt_base.best_estimator_.get_params()[&quot;min_samples_leaf&quot;]) 
+
+print(&quot;Best min_samples_split:&quot;, dt_base.best_estimator_.get_params()[&quot;min_samples_split&quot;]) 
+
+print(&quot;Best criterion:&quot;, dt_base.best_estimator_.get_params()[&quot;criterion&quot;]) </code></pre>
+<pre><code>Best max_depth: 20
+Best min_samples_leaf: 3
+Best min_samples_split: 3
+Best criterion: gini</code></pre>
+</div>
+<div id="decision-tree---smote-balanced" class="section level3">
+<h3>Decision Tree - SMOTE (balanced)</h3>
+<pre class="python"><code># train &amp; evaluate
+# setting hyperparameter variables here for use for tree map at end. 
+
+dt_smote = GridSearchCV(dt, hyperparameters, scoring=&quot;accuracy&quot;).fit(X_train_smote, y_train_smote) 
+
+print(&quot;Best max_depth:&quot;, max_depth := dt_smote.best_estimator_.get_params()[&quot;max_depth&quot;]) 
+
+print(&quot;Best min_samples_leaf:&quot;, min_samples_leaf := dt_smote.best_estimator_.get_params()[&quot;min_samples_leaf&quot;]) 
+
+print(&quot;Best min_samples_split:&quot;, min_samples_split := dt_smote.best_estimator_.get_params()[&quot;min_samples_split&quot;]) 
+
+print(&quot;Best criterion:&quot;, criterion := dt_smote.best_estimator_.get_params()[&quot;criterion&quot;]) </code></pre>
+<pre><code>Best max_depth: 120
+Best min_samples_leaf: 3
+Best min_samples_split: 2
+Best criterion: gini</code></pre>
+</div>
+</div>
+</div>
+<div id="model-evaluation" class="section level1">
+<h1>Model Evaluation</h1>
+<ul>
+<li>Successfully and fully test the models, using appropriate measures
+for evaluation (e.g. accuracy, balanced accuracy, training time,
+prediction time)</li>
+</ul>
+<div id="functions" class="section level2">
+<h2>Functions</h2>
+<pre class="python"><code>
+
+def plot_confusion_matrix (model, y_predicted, title=&quot;TBC&quot;, fig_num=&quot;TBC&quot;):
+    # Confusion Matrix
+    plt.figure(figsize=(4,4))
+    cm = confusion_matrix(y_test, y_predicted, labels=model.classes_, ) 
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=model.classes_) 
+    disp.plot(cmap=&quot;YlOrBr_r&quot;) 
+
+    plt.title(f&quot;Fig. {fig_num} {title}&quot;, fontsize=20, fontweight=&quot;bold&quot;)
+    plt.xlabel(&quot;Predicted&quot;, fontsize=14)
+    plt.ylabel(&quot;True label&quot;, fontsize=14)
+    
+    return disp 
+
+def calc_accuracy (model_name, y_predicted):
+    # Accuracy
+    results.loc[model_name,&quot;accuracy&quot;] = accuracy_score(y_test,y_predicted) 
+    return results.loc[model_name,&quot;accuracy&quot;]
+
+def calc_balanced_accuracy (model_name, y_predicted):
+    # Balanced Accuracy
+    results.loc[model_name,&quot;balanced_accuracy&quot;] = balanced_accuracy_score(y_test,y_predicted) 
+    return results.loc[model_name,&quot;balanced_accuracy&quot;]
+
+def calc_training_time (model, model_name):
+    # Training Time
+    results.loc[model_name,&quot;training_time&quot;] = model.cv_results_[&quot;mean_fit_time&quot;].mean()
+    return results.loc[model_name,&quot;training_time&quot;]
+
+def calc_prediction_time (model, model_name):
+    # Training Time
+    results.loc[model_name,&quot;prediction_time&quot;] = model.cv_results_[&quot;mean_score_time&quot;].mean()/len(y_test)
+    return results.loc[model_name,&quot;prediction_time&quot;]
+
+
+</code></pre>
+</div>
+<div
+id="metrics-for-knn-evaluation---confusion-matrix-and-metric-calculations"
+class="section level2">
+<h2>Metrics for KNN evaluation - Confusion Matrix and metric
+calculations</h2>
+<pre class="python"><code># Create empty results table
+
+results = pd.DataFrame()</code></pre>
+<pre class="python"><code>model = knn_base
+model_name = &quot;KNN&quot;
+
+y_predicted = model.predict(X_test)</code></pre>
+<p>Metrics for KNN evaluation</p>
+<pre class="python"><code># Confusion Matrix
+
+title = &quot;KNN (unbalanced)&quot;
+fig_num = &quot;5&quot;
+
+disp = plot_confusion_matrix(model, y_predicted, title=title, fig_num=fig_num)
+
+plt.savefig(f&quot;Fig. {fig_num} {title}.png&quot;, dpi=300, transparent=True, bbox_inches = &quot;tight&quot;)
+ </code></pre>
+<pre><code>&lt;Figure size 400x400 with 0 Axes&gt;</code></pre>
+<div class="float">
+<img src="images/output_96_1.png" alt="png" />
+<div class="figcaption">png</div>
+</div>
+<pre class="python"><code># KNN_base results
+# Accuracy
+accuracy = calc_accuracy(model_name, y_predicted)
+
+# Balanced Accuracy 
+balanced = calc_balanced_accuracy(model_name, y_predicted)
+
+# Training Time
+train_time = calc_training_time(model, model_name)
+
+# Prediction Time
+pred_time = calc_prediction_time(model, model_name)
+
+print (f&quot;Accuracy: {accuracy:.10f}&quot;)
+print (f&quot;Balanced Accuracy: {balanced:.10f}&quot;)
+print (f&quot;Training Time: {train_time:.10f}&quot;)
+print (f&quot;Prediction Time: {pred_time:.10f}&quot;)
+</code></pre>
+<pre><code>Accuracy: 0.9187675070
+Balanced Accuracy: 0.7136805020
+Training Time: 0.0025524473
+Prediction Time: 0.0001030172</code></pre>
+<pre class="python"><code>model = knn_smote
+model_name = &quot;KNN-SMOTE&quot;
+
+y_predicted = model.predict(X_test)</code></pre>
+<pre class="python"><code># Confusion Matrix
+
+title = &quot;KNN (SMOTE)&quot;
+fig_num = &quot;7&quot;
+
+disp = plot_confusion_matrix(model, y_predicted, title=title, fig_num=fig_num)
+
+
+plt.savefig(f&quot;Fig. {fig_num} {title}.png&quot;, dpi=300, transparent=True, bbox_inches = &quot;tight&quot;)</code></pre>
+<pre><code>&lt;Figure size 400x400 with 0 Axes&gt;</code></pre>
+<div class="float">
+<img src="images/output_99_1.png" alt="png" />
+<div class="figcaption">png</div>
+</div>
+<pre class="python"><code># KNN_SMOTE results
+# Accuracy
+accuracy = calc_accuracy(model_name, y_predicted)
+
+# Balanced Accuracy 
+balanced = calc_balanced_accuracy(model_name, y_predicted)
+
+# Training Time
+train_time = calc_training_time(model, model_name)
+
+# Prediction Time
+pred_time = calc_prediction_time(model, model_name)
+
+print (f&quot;Accuracy: {accuracy:.10f}&quot;)
+print (f&quot;Balanced Accuracy: {balanced:.10f}&quot;)
+print (f&quot;Training Time: {train_time:.10f}&quot;)
+print (f&quot;Prediction Time: {pred_time:.10f}&quot;)</code></pre>
+<pre><code>Accuracy: 0.8085901027
+Balanced Accuracy: 0.7312779339
+Training Time: 0.0037259293
+Prediction Time: 0.0002646201</code></pre>
+<pre class="python"><code>model = dt_base
+model_name = &quot;DT&quot;
+
+y_predicted = model.predict(X_test)</code></pre>
+<pre class="python"><code># Confusion Matrix
+
+title = &quot;Decision Tree (unbalanced)&quot;
+fig_num = &quot;6&quot;
+
+disp = plot_confusion_matrix(model, y_predicted, title=title, fig_num=fig_num)
+
+
+plt.savefig(f&quot;Fig. {fig_num} {title}.png&quot;, dpi=300, transparent=True, bbox_inches = &quot;tight&quot;)
+</code></pre>
+<pre><code>&lt;Figure size 400x400 with 0 Axes&gt;</code></pre>
+<div class="float">
+<img src="images/output_102_1.png" alt="png" />
+<div class="figcaption">png</div>
+</div>
+<pre class="python"><code># DT_BASE results
+# Accuracy
+accuracy = calc_accuracy(model_name, y_predicted)
+
+# Balanced Accuracy 
+balanced = calc_balanced_accuracy(model_name, y_predicted)
+
+# Training Time
+train_time = calc_training_time(model, model_name)
+
+# Prediction Time
+pred_time = calc_prediction_time(model, model_name)
+
+print (f&quot;Accuracy: {accuracy:.10f}&quot;)
+print (f&quot;Balanced Accuracy: {balanced:.10f}&quot;)
+print (f&quot;Training Time: {train_time:.10f}&quot;)
+print (f&quot;Prediction Time: {pred_time:.10f}&quot;)</code></pre>
+<pre><code>Accuracy: 0.8832866480
+Balanced Accuracy: 0.6424318304
+Training Time: 0.1051164484
+Prediction Time: 0.0000014010</code></pre>
+<pre class="python"><code>model = dt_smote
+model_name = &quot;DT-SMOTE&quot;
+
+y_predicted = model.predict(X_test)</code></pre>
+<pre class="python"><code># Confusion Matrix
+
+title = &quot;Decision Tree (SMOTE)&quot;
+fig_num = &quot;8&quot;
+
+disp = plot_confusion_matrix(model, y_predicted, title=title, fig_num=fig_num)
+
+plt.savefig(f&quot;Fig. {fig_num} {title}.png&quot;, dpi=300, transparent=True, bbox_inches = &quot;tight&quot;)</code></pre>
+<pre><code>&lt;Figure size 400x400 with 0 Axes&gt;</code></pre>
+<div class="float">
+<img src="images/output_105_1.png" alt="png" />
+<div class="figcaption">png</div>
+</div>
+<pre class="python"><code># DT_SMOTE results
+# Accuracy
+accuracy = calc_accuracy(model_name, y_predicted)
+
+# Balanced Accuracy 
+balanced = calc_balanced_accuracy(model_name, y_predicted)
+
+# Training Time
+train_time = calc_training_time(model, model_name)
+
+# Prediction Time
+pred_time = calc_prediction_time(model, model_name)
+
+print (f&quot;Accuracy: {accuracy:.10f}&quot;)
+print (f&quot;Balanced Accuracy: {balanced:.10f}&quot;)
+print (f&quot;Training Time: {train_time:.10f}&quot;)
+print (f&quot;Prediction Time: {pred_time:.10f}&quot;)</code></pre>
+<pre><code>Accuracy: 0.6937441643
+Balanced Accuracy: 0.5886131695
+Training Time: 0.1291490380
+Prediction Time: 0.0000019057</code></pre>
+</div>
+</div>
+<div id="results" class="section level1">
+<h1>Results</h1>
+<pre class="python"><code>results.index</code></pre>
+<pre><code>Index([&#39;KNN&#39;, &#39;KNN-SMOTE&#39;, &#39;DT&#39;, &#39;DT-SMOTE&#39;], dtype=&#39;object&#39;)</code></pre>
+<pre class="python"><code># show collated results
+results.style.highlight_max(color=color, axis=0).highlight_min(color=color_r, axis=0)</code></pre>
+<div class="float">
+<img src="images/output_109_0.png" alt="png" />
+<div class="figcaption">png</div>
+</div>
+<pre class="python"><code>#Accuracy &amp; balanced accuracy
+fig_num=&quot;9&quot;
+labels = list(results.index)
+
+fig = results[[&quot;accuracy&quot;,&quot;balanced_accuracy&quot;]].plot(kind=&quot;bar&quot;, color=colors_r, figsize=(8,5)) 
+
+plt.title(f&quot;Fig. {fig_num} Accuracy &amp; Balanced Accuracy by Model&quot;
+         , fontweight=&quot;bold&quot;
+         , fontsize=14)
+
+
+plt.xticks(rotation=0)
+plt.ylabel(&quot;Percentage&quot;, fontsize=14)
+plt.legend()
+
+plt.savefig(f&quot;Fig. {fig_num} Accuracy &amp; Balanced Accuracy by Model.png&quot;, dpi=300, transparent=True, bbox_inches = &quot;tight&quot;)</code></pre>
+<div class="float">
+<img src="images/output_110_0.png" alt="png" />
+<div class="figcaption">png</div>
+</div>
+<pre class="python"><code># Training Time
+fig_num=&quot;10&quot; 
+
+results[&quot;training_time&quot;].plot(kind=&quot;bar&quot;, color=color, figsize=(7,3)) 
+
+plt.title(f&quot;Fig. {fig_num} Training Time by Model&quot;
+         , fontweight=&quot;bold&quot;
+         , fontsize=14)
+
+plt.xticks(rotation=0)
+plt.ylabel(&quot;Training Time&quot;, fontsize=14)
+
+plt.savefig(f&quot;Fig. {fig_num} Training Time by Model.png&quot;, dpi=300, transparent=True, bbox_inches = &quot;tight&quot;)</code></pre>
+<div class="float">
+<img src="images/output_111_0.png" alt="png" />
+<div class="figcaption">png</div>
+</div>
+<pre class="python"><code># Prediction Time
+
+fig_num=&quot;11&quot;
+
+results[&quot;prediction_time&quot;].plot(kind=&quot;bar&quot;, color=color, figsize=(7,3)) 
+
+plt.title(f&quot;Fig. {fig_num} Prediction Time by Model&quot;
+         , fontweight=&quot;bold&quot;
+         , fontsize=14)
+
+plt.xticks(rotation=0)
+plt.ylabel(&quot;Prediction Time&quot;, fontsize=14)
+
+plt.savefig(f&quot;Fig. {fig_num} Prediction Time by Model.png&quot;, dpi=300, transparent=True, bbox_inches = &quot;tight&quot;)
+</code></pre>
+<div class="float">
+<img src="images/output_112_0.png" alt="png" />
+<div class="figcaption">png</div>
+</div>
+<div id="classification-report-including-f1-score"
+class="section level2">
+<h2>Classification Report (including F1-score)</h2>
+<pre class="python"><code>all_words[&quot;type&quot;].shape
+</code></pre>
+<pre><code>(9741,)</code></pre>
+<pre class="python"><code>df_words[&quot;check&quot;] = df_words[&quot;spam&quot;].replace({True: &quot;Spam&quot;, False: &quot;Ham&quot;}).astype(str)</code></pre>
+<pre class="python"><code># Classification report for KNN (unbalanced)
+
+y_predicted = knn_base.fit(X_train, y_train).predict(X_test)
+
+report = classification_report(y_test, y_predicted, target_names= df_words[&quot;check&quot;].unique()) #(all_words[&quot;type&quot;].unique()))
+print(report)</code></pre>
+<pre><code>              precision    recall  f1-score   support
+
+         Ham       0.92      1.00      0.95       922
+        Spam       0.97      0.43      0.60       149
+
+    accuracy                           0.92      1071
+   macro avg       0.94      0.71      0.78      1071
+weighted avg       0.92      0.92      0.90      1071</code></pre>
+<pre class="python"><code># Classification report for Decision Tree (unbalanced)
+
+y_predicted = dt_base.fit(X_train, y_train).predict(X_test)
+
+report = classification_report(y_test, y_predicted, target_names= df_words[&quot;check&quot;].unique()) #(all_words[&quot;type&quot;].unique()))
+print(report)</code></pre>
+<pre><code>              precision    recall  f1-score   support
+
+         Ham       0.90      0.98      0.94       922
+        Spam       0.70      0.32      0.44       149
+
+    accuracy                           0.89      1071
+   macro avg       0.80      0.65      0.69      1071
+weighted avg       0.87      0.89      0.87      1071</code></pre>
+<pre class="python"><code># Classification report for Decision Tree (SMOTE)
+
+y_predicted = dt_smote.fit(X_train_smote, y_train_smote).predict(X_test)
+
+report = classification_report(y_test, y_predicted, target_names= df_words[&quot;check&quot;].unique()) #(all_words[&quot;type&quot;].unique()))
+print(report)</code></pre>
+<pre><code>              precision    recall  f1-score   support
+
+         Ham       0.89      0.75      0.81       922
+        Spam       0.22      0.45      0.30       149
+
+    accuracy                           0.71      1071
+   macro avg       0.56      0.60      0.56      1071
+weighted avg       0.80      0.71      0.74      1071</code></pre>
+<pre class="python"><code># Classification report for KNN (SMOTE)
+
+
+y_predicted = knn_smote.fit(X_train_smote, y_train_smote).predict(X_test)
+
+report = classification_report(y_test, y_predicted, target_names= df_words[&quot;check&quot;].unique()) #(all_words[&quot;type&quot;].unique()))
+print(report)
+
+</code></pre>
+<pre><code>              precision    recall  f1-score   support
+
+         Ham       0.93      0.84      0.88       922
+        Spam       0.38      0.62      0.48       149
+
+    accuracy                           0.81      1071
+   macro avg       0.66      0.73      0.68      1071
+weighted avg       0.86      0.81      0.83      1071</code></pre>
+</div>
+<div id="tree-chart" class="section level2">
+<h2>Tree chart</h2>
+<p><strong>Commented out for this HTML document due to output
+length</strong></p>
+<p>Trying just out of curiosoity - not included in final report.<br />
+Parameters have been set from above based on
+best_estimator.get_params</p>
+<pre class="python"><code>print (criterion, max_depth, min_samples_split, min_samples_leaf)</code></pre>
+<pre><code>gini 120 2 3</code></pre>
+<pre class="python"><code># dt_tree = DecisionTreeClassifier(criterion=criterion
+#                            , max_depth=max_depth
+#                            , min_samples_split=min_samples_split
+#                            , min_samples_leaf=min_samples_leaf)
+
+# dt_tree = dt_tree.fit(X_train_smote, y_train_smote)
+
+# plt.figure(figsize=(15,50))
+
+
+# tree.plot_tree(decision_tree=dt_tree, class_names=all_words[&quot;type&quot;],\
+#              filled=True, rounded=True)</code></pre>
+</div>
+</div>
+
+<br>
+<br>
+<h6>
+<p style="text-align:right;">Copyright &copy; 2023 Adam Simmons, Inc. All rights reserved.</p>
+</h6>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
