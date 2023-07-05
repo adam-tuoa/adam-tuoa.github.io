@@ -1,5 +1,5 @@
 ---
-title: "RMIT Stats and probability with R"
+title: "Stats & Probability with R - 5 questions"
 ---
 
 June 4, 2023

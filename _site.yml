@@ -4,26 +4,32 @@ navbar:
   title: "Adam Simmons"
   href: index.html
   left:
+  - text: "About me"
+    href: about.html
   - text: R programming
     menu:
-    - text: "RMIT - Statistical Data Analysis"
-      href: RMIT-Statistical-Data-Analysis.html 
-    - text: "RMIT - Stats and probability with R"
-      href: RMIT-Stats-and-probability-with-R.html
     - text: "Shiny app - Tolling Customer Ombudsman"
       href: shiny-tco-app.html
+    - text: "Statistical Analysis - demographic data"
+      href: RMIT-Statistical-Data-Analysis.html 
+    - text: "Stats & Probability with R - 5 questions"
+      href: stats-and-probability-with-r.html
   - text: "Python programming"
     menu:
-    - text: "RMIT - Employee retention analysis"
-      href: RMIT-employee-retention.html
-    - text: "RMIT - VISTA survey analysis"
+    - text: "Employee retention analysis"
+      href: employee-retention.html
+    - text: "VISTA survey analysis"
       href: vista-analysis.html
   - text: "Tableau"
     href: tableau.html
+  - text: "ML/AI"
+    menu:
+    - text: "RMIT - Spam Classification"
+      href: RMIT-spam.html
   - text: "Presentation"
     menu:
-    - text: "RMIT - A/B testing"
-      href: RMIT-AB-testing.html
+    - text: "A/B testing"
+      href: ab-testing.html
     - text: "Rise and Slide of Python"
       href: rise-slide-of-python.html
     - text: "Macbeth and Mariam - text comparison"
