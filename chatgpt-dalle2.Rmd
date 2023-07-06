@@ -16,7 +16,7 @@ Similarly with coding - at times ChatGPT is a great help, and at other times is 
 
 #### Getting ready
 
-Get Open AI Key - you'll need to set up a developer account to access the API key:
+Get OpenAI Key - you'll need to set up a developer account to create your personal API key:
 
 - [https://platform.openai.com/overview](https://platform.openai.com/overview){target="_blank"}
 
