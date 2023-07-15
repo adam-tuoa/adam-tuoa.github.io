@@ -498,8 +498,8 @@ Dziuban and Mary Mark Ockerbloom. From this site, I copied and pasted
 the entire text into a plain text document (CSV).</p>
 <pre class="r"><code># Load Mariam
 mariam &lt;- read_csv(&quot;The Tragedie of Mariam.csv&quot;, show_col_types = FALSE)</code></pre>
-<pre><code>## Warning: One or more parsing issues, call `problems()`
-## on your data frame for details, e.g.:
+<pre><code>## Warning: One or more parsing issues, call `problems()` on
+## your data frame for details, e.g.:
 ##   dat &lt;- vroom(...)
 ##   problems(dat)</code></pre>
 <pre class="r"><code># Check dataset
@@ -635,7 +635,7 @@ And we will get to that problem.</p>
 ## )
 ## 
 ## $problems
-## &lt;pointer: 0x7ff01586be60&gt;
+## &lt;pointer: 0x7fad808b40a0&gt;
 ## 
 ## $class
 ## [1] &quot;spec_tbl_df&quot; &quot;tbl_df&quot;      &quot;tbl&quot;         &quot;data.frame&quot;</code></pre>
@@ -1087,17 +1087,13 @@ pivot_pair &lt;- c(&quot;lady macbeth&quot;, &quot;doris&quot;)
 df_token %&gt;% 
   word_frequency_compare(characters) %&gt;% 
   plot_frequency_compare(y_character, pivot_pair)</code></pre>
-<pre><code>## Warning: Use of `dataframe[[y_character]]` is
-## discouraged.
+<pre><code>## Warning: Use of `dataframe[[y_character]]` is discouraged.
 ## ℹ Use `.data[[y_character]]` instead.
-## Use of `dataframe[[y_character]]` is
-## discouraged.
+## Use of `dataframe[[y_character]]` is discouraged.
 ## ℹ Use `.data[[y_character]]` instead.
-## Use of `dataframe[[y_character]]` is
-## discouraged.
+## Use of `dataframe[[y_character]]` is discouraged.
 ## ℹ Use `.data[[y_character]]` instead.
-## Use of `dataframe[[y_character]]` is
-## discouraged.
+## Use of `dataframe[[y_character]]` is discouraged.
 ## ℹ Use `.data[[y_character]]` instead.</code></pre>
 <pre><code>## Warning: Removed 7786 rows containing missing values
 ## (`geom_point()`).</code></pre>
@@ -1114,17 +1110,13 @@ pivot_pair &lt;- c(&quot;lady macbeth&quot;, &quot;doris&quot;)
 df_no_stopwords %&gt;% 
   word_frequency_compare(characters) %&gt;% 
   plot_frequency_compare(y_character, pivot_pair)</code></pre>
-<pre><code>## Warning: Use of `dataframe[[y_character]]` is
-## discouraged.
+<pre><code>## Warning: Use of `dataframe[[y_character]]` is discouraged.
 ## ℹ Use `.data[[y_character]]` instead.
-## Use of `dataframe[[y_character]]` is
-## discouraged.
+## Use of `dataframe[[y_character]]` is discouraged.
 ## ℹ Use `.data[[y_character]]` instead.
-## Use of `dataframe[[y_character]]` is
-## discouraged.
+## Use of `dataframe[[y_character]]` is discouraged.
 ## ℹ Use `.data[[y_character]]` instead.
-## Use of `dataframe[[y_character]]` is
-## discouraged.
+## Use of `dataframe[[y_character]]` is discouraged.
 ## ℹ Use `.data[[y_character]]` instead.</code></pre>
 <pre><code>## Warning: Removed 7552 rows containing missing values
 ## (`geom_point()`).</code></pre>
