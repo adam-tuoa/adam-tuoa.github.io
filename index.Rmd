@@ -11,10 +11,7 @@ title: "Welcome"
 
 I've always been into numbers, technology and problem-solving, whether in bookkeeping, grant writing, social network research, music, sculpture or arts administration. 
 
-
-Since 2021, I've been developing technical data skills in Python, R, SQL, Tableau and Excel -- and a little in NVivo and Power BI. I was a successful applicant to the Victorian Digital Jobs Program, which gave me 12 weeks training at RMIT Online, followed by a 12-week placement at KPMG in their Policy, Economics and Public Impact group, where I contributed data solutions on a range of projects for my team. 
-
-I've just completed my Grad Cert of Data Science at RMIT Online (June 2023), utilising Python (Jupyter Notebook) and R (RStudio).
+Examples of data analysis in my musical exploits include 2015's _100:25:1_ project involving social network analysis, as well as in my research and advocacy for the Australian jazz scene at state and federal levels. Since 2021, I've developed technical data skills in Python, R, SQL, Tableau, Power BI, Neo4j and Excel, working in major professional service consultancies, GHD and KPMG, as well as project-based work for The Music Place, Celsius Design and University of Melbourne research.
 
 Here you'll find examples of my projects:
 
