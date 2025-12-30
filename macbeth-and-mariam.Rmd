@@ -829,6 +829,8 @@ Johnston M, Robinson D (2022). *gutenbergr: Download and Process Public Domain W
 
 Müller K (2020) *here: A Simpler Way to Find Your Files*, R package version 1.0.1. <https://CRAN.R-project.org/package=here>
 
+Müller K, Wickham H (2025). *tibble: Simple Data Frames*. R package version 3.3.1, <https://tibble.tidyverse.org/>.
+
 Bache S, Wickham H (2022) *magrittr: A Forward-Pipe Operator for R*, R package version 2.0.3. <https://CRAN.R-project.org/package=magrittr>
 
 Silge J, Robinson D (2016) *tidytext: Text Mining and Analysis Using Tidy Data Principles in R.* JOSS, 1(3). <doi:10.21105/joss.00037> <https://doi.org/10.21105/joss.00037>

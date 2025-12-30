@@ -17,6 +17,7 @@ Here you'll find examples of my projects:
 
 - **Python** -- [data wrangling and analysis](employee-retention.html), [visualisation, presentation and forecasting](vista-analysis.html)
 - **R** -- [data wrangling and analysis](statistical-data-analysis.html), [statistical theory and methods](stats-and-probability-with-r.html), [machine learning, linear regression and forecasting](ab-testing.html)
+- **Power BI** -- [interactive dashboard](pbi-student-performance.html) that got me a job
 - **Shiny app** -- [interactive web app](shiny-tco-app.html) built with R
 - **Tableau** -- interactive visualisations of [sales reports/forecasting](tableau.html#puri), [investment advice](tableau.html#aircom), [government cultural funding](tableau.html#govt-arts) and [Spotify metrics](tableau.html#spotify)
 - **ML/AI** -- machine learning for [spam classification](spam-classification.html) and a Python script to access [ChatGPT and DALL-E 2](chatgpt-dalle2.html) in Jupyter Notebook

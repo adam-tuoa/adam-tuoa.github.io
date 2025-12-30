@@ -4,30 +4,26 @@ navbar:
   title: "Adam Simmons"
   href: index.html
   left:
-  - text: "About me"
+  - text: "About"
     href: about.html
-  - text: R programming
+  - text: "Dashboards & Reports"
     menu:
+    - text: "Power BI - Student Performance"
+      href: pbi-student-performance.html
     - text: "Shiny app - Tolling Customer Ombudsman"
       href: shiny-tco-app.html
-    - text: "Statistical Analysis - demographic data"
-      href: statistical-data-analysis.html 
-    - text: "Stats & Probability with R - 5 questions"
-      href: stats-and-probability-with-r.html
-  - text: "Python programming"
-    menu:
+    - text: "Tableau - various"
+      href: tableau.html
     - text: "Employee retention analysis"
       href: employee-retention.html
     - text: "VISTA survey analysis"
       href: vista-analysis.html
-  - text: "Tableau"
-    href: tableau.html
-  - text: "ML/AI"
+  - text: Statistical Analysis
     menu:
-    - text: "Spam Classification"
-      href: spam-classification.html
-    - text: "ChapGPT & DALL-E 2 with Python"
-      href: chatgpt-dalle2.html
+    - text: "Statistical Analysis - demographic data"
+      href: statistical-data-analysis.html 
+    - text: "Stats & Probability with R - 5 questions"
+      href: stats-and-probability-with-r.html
   - text: "Presentation"
     menu:
     - text: "A/B testing"
@@ -36,6 +32,12 @@ navbar:
       href: rise-slide-of-python.html
     - text: "Macbeth and Mariam - text comparison"
       href: macbeth-and-mariam.html
+  - text: "ML/AI"
+    menu:
+    - text: "Spam Classification"
+      href: spam-classification.html
+    - text: "ChapGPT & DALL-E 2 with Python"
+      href: chatgpt-dalle2.html
   - text: "Other"
     href: other-projects.html
   - text: "Resume"
