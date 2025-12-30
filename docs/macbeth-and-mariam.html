@@ -393,6 +393,7 @@ library(here)</code></pre>
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>library(magrittr)
+library(tibble)
 library(tidyr)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;tidyr&#39;</code></pre>
@@ -452,31 +453,38 @@ gutenberg_works() %&gt;%
 ## 1         1533 Macbeth Shakesp…                  65 en       Opera              
 ## # ℹ 2 more variables: rights &lt;chr&gt;, has_text &lt;lgl&gt;</code></pre>
 <pre class="r"><code># Download MacBeth
-macbeth &lt;-gutenberg_download(1533, mirror = &quot;http://aleph.gutenberg.org&quot;)
+# Updated/superceded: macbeth &lt;-gutenberg_download(1533, mirror = &quot;https://gutenberg.pglaf.org/&quot;)
+# New method to download directly, instead of via mirror which no longer worked. 
+# Adds `gutenberg_id` to match original method - though this is not actually required - see below. 
+macbeth &lt;- tibble(
+  gutenberg_id = 1533L,
+  text = read_lines(&quot;https://www.gutenberg.org/ebooks/1533.txt.utf-8&quot;)
+)
+
 # Check dataset
 macbeth %&gt;% head()</code></pre>
 <pre><code>## # A tibble: 6 × 2
-##   gutenberg_id text     
-##          &lt;int&gt; &lt;chr&gt;    
-## 1         1533 &quot;cover &quot; 
-## 2         1533 &quot;&quot;       
-## 3         1533 &quot;&quot;       
-## 4         1533 &quot;&quot;       
-## 5         1533 &quot;&quot;       
-## 6         1533 &quot;MACBETH&quot;</code></pre>
+##   gutenberg_id text                                                             
+##          &lt;int&gt; &lt;chr&gt;                                                            
+## 1         1533 &quot;The Project Gutenberg eBook of Macbeth&quot;                         
+## 2         1533 &quot;    &quot;                                                           
+## 3         1533 &quot;This ebook is for the use of anyone anywhere in the United Stat…
+## 4         1533 &quot;most other parts of the world at no cost and with almost no res…
+## 5         1533 &quot;whatsoever. You may copy it, give it away or re-use it under th…
+## 6         1533 &quot;of the Project Gutenberg License included with this ebook or on…</code></pre>
 <p>This is just the beginning of the play’s text, so let’s check further
 down:</p>
 <pre class="r"><code># View random six rows
 macbeth[2001:2006, ]</code></pre>
 <pre><code>## # A tibble: 6 × 2
-##   gutenberg_id text                                
-##          &lt;int&gt; &lt;chr&gt;                               
-## 1         1533 &quot;But who did bid thee join with us?&quot;
-## 2         1533 &quot;&quot;                                  
-## 3         1533 &quot;THIRD MURDERER.&quot;                   
-## 4         1533 &quot;Macbeth.&quot;                          
-## 5         1533 &quot;&quot;                                  
-## 6         1533 &quot;SECOND MURDERER.&quot;</code></pre>
+##   gutenberg_id text                                              
+##          &lt;int&gt; &lt;chr&gt;                                             
+## 1         1533 &quot;&quot;                                                
+## 2         1533 &quot;MACBETH.&quot;                                        
+## 3         1533 &quot;Be innocent of the knowledge, dearest chuck,&quot;    
+## 4         1533 &quot;Till thou applaud the deed. Come, seeling night,&quot;
+## 5         1533 &quot;Scarf up the tender eye of pitiful day,&quot;         
+## 6         1533 &quot;And with thy bloody and invisible hand&quot;</code></pre>
 <p><br></p>
 </div>
 <div id="the-tragedie-of-mariam-the-faire-queene-of-jewry"
@@ -498,8 +506,7 @@ Dziuban and Mary Mark Ockerbloom. From this site, I copied and pasted
 the entire text into a plain text document (CSV).</p>
 <pre class="r"><code># Load Mariam
 mariam &lt;- read_csv(&quot;The Tragedie of Mariam.csv&quot;, show_col_types = FALSE)</code></pre>
-<pre><code>## Warning: One or more parsing issues, call `problems()` on
-## your data frame for details, e.g.:
+<pre><code>## Warning: One or more parsing issues, call `problems()` on your data frame for details, e.g.:
 ##   dat &lt;- vroom(...)
 ##   problems(dat)</code></pre>
 <pre class="r"><code># Check dataset
@@ -544,7 +551,7 @@ datasets.</p>
 cat(&quot;macbeth:\n&quot;)</code></pre>
 <pre><code>## macbeth:</code></pre>
 <pre class="r"><code>macbeth %&gt;% dim()</code></pre>
-<pre><code>## [1] 4168    2</code></pre>
+<pre><code>## [1] 4545    2</code></pre>
 <pre class="r"><code>cat(&quot;\nmariam:\n&quot;)</code></pre>
 <pre><code>## 
 ## mariam:</code></pre>
@@ -554,9 +561,9 @@ cat(&quot;macbeth:\n&quot;)</code></pre>
 cat(&quot;macbeth:\n&quot;)</code></pre>
 <pre><code>## macbeth:</code></pre>
 <pre class="r"><code>macbeth %&gt;% str()</code></pre>
-<pre><code>## tibble [4,168 × 2] (S3: tbl_df/tbl/data.frame)
-##  $ gutenberg_id: int [1:4168] 1533 1533 1533 1533 1533 1533 1533 1533 1533 1533 ...
-##  $ text        : chr [1:4168] &quot;cover &quot; &quot;&quot; &quot;&quot; &quot;&quot; ...</code></pre>
+<pre><code>## tibble [4,545 × 2] (S3: tbl_df/tbl/data.frame)
+##  $ gutenberg_id: int [1:4545] 1533 1533 1533 1533 1533 1533 1533 1533 1533 1533 ...
+##  $ text        : chr [1:4545] &quot;The Project Gutenberg eBook of Macbeth&quot; &quot;    &quot; &quot;This ebook is for the use of anyone anywhere in the United States and&quot; &quot;most other parts of the world at no cost and with almost no restrictions&quot; ...</code></pre>
 <pre class="r"><code>cat(&quot;\nmariam:\n&quot;)</code></pre>
 <pre><code>## 
 ## mariam:</code></pre>
@@ -581,7 +588,7 @@ variables:</p>
 <li><code>text</code> - character/string</li>
 </ul>
 <p>The first identifies the play, while the second is the play’s text
-split by line into 4168 rows.</p>
+split by line into 4545 rows.</p>
 </div>
 <div id="attributes" class="section level4">
 <h4>Attributes</h4>
@@ -594,7 +601,7 @@ confirming we are working with a tibble class dataframe</p>
 ## $row.names
 ##  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
 ## [26] 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
-##  [ reached getOption(&quot;max.print&quot;) -- omitted 4118 entries ]
+##  [ reached getOption(&quot;max.print&quot;) -- omitted 4495 entries ]
 ## 
 ## $names
 ## [1] &quot;gutenberg_id&quot; &quot;text&quot;</code></pre>
@@ -635,7 +642,7 @@ And we will get to that problem.</p>
 ## )
 ## 
 ## $problems
-## &lt;pointer: 0x7fad808b40a0&gt;
+## &lt;pointer: 0x7fdc5180ce50&gt;
 ## 
 ## $class
 ## [1] &quot;spec_tbl_df&quot; &quot;tbl_df&quot;      &quot;tbl&quot;         &quot;data.frame&quot;</code></pre>
@@ -753,14 +760,14 @@ from both plays:</p>
 <pre class="r"><code># show top and tail of the merged dataset
 df %&gt;% head()</code></pre>
 <pre><code>## # A tibble: 6 × 4
-##   title   text      character line_number
-##   &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;           &lt;int&gt;
-## 1 Macbeth &quot;cover &quot;  &lt;NA&gt;                1
-## 2 Macbeth &quot;&quot;        &lt;NA&gt;                2
-## 3 Macbeth &quot;&quot;        &lt;NA&gt;                3
-## 4 Macbeth &quot;&quot;        &lt;NA&gt;                4
-## 5 Macbeth &quot;&quot;        &lt;NA&gt;                5
-## 6 Macbeth &quot;MACBETH&quot; MACBETH             6</code></pre>
+##   title   text                                             character line_number
+##   &lt;chr&gt;   &lt;chr&gt;                                            &lt;chr&gt;           &lt;int&gt;
+## 1 Macbeth &quot;The Project Gutenberg eBook of Macbeth&quot;         &lt;NA&gt;                1
+## 2 Macbeth &quot;    &quot;                                           &lt;NA&gt;                2
+## 3 Macbeth &quot;This ebook is for the use of anyone anywhere i… &lt;NA&gt;                3
+## 4 Macbeth &quot;most other parts of the world at no cost and w… &lt;NA&gt;                4
+## 5 Macbeth &quot;whatsoever. You may copy it, give it away or r… &lt;NA&gt;                5
+## 6 Macbeth &quot;of the Project Gutenberg License included with… &lt;NA&gt;                6</code></pre>
 <pre class="r"><code>df %&gt;% tail()</code></pre>
 <pre><code>## # A tibble: 6 × 4
 ##   title                  text                              character line_number
@@ -785,7 +792,7 @@ df &lt;- df[-(6388:6391),]
 df &lt;- df[-(4057:4197),]</code></pre>
 <p>We have our merged dataset containing the complete texts of
 <em>Macbeth</em> and <em>The Tragedie of Mariam</em>, a tibble of 4
-columns and 6266 rows.</p>
+columns and 6643 rows.</p>
 <p>Now, let’s begin the real fun!</p>
 <hr />
 <p><br></p>
@@ -815,21 +822,21 @@ df_token &lt;- df %&gt;% unnest_tokens(word, text)
 df_token$character %&lt;&gt;% str_to_lower() 
 
 df_token %&gt;%  str()</code></pre>
-<pre><code>## tibble [35,469 × 4] (S3: tbl_df/tbl/data.frame)
-##  $ title      : chr [1:35469] &quot;Macbeth&quot; &quot;Macbeth&quot; &quot;Macbeth&quot; &quot;Macbeth&quot; ...
-##  $ character  : chr [1:35469] &quot;hecate&quot; &quot;hecate&quot; &quot;hecate&quot; &quot;hecate&quot; ...
-##  $ line_number: int [1:35469] 94 94 94 94 94 94 94 94 94 94 ...
-##  $ word       : chr [1:35469] &quot;scene&quot; &quot;in&quot; &quot;the&quot; &quot;end&quot; ...</code></pre>
+<pre><code>## tibble [38,816 × 4] (S3: tbl_df/tbl/data.frame)
+##  $ title      : chr [1:38816] &quot;Macbeth&quot; &quot;Macbeth&quot; &quot;Macbeth&quot; &quot;Macbeth&quot; ...
+##  $ character  : chr [1:38816] &quot;angus&quot; &quot;angus&quot; &quot;angus&quot; &quot;angus&quot; ...
+##  $ line_number: int [1:38816] 93 93 93 93 94 94 94 94 95 95 ...
+##  $ word       : chr [1:38816] &quot;angus&quot; &quot;nobleman&quot; &quot;of&quot; &quot;scotland&quot; ...</code></pre>
 <pre class="r"><code>df_token %&gt;% head()</code></pre>
 <pre><code>## # A tibble: 6 × 4
-##   title   character line_number word 
-##   &lt;chr&gt;   &lt;chr&gt;           &lt;int&gt; &lt;chr&gt;
-## 1 Macbeth hecate             94 scene
-## 2 Macbeth hecate             94 in   
-## 3 Macbeth hecate             94 the  
-## 4 Macbeth hecate             94 end  
-## 5 Macbeth hecate             94 of   
-## 6 Macbeth hecate             94 the</code></pre>
+##   title   character line_number word     
+##   &lt;chr&gt;   &lt;chr&gt;           &lt;int&gt; &lt;chr&gt;    
+## 1 Macbeth angus              93 angus    
+## 2 Macbeth angus              93 nobleman 
+## 3 Macbeth angus              93 of       
+## 4 Macbeth angus              93 scotland 
+## 5 Macbeth caithness          94 caithness
+## 6 Macbeth caithness          94 nobleman</code></pre>
 <pre class="r"><code>df_token %&gt;% tail()</code></pre>
 <pre><code>## # A tibble: 6 × 4
 ##   title                  character line_number word      
@@ -840,7 +847,7 @@ df_token %&gt;%  str()</code></pre>
 ## 4 The Tragedie of Mariam chorus           2335 mary      
 ## 5 The Tragedie of Mariam chorus           2335 mark      
 ## 6 The Tragedie of Mariam chorus           2335 ockerbloom</code></pre>
-<p>We have a tidy tibble with 35469 words, complete with removal of all
+<p>We have a tidy tibble with 38816 words, complete with removal of all
 additional punctuation and conversion of all words to lower case.</p>
 <hr />
 <p><br></p>
@@ -897,7 +904,7 @@ correct data types. Next to check the values themselves.</p>
 <pre class="r"><code># Check for NA values
 colSums(is.na(df_token))</code></pre>
 <pre><code>##       title        word   character      gender line_number 
-##           0           0           0           0           0</code></pre>
+##           0           0         215           0           0</code></pre>
 </div>
 <div id="inconsistenceserrors" class="section level4">
 <h4>Inconsistences/Errors</h4>
@@ -912,7 +919,7 @@ colSums(is.na(df_token))</code></pre>
 ## Macbeth The Tragedie of Mariam
 ## 
 ## character :
-## alexander angus annanell antipater babus first sonne babus second sonne banquo bu caithness chorus constabarus doctor donalbain doris duncan first witch fleance gentlewoman graphina hecate herod lady macbeth lady macduff lennox lords macbeth macduff malcolm mariam menteith messenger nuntio old man pheroras porter ross salome second witch seyton sillius siward sohemus soldier third witch young siward
+## alexander angus annanell antipater babus first sonne babus second sonne banquo boy bu caithness chorus constabarus doctor donalbain doris duncan first witch fleance gentlewoman graphina hecate herod lady macbeth lady macduff lennox lords macbeth macduff malcolm mariam menteith messenger nuntio old man pheroras porter ross salome second witch seyton sillius siward sohemus soldier third witch young siward
 ## 
 ## gender :
 ## female male undefined</code></pre>
@@ -941,10 +948,11 @@ df_check_end &lt;- df_token[str_detect(df_token$word, &quot;$[^A-Za-z]$&quot;), 
 # print list of relevant values
 cat(paste(&quot;Begins/ends with non-alpha:\n&quot;, unique(df_check_start)))</code></pre>
 <pre><code>## Begins/ends with non-alpha:
-##  c(&quot;i&quot;, &quot;_exeunt&quot;, &quot;a&quot;, &quot;o&quot;, &quot;_exit&quot;, &quot;_tiger&quot;, &quot;_drum&quot;, &quot;_witches&quot;, &quot;_aside&quot;, &quot;_to&quot;, &quot;_flourish&quot;, &quot;v&quot;, &quot;_a&quot;, &quot;_within&quot;, &quot;_looking&quot;, &quot;_knocking&quot;, &quot;_opens&quot;, &quot;_alarum&quot;, &quot;_lady&quot;, &quot;c&quot;, &quot;_assaults&quot;, &quot;_dies&quot;, &quot;_ghost&quot;, &quot;_music&quot;, &quot;t&quot;, &quot;_thunder&quot;, &quot;_descends&quot;, &quot;_hautboys&quot;, &quot;_stabbing&quot;, &quot;_they&quot;, &quot;2&quot;, &quot;1&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;æthiopian&quot;, &quot;s&quot;, &quot;j&quot;, &quot;u&quot;, &quot;w&quot;)</code></pre>
+##  c(&quot;a&quot;, &quot;i&quot;, &quot;_exeunt&quot;, &quot;o&quot;, &quot;_exit&quot;, &quot;_tiger&quot;, &quot;_drum&quot;, &quot;_witches&quot;, &quot;_aside&quot;, &quot;_to&quot;, &quot;_flourish&quot;, &quot;v&quot;, &quot;_a&quot;, &quot;_within&quot;, &quot;_looking&quot;, &quot;_knocking&quot;, &quot;_opens&quot;, &quot;_alarum&quot;, &quot;_lady&quot;, &quot;c&quot;, &quot;_assaults&quot;, &quot;_dies&quot;, &quot;_ghost&quot;, &quot;_music&quot;, &quot;t&quot;, &quot;_thunder&quot;, &quot;_descends&quot;, &quot;_hautboys&quot;, &quot;_stabbing&quot;, &quot;_they&quot;, &quot;1&quot;, &quot;e&quot;, &quot;2&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;20&quot;, &quot;60&quot;, &quot;30&quot;, &quot;s&quot;, &quot;f&quot;, &quot;90&quot;, &quot;b&quot;, &quot;2001&quot;, &quot;501&quot;, &quot;64&quot;, &quot;6221541&quot;, &quot;809&quot;, &quot;1500&quot;, &quot;84116&quot;, &quot;801&quot;, &quot;596&quot;, &quot;1887&quot;, &quot;5,000&quot;, &quot;50&quot;, &quot;1585&quot;, &quot;1639&quot;, &quot;1613&quot;, &quot;æthiopian&quot;, 
+## &quot;j&quot;, &quot;u&quot;, &quot;w&quot;)</code></pre>
 <p>A few things to address:</p>
 <ul>
-<li>remove preceding underscore character (“_“)</li>
+<li>remove preceding underscore character (“_”)</li>
 <li>replace unusual “æ” character - and here we are: I believe this is
 the culprit behind the “problems” warning with
 <code>read_csv</code>.</li>
@@ -979,21 +987,21 @@ regrouped to get the frequency for each word:</p>
   arrange(desc(n)) 
 
 df_no_stopwords</code></pre>
-<pre><code>## # A tibble: 10,210 × 5
-##    title                  word    gender    character        n
-##    &lt;chr&gt;                  &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;        &lt;int&gt;
-##  1 Macbeth                macbeth undefined macbeth        158
-##  2 Macbeth                macbeth female    lady macbeth    63
-##  3 Macbeth                macduff undefined macduff         62
-##  4 Macbeth                lady    female    lady macbeth    59
-##  5 The Tragedie of Mariam herod   male      herod           58
-##  6 The Tragedie of Mariam thou    male      herod           54
-##  7 Macbeth                thou    undefined macbeth         40
-##  8 The Tragedie of Mariam thy     male      herod           40
-##  9 Macbeth                malcolm male      malcolm         39
-## 10 The Tragedie of Mariam mariam  male      herod           39
-## # ℹ 10,200 more rows</code></pre>
-<p>This has reduced the overall number of rows to 10210 though keep in
+<pre><code>## # A tibble: 10,943 × 5
+##    title                  word        gender    character        n
+##    &lt;chr&gt;                  &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;        &lt;int&gt;
+##  1 Macbeth                &quot;macbeth&quot;   undefined macbeth        158
+##  2 Macbeth                &quot;&quot;          undefined macbeth         67
+##  3 Macbeth                &quot;macbeth&quot;   female    lady macbeth    64
+##  4 Macbeth                &quot;macduff&quot;   undefined macduff         61
+##  5 Macbeth                &quot;lady&quot;      female    lady macbeth    60
+##  6 The Tragedie of Mariam &quot;herod&quot;     male      herod           59
+##  7 Macbeth                &quot;gutenberg&quot; undefined macbeth         58
+##  8 Macbeth                &quot;project&quot;   undefined macbeth         58
+##  9 The Tragedie of Mariam &quot;thou&quot;      male      herod           54
+## 10 Macbeth                &quot;thou&quot;      undefined macbeth         40
+## # ℹ 10,933 more rows</code></pre>
+<p>This has reduced the overall number of rows to 10943 though keep in
 mind a word may be in more than one row in this dataframe relating to
 different instances of title, gender and character.</p>
 <p>The most frequent word in this list is “Macbeth” connected to
@@ -1047,6 +1055,7 @@ class="section level4">
 proportion</p>
 <p>Creating functions for creating table and scatter plotting:</p>
 <pre class="r"><code>#compare_character_word_freq &lt;- function(characters)
+
 word_frequency_compare &lt;- function (dataframe, characters)
 { frequency &lt;- dataframe %&gt;% 
   filter (character %in% characters) %&gt;% 
@@ -1095,10 +1104,8 @@ df_token %&gt;%
 ## ℹ Use `.data[[y_character]]` instead.
 ## Use of `dataframe[[y_character]]` is discouraged.
 ## ℹ Use `.data[[y_character]]` instead.</code></pre>
-<pre><code>## Warning: Removed 7786 rows containing missing values
-## (`geom_point()`).</code></pre>
-<pre><code>## Warning: Removed 7786 rows containing missing values
-## (`geom_text()`).</code></pre>
+<pre><code>## Warning: Removed 8904 rows containing missing values (`geom_point()`).</code></pre>
+<pre><code>## Warning: Removed 8906 rows containing missing values (`geom_text()`).</code></pre>
 <p><img src="macbeth-and-mariam_files/figure-html/unnamed-chunk-34-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p><br></p>
 <p><strong>With stopwords removed</strong></p>
@@ -1118,10 +1125,8 @@ df_no_stopwords %&gt;%
 ## ℹ Use `.data[[y_character]]` instead.
 ## Use of `dataframe[[y_character]]` is discouraged.
 ## ℹ Use `.data[[y_character]]` instead.</code></pre>
-<pre><code>## Warning: Removed 7552 rows containing missing values
-## (`geom_point()`).</code></pre>
-<pre><code>## Warning: Removed 7552 rows containing missing values
-## (`geom_text()`).</code></pre>
+<pre><code>## Warning: Removed 8573 rows containing missing values (`geom_point()`).</code></pre>
+<pre><code>## Warning: Removed 8575 rows containing missing values (`geom_text()`).</code></pre>
 <p><img src="macbeth-and-mariam_files/figure-html/unnamed-chunk-35-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p><br></p>
 </div>
@@ -1140,14 +1145,14 @@ create_ngrams &lt;- function (dataframe, n=2)
 <pre class="r"><code>df_bigrams &lt;- create_ngrams(df, 2)
 df_bigrams %&gt;% head()</code></pre>
 <pre><code>## # A tibble: 6 × 4
-##   title   character line_number words   
-##   &lt;chr&gt;   &lt;chr&gt;           &lt;int&gt; &lt;chr&gt;   
-## 1 Macbeth HECATE             93 &lt;NA&gt;    
-## 2 Macbeth HECATE             94 scene in
-## 3 Macbeth HECATE             94 in the  
-## 4 Macbeth HECATE             94 the end 
-## 5 Macbeth HECATE             94 end of  
-## 6 Macbeth HECATE             94 of the</code></pre>
+##   title   character line_number words             
+##   &lt;chr&gt;   &lt;chr&gt;           &lt;int&gt; &lt;chr&gt;             
+## 1 Macbeth ANGUS              93 angus nobleman    
+## 2 Macbeth ANGUS              93 nobleman of       
+## 3 Macbeth ANGUS              93 of scotland       
+## 4 Macbeth CAITHNESS          94 caithness nobleman
+## 5 Macbeth CAITHNESS          94 nobleman of       
+## 6 Macbeth CAITHNESS          94 of scotland</code></pre>
 <p><strong>Frequency of bigrams for <em>Macbeth</em>:</strong></p>
 <pre class="r"><code>df_bigrams %&gt;% 
   filter(!df_bigrams$words %in% stop_words$word) %&gt;% 
@@ -1156,14 +1161,14 @@ df_bigrams %&gt;% head()</code></pre>
   arrange(desc(n)) %&gt;% 
   head()</code></pre>
 <pre><code>## # A tibble: 6 × 3
-##   title   words            n
-##   &lt;chr&gt;   &lt;chr&gt;        &lt;int&gt;
-## 1 Macbeth &lt;NA&gt;          1433
-## 2 Macbeth lady macbeth    70
-## 3 Macbeth i have          40
-## 4 Macbeth in the          36
-## 5 Macbeth to the          35
-## 6 Macbeth of the          30</code></pre>
+##   title   words                 n
+##   &lt;chr&gt;   &lt;chr&gt;             &lt;int&gt;
+## 1 Macbeth &lt;NA&gt;               1471
+## 2 Macbeth lady macbeth         72
+## 3 Macbeth of the               54
+## 4 Macbeth to the               49
+## 5 Macbeth project gutenberg    47
+## 6 Macbeth i have               40</code></pre>
 <p><strong>Frequency of bigrams for <em>Mariam</em>:</strong></p>
 <pre class="r"><code>df_bigrams %&gt;% 
   filter(!df_bigrams$words %in% stop_words$word) %&gt;% 
@@ -1174,12 +1179,12 @@ df_bigrams %&gt;% head()</code></pre>
 <pre><code>## # A tibble: 6 × 3
 ##   title                  words        n
 ##   &lt;chr&gt;                  &lt;chr&gt;    &lt;int&gt;
-## 1 The Tragedie of Mariam to be       37
-## 2 The Tragedie of Mariam i will      20
-## 3 The Tragedie of Mariam i am        19
-## 4 The Tragedie of Mariam it is       19
-## 5 The Tragedie of Mariam my heart    19
-## 6 The Tragedie of Mariam &lt;NA&gt;        18</code></pre>
+## 1 The Tragedie of Mariam to be       38
+## 2 The Tragedie of Mariam &lt;NA&gt;        24
+## 3 The Tragedie of Mariam i will      20
+## 4 The Tragedie of Mariam my heart    20
+## 5 The Tragedie of Mariam i am        19
+## 6 The Tragedie of Mariam it is       19</code></pre>
 <p>Note - these are tested with the pre-tokenised dataframe
 (<code>df</code>), which explains the null values, as well as the
 outlier value for “lady macbeth”. To address this, the dataframe will

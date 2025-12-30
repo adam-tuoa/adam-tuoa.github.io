@@ -6,22 +6,28 @@ April 20, 2023
 
 <center>
 
-<div style="padding:40% 0 0 0;position:relative;">
-<iframe src="https://player.vimeo.com/video/819290988?badge=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;speed=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;" title="RMIT Data Wrangling Ass3 - s4001341"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+::: {style="padding:40% 0 0 0;position:relative;"}
+<iframe src="https://player.vimeo.com/video/819290988?badge=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;speed=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;" title="RMIT Data Wrangling Ass3 - s4001341">
 
+</iframe>
+:::
+
+```{=html}
+<script src="https://player.vimeo.com/api/player.js"></script>
+```
 </center>
 
 <br>
 
-For my third and final RMIT Data Wrangling assignment, we had to compare two datasets with some exploratory analysis. Having done a little mixed-methods research at KPMG with NVivo, but no text analysis in Python or R as yet,I chose two texts as my datasets. Or to be specific, two plays: _Macbeth_ by William Shakespeare and _The Tragedie of Mariam, faire queene of Jewry_ by Elizabeth Carey, both 16-17th century contemporaries. 
+For my third and final RMIT Data Wrangling assignment, we had to compare two datasets with some exploratory analysis. Having done a little mixed-methods research at KPMG with NVivo, but no text analysis in Python or R as yet,I chose two texts as my datasets. Or to be specific, two plays: *Macbeth* by William Shakespeare and *The Tragedie of Mariam, faire queene of Jewry* by Elizabeth Carey, both 16-17th century contemporaries.
 
-Approaching it from the place of the play being a "dataset" and how to fit it to Tidy Data principles, helped identify variables, values (words) and factors, such as title, gender, characters and acts/scenes (which were out of my scope here due to time and space). I'm increasingly thinking of how things would be broken down similarly in other everyday situations. 
+Approaching it from the place of the play being a "dataset" and how to fit it to Tidy Data principles, helped identify variables, values (words) and factors, such as title, gender, characters and acts/scenes (which were out of my scope here due to time and space). I'm increasingly thinking of how things would be broken down similarly in other everyday situations.
 
-One challenge I identify is that the language of both writers is quite different in spelling - to progress beyond the scope of this report would require this to be addressed for proper comparison. Though even in this preliminary form, I believe there are some potentially interesting insights. Overall, it was a fascinating shift of thinking, applying familiar skills with a different approach. 
+One challenge I identify is that the language of both writers is quite different in spelling - to progress beyond the scope of this report would require this to be addressed for proper comparison. Though even in this preliminary form, I believe there are some potentially interesting insights. Overall, it was a fascinating shift of thinking, applying familiar skills with a different approach.
 
 <br>
 
-Below is the R code used for the data wrangling, transformation, analysis and visualisations. 
+Below is the R code used for the data wrangling, transformation, analysis and visualisations.
 
 <br>
 
@@ -37,6 +43,7 @@ library (readr)
 library(here)
 library(dplyr)
 library(magrittr)
+library(tibble)
 library(tidyr)
 library(tidytext)
 library(stringr)
@@ -48,27 +55,27 @@ options(max.print=50)
 
 ```
 
-***
+------------------------------------------------------------------------
 
 <br>
 
 ## 1. Data Description
 
-For this project, two texts will be processed in preparation for a comparative text analysis with consideration of gender. The two plays are by 17th century contemporaries. One is considered "the greatest dramatist of all time as well as the most influential writer in the history of the English language" (EB 2020), while the other never saw her play performed in her lifetime, she does have the distinction of having written the first known play published by a woman (Braganza 2022). And both plays happen to involve murderous royalty.  
+For this project, two texts will be processed in preparation for a comparative text analysis with consideration of gender. The two plays are by 17th century contemporaries. One is considered "the greatest dramatist of all time as well as the most influential writer in the history of the English language" (EB 2020), while the other never saw her play performed in her lifetime, she does have the distinction of having written the first known play published by a woman (Braganza 2022). And both plays happen to involve murderous royalty.
 
--   _Macbeth_ - William Shakespeare (1623)*
--   _The Tragedie of Mariam, faire queene of Jewry_ - Elizabeth Carey (1613) 
+-   *Macbeth* - William Shakespeare (1623)\*
+-   *The Tragedie of Mariam, faire queene of Jewry* - Elizabeth Carey (1613)
 
 The intended result of this process will be a dataset that combines the text from both plays in a Tidy Data format, ready for exploratory data analysis.
 
 The preparation will identify variables for extraction, creation or transformation. With gender as a key focus, the variables will be selected for aiding the focus of the analysis.
 
-* Macbeth is said to have been written around 1606 (EB 2022), though was first published in 1623 (Mowat and Werstine n.d.)
+-   Macbeth is said to have been written around 1606 (EB 2022), though was first published in 1623 (Mowat and Werstine n.d.)
 
 ### 1.1 Macbeth
 
-Use Project Gutenberger R library to identify and access Macbeth:
-<br>
+Use Project Gutenberger R library to identify and access Macbeth: <br>
+
 ```{r}
 
 # Find Project Gutenberger ID for Macbeth
@@ -79,10 +86,18 @@ gutenberg_works() %>%
 
 ```
 
+
 ```{r}
 
 # Download MacBeth
-macbeth <-gutenberg_download(1533, mirror = "http://aleph.gutenberg.org")
+# Updated/superceded: macbeth <-gutenberg_download(1533, mirror = "https://gutenberg.pglaf.org/")
+# New method to download directly, instead of via mirror which no longer worked. 
+# Adds `gutenberg_id` to match original method - though this is not actually required - see below. 
+macbeth <- tibble(
+  gutenberg_id = 1533L,
+  text = read_lines("https://www.gutenberg.org/ebooks/1533.txt.utf-8")
+)
+
 # Check dataset
 macbeth %>% head()
 
@@ -96,7 +111,6 @@ This is just the beginning of the play's text, so let's check further down:
 macbeth[2001:2006, ]
 
 ```
-
 
 <br>
 
@@ -137,16 +151,15 @@ mariam[2001:2006, ]
 
 Now the plays are loaded, before merging them it will be necessary to inspect each dataset more carefully and ensure that data from each play will be identifiable as such.
 
-
-***
+------------------------------------------------------------------------
 
 <br>
 
 ## 2. Understand
 
-To start, let's look at the overall dimensions and structure in terms of variables and data types. 
+To start, let's look at the overall dimensions and structure in terms of variables and data types.
 
-From here on, _Macbeth_ and _Mariam_ will refer to the plays; `macbeth` and `mariam` for their respective datasets.
+From here on, *Macbeth* and *Mariam* will refer to the plays; `macbeth` and `mariam` for their respective datasets.
 
 ```{r}
 
@@ -183,7 +196,7 @@ The first identifies the play, while the second is the play's text split by line
 
 #### Attributes
 
-Here are the attributes of the `macbeth` dataset, confirming we are working with a tibble class dataframe 
+Here are the attributes of the `macbeth` dataset, confirming we are working with a tibble class dataframe
 
 ```{r}
 
@@ -199,12 +212,11 @@ From above (2.0), we can see that Mariam has one variable:
 
 -   `A Celebration of Women Writers` - character/string type
 
-This single column contains the play's text split by line into `r length(mariam[[1]])`
-rows.
+This single column contains the play's text split by line into `r length(mariam[[1]])` rows.
 
 #### Attributes
 
-Here are the attributes of the `macbeth` dataset. As it has been created by `readr::read_csv`, it is a `spec_tbl_df` which has additional specification. For all intents and purposes this has no impact on our use of this tibble subclass. It will become moot upon merging of the two datasets anyway. And we will get to that problem. 
+Here are the attributes of the `macbeth` dataset. As it has been created by `readr::read_csv`, it is a `spec_tbl_df` which has additional specification. For all intents and purposes this has no impact on our use of this tibble subclass. It will become moot upon merging of the two datasets anyway. And we will get to that problem.
 
 ```{r}
 
@@ -214,13 +226,11 @@ mariam %>% attributes()
 
 From these outputs on `macbeth` and `mariam`, it confirms the above in terms of size, variable names and that they are indeed of dataframe format, more specifically a tibble and tibble subclass (`spec_tbl_df`) respectively. Though `mariam` is lacking an identifier column, as well as column names/headers.
 
-
 ### 2.2.1 Create Character variable
 
-Curiously, this section was added later in the process, but is a necessary step right now in the process, in order to make things easier later on. 
+Curiously, this section was added later in the process, but is a necessary step right now in the process, in order to make things easier later on.
 
 For the purposes of ascribing gender to the use of each word, a variable based on the character's names will be created. The initial formatting - uppercase and punctuation - of both works makes it possible to differentiate speakers/characters from the use of their names in speech.
-
 
 ```{r}
 
@@ -271,7 +281,7 @@ mariam <- add_mariam_character(mariam, mariam_names)
 
 ```
 
-What has just been done is the creation of a new `character` name column, corresponding to any row where the correctly formatted character name has been added. Now, what remains to be done is "fill down" for each name found in this new column - with some cleaning required of the character names in `mariam`.   
+What has just been done is the creation of a new `character` name column, corresponding to any row where the correctly formatted character name has been added. Now, what remains to be done is "fill down" for each name found in this new column - with some cleaning required of the character names in `mariam`.
 
 ```{r}
 
@@ -301,7 +311,7 @@ What is required is for either this column to be replicated in `mariam` or to re
 
 To be clean about it - let's remove the `gutenberg_id` column and create a new column for each dataset. Then a straightforward join by stacking one dataset on top of the other (row binding) will result in our merged dataset.
 
-An added `line_number` column will be added so that cross-referencing with the original text sources can be easily done.  
+An added `line_number` column will be added so that cross-referencing with the original text sources can be easily done.
 
 From 2.2, it was noted `mariam` requires a column name change. This will be rectified now also.
 
@@ -329,8 +339,7 @@ df <- rbind(macbeth, mariam) %>% select("title", "text", "character", "line_numb
 
 ```
 
-A quick check of the top and and tail of the dataset should show text
-from both plays:
+A quick check of the top and and tail of the dataset should show text from both plays:
 
 ```{r}
 
@@ -355,13 +364,11 @@ df <- df[-(4057:4197),]
 
 ```
 
-
-We have our merged dataset containing the complete texts of _Macbeth_ and _The Tragedie of Mariam_, a tibble of 4 columns and `r length(df[[1]])` rows. 
+We have our merged dataset containing the complete texts of *Macbeth* and *The Tragedie of Mariam*, a tibble of 4 columns and `r length(df[[1]])` rows.
 
 Now, let's begin the real fun!
 
-***
-
+------------------------------------------------------------------------
 
 <br>
 
@@ -373,12 +380,11 @@ Firstly, we need to conform the data to Tidy Data principles as it fails to comp
 
 -   each variable has its own column - play title, text, character and line number
 
-But, the `text` column contains combinations of values rather than each having their own cell. Each value needs to be a single word only, corresponding to the observation of said value. 
+But, the `text` column contains combinations of values rather than each having their own cell. Each value needs to be a single word only, corresponding to the observation of said value.
 
-_[NOTE: I did get this wrong in the video - this has been updated since that recording]_
+*[NOTE: I did get this wrong in the video - this has been updated since that recording]*
 
 Tokenisation will be the method used to achieve this.
-
 
 ```{r}
 
@@ -396,17 +402,16 @@ df_token %>% tail()
 
 We have a tidy tibble with `r length(df_token$word)` words, complete with removal of all additional punctuation and conversion of all words to lower case.
 
-
-***
+------------------------------------------------------------------------
 
 <br>
-
 
 ## 4. Tidy & Manipulate Data II
 
 Now to create additional variables by extracting them from data variable we have so far - and we've done one already!
 
 ### Characters and Gender
+
 The endpoint of this pre-processing is being able to ascribe gender to each observation. For this it will be necessary to identify the speaker. It was at this point I realised that generating the character variable would be far easier prior to tokenisation and even before joining the two initial datasets. Section 2.2.1 is where I travelled back in time to insert the creation of the character variable into this process.
 
 Creating the gender category is based on indications from the introduction for each play. Without intent to offend or exclude, a binary approach has been taken for this report's categorisation.
@@ -431,6 +436,7 @@ df_token %<>% mutate(gender = case_when(character %in% male_chars ~ "male",
 ### Create Factors
 
 For the categorical variables - `title`, `character`, `gender` - these will be converted to factors, which will aid further analysis and visualisation.
+
 ```{r}
 
 #Convert to factors
@@ -440,11 +446,9 @@ df_token$gender <- as.factor(df_token$gender)
 
 ```
 
-
-***
+------------------------------------------------------------------------
 
 <br>
-
 
 ## 5. Scan I
 
@@ -461,7 +465,6 @@ colSums(is.na(df_token))
 
 ```
 
-
 #### Inconsistences/Errors
 
 Double-checking factors are correct:
@@ -475,12 +478,11 @@ for (variable in c("title", "character", "gender"))
 }
 ```
 
-There will be no great benefit in checking for spelling errors given the nature of the old style of English, especially with _Mariam_, which also has a "flexible" approach to spelling anyway. This difference in language will impact some conventional text analysis techniques without further transformation of the data, such as lemmatisation, or converting to modern spelling, both of which are beyond the scope of this report. 
+There will be no great benefit in checking for spelling errors given the nature of the old style of English, especially with *Mariam*, which also has a "flexible" approach to spelling anyway. This difference in language will impact some conventional text analysis techniques without further transformation of the data, such as lemmatisation, or converting to modern spelling, both of which are beyond the scope of this report.
 
-***
+------------------------------------------------------------------------
 
 <br>
-
 
 ## 6. Scan II
 
@@ -499,12 +501,13 @@ df_check_end <- df_token[str_detect(df_token$word, "$[^A-Za-z]$"), ] %>% select(
 cat(paste("Begins/ends with non-alpha:\n", unique(df_check_start)))
 
 ```
-A few things to address: 
 
-- remove preceding underscore character ("_") 
-- replace unusual "æ" character - and here we are: I believe this is the culprit behind the "problems" warning with `read_csv`.
-- remove all digits - numbers are not useful in this kind of text analysis and are largely line numbers from the source
-- single letters - this should be addressed by the following "stopwords" step.
+A few things to address:
+
+-   remove preceding underscore character ("\_")
+-   replace unusual "æ" character - and here we are: I believe this is the culprit behind the "problems" warning with `read_csv`.
+-   remove all digits - numbers are not useful in this kind of text analysis and are largely line numbers from the source
+-   single letters - this should be addressed by the following "stopwords" step.
 
 ```{r}
 
@@ -517,8 +520,7 @@ df_token$word %<>% str_remove_all("^[:digit:]$")
 
 ```
 
-
-***
+------------------------------------------------------------------------
 
 <br>
 
@@ -526,7 +528,7 @@ df_token$word %<>% str_remove_all("^[:digit:]$")
 
 ### 7.1 Remove stopwords / Word frequency
 
-For considering word frequency, a good practice is to remove "stopwords", which are a group of commonly used words - "a", "the", "but", "about" - that when removed can help reduce the level of noise to reveal those more meaningful words. 
+For considering word frequency, a good practice is to remove "stopwords", which are a group of commonly used words - "a", "the", "but", "about" - that when removed can help reduce the level of noise to reveal those more meaningful words.
 
 At this step, stopwords will be removed and then the dataframe regrouped to get the frequency for each word:
 
@@ -543,11 +545,11 @@ df_no_stopwords
 
 ```
 
-This has reduced the overall number of rows to `r length(df_no_stopwords[[1]])` though keep in mind a word may be in more than one row in this dataframe relating to different instances of title, gender and character. 
+This has reduced the overall number of rows to `r length(df_no_stopwords[[1]])` though keep in mind a word may be in more than one row in this dataframe relating to different instances of title, gender and character.
 
-The most frequent word in this list is "Macbeth" connected to "Macbeth. This highlights a flaw in my methodology for creating the `character` variable based on the appearance of the character's name in the text (albeit in capitalised form in the first instance). This number (n) will include all of the matched instances referring to Macbeth's lines. 
+The most frequent word in this list is "Macbeth" connected to "Macbeth. This highlights a flaw in my methodology for creating the `character` variable based on the appearance of the character's name in the text (albeit in capitalised form in the first instance). This number (n) will include all of the matched instances referring to Macbeth's lines.
 
-Another issue of note is the presence of Old English words like "thou" and "thy". In modern English, "you" and "your" would be removed by a regular stopwords list, but they do not account for Old English. Compounding the issue, is the fact that Cary's approach to spelling might be described as flexible at best. Further work could be undertaken to address these issues to standardise the texts (as one option). 
+Another issue of note is the presence of Old English words like "thou" and "thy". In modern English, "you" and "your" would be removed by a regular stopwords list, but they do not account for Old English. Compounding the issue, is the fact that Cary's approach to spelling might be described as flexible at best. Further work could be undertaken to address these issues to standardise the texts (as one option).
 
 So, irrespective of these foreseeable and rectifiable flaws, the dataset is prepared for exploring word frequency in regard to comparison by title, gender and/or character.
 
@@ -564,6 +566,7 @@ barplot_word_freq <- function (dataframe, num=30)
 <br>
 
 #### Word frequency bar plots for both titles
+
 ```{r fig.height = 2, fig.width=6, fig.align = "center"}
 
 df_no_stopwords %>% 
@@ -579,6 +582,7 @@ df_no_stopwords %>%
 <br>
 
 #### Word frequency bar plots for gender (male/female):
+
 ```{r fig.height = 2, fig.width=6, fig.align = "center"}
  
 df_no_stopwords %>% 
@@ -598,6 +602,7 @@ Creating functions for creating table and scatter plotting:
 ```{r fig.height = 4, fig.width=6, fig.align = "center"}
 
 #compare_character_word_freq <- function(characters)
+
 word_frequency_compare <- function (dataframe, characters)
 { frequency <- dataframe %>% 
   filter (character %in% characters) %>% 
@@ -627,11 +632,14 @@ plot_frequency_compare <- function (dataframe, y_character, pivot_pair)
   theme(legend.position="none") +
   labs(y = "Macbeth", x = NULL)
 }
+
+
 ```
 
 #### Word frequency scatter plots for comparison of character word usage:
 
 **All words (including stopwords)**
+
 ```{r fig.height = 7, fig.width=10, fig.align = "center"}
 
 characters <- c("lady macbeth", "doris", "macbeth", "herod")
@@ -647,6 +655,7 @@ df_token %>%
 <br>
 
 **With stopwords removed**
+
 ```{r fig.height = 7, fig.width=10, fig.align = "center"}
 
 characters <- c("lady macbeth", "doris", "macbeth", "herod", "banquo")
@@ -664,8 +673,7 @@ df_no_stopwords %>%
 
 #### Bigram/ngrams
 
-An example of the dataset being used for generating ngrams - groups of _n_ words appearing together.
-Here is a function to generate them based on _n_ words:
+An example of the dataset being used for generating ngrams - groups of *n* words appearing together. Here is a function to generate them based on *n* words:
 
 ```{r}
 #Function - create ngram of different numbers 
@@ -677,13 +685,15 @@ create_ngrams <- function (dataframe, n=2)
 ```
 
 **Creating bigrams (words in pairs):**
+
 ```{r}
 df_bigrams <- create_ngrams(df, 2)
 df_bigrams %>% head()
 
 ```
 
-**Frequency of bigrams for _Macbeth_:** 
+**Frequency of bigrams for *Macbeth*:**
+
 ```{r}
 
 df_bigrams %>% 
@@ -695,7 +705,8 @@ df_bigrams %>%
 
 ```
 
-**Frequency of bigrams for _Mariam_:** 
+**Frequency of bigrams for *Mariam*:**
+
 ```{r}
 
 df_bigrams %>% 
@@ -707,37 +718,38 @@ df_bigrams %>%
 
 ```
 
-Note - these are tested with the pre-tokenised dataframe (`df`), which explains the null values, as well as the outlier value for "lady macbeth". To address this, the dataframe will need to be processed slightly differently, though largely a matter of changing the order, not the methods.  
+Note - these are tested with the pre-tokenised dataframe (`df`), which explains the null values, as well as the outlier value for "lady macbeth". To address this, the dataframe will need to be processed slightly differently, though largely a matter of changing the order, not the methods.
 
-***
+------------------------------------------------------------------------
 
 <br>
 
 ## 8. Reflective journal
 
 ### Concept
+
 I went into this project with the intention of presenting myself a challenge but was unsure of the direction to go. Two things helped clarify my decision to undertake this text-based project:
 
-- a job application I undertook that required a critical response to a massive collection of structured, but seemingly chaotic data with long strings of unknown codes, symbols, URLS, names and places
-- the opportunity to delve into something to complement and expand on the more numerical/date-focused wrangling skills developed in this subject and that I have applied in my final Data Visualisation assignment during this same teaching period. 
+-   a job application I undertook that required a critical response to a massive collection of structured, but seemingly chaotic data with long strings of unknown codes, symbols, URLS, names and places
+-   the opportunity to delve into something to complement and expand on the more numerical/date-focused wrangling skills developed in this subject and that I have applied in my final Data Visualisation assignment during this same teaching period.
 
-I started with Shakespeare's _Macbeth_ as a seemingly obvious start - available, significant and a work I am familiar with in a range of variations, including an Australian rock opera and Akira Kurosawa's adaptation in _Throne of Blood_. I had thought to do another of Shakespeare's works, but then I wondered: might there be a female author who was a contemporary of Shakespeare's? And certainly, there was: Elizabeth Cary, who may be less well-known but not without her own significance as the first known published female playwright, with a work coincidentally with similar themes to Macbeth. This helped meaningfully underpin the project's concept to be the foundation for a gender-focused comparative text analysis of the two works.
+I started with Shakespeare's *Macbeth* as a seemingly obvious start - available, significant and a work I am familiar with in a range of variations, including an Australian rock opera and Akira Kurosawa's adaptation in *Throne of Blood*. I had thought to do another of Shakespeare's works, but then I wondered: might there be a female author who was a contemporary of Shakespeare's? And certainly, there was: Elizabeth Cary, who may be less well-known but not without her own significance as the first known published female playwright, with a work coincidentally with similar themes to Macbeth. This helped meaningfully underpin the project's concept to be the foundation for a gender-focused comparative text analysis of the two works.
 
 ### Getting started
 
-At first, I scribbled and sketched out possibilities for different features and how they could be used for analytical purposes, with consideration for the assignment's requirements. The latter was helpful in pushing me in directions I may have not explored otherwise. 
+At first, I scribbled and sketched out possibilities for different features and how they could be used for analytical purposes, with consideration for the assignment's requirements. The latter was helpful in pushing me in directions I may have not explored otherwise.
 
-I'm learning that RMarkdown offers an easy way to create a framework for a project with flexibility to adapt - Jupyter Notebook also, though with differences. Starting with the template as a helpful base, I populated the document with my questions, aims, tasks and ideas which helped give focus and direction when straying down coding tunnels. 
+I'm learning that RMarkdown offers an easy way to create a framework for a project with flexibility to adapt - Jupyter Notebook also, though with differences. Starting with the template as a helpful base, I populated the document with my questions, aims, tasks and ideas which helped give focus and direction when straying down coding tunnels.
 
 ### Cleaning/Tidying
 
 This was a good example of the 80/20 rule - I'm sure I spent all of that 80% and more on the cleaning/wrangling side of things, though the focus here is on the pre-processing anyway. At first, it felt it may be on the easy side in some ways; how hard can it be to start with only two columns in the beginning? But yes, it's all about what features are waiting to be extracted from the data.
 
-I was confused by the `spec_tbl_df` subclass of tibble generated by reading in _Mariam_, and unsure of what problem there might be from the CSV file reading. It was all fine in the end, but it showed the importance of checking not just shape and size, but also the nature of R objects. A problem did pop up after I used `str_trim` which converted the tibble into a Large list, though easily converted back again.
+I was confused by the `spec_tbl_df` subclass of tibble generated by reading in *Mariam*, and unsure of what problem there might be from the CSV file reading. It was all fine in the end, but it showed the importance of checking not just shape and size, but also the nature of R objects. A problem did pop up after I used `str_trim` which converted the tibble into a Large list, though easily converted back again.
 
 ### Creation/Transformation
 
-One thing I got stuck on was how to create the new character variable and matching by name, especially for the `mariam` dataset. I am unsure of why it was so difficult - I tried a range of functions and approaches using `group_by, mutate, filter, case_when`, various stringr functions such as `str_detect, str_match` and so on, until finally finding a solution I could work with. One issue was the need to deal with periods (".") but I wonder if it was the `spec_tbl_df` subclass also? Anyway, I got there. A positive learning outcome is that having a mindset based on knowing there _will_ be a solution makes it easier to keep looking for it.
+One thing I got stuck on was how to create the new character variable and matching by name, especially for the `mariam` dataset. I am unsure of why it was so difficult - I tried a range of functions and approaches using `group_by, mutate, filter, case_when`, various stringr functions such as `str_detect, str_match` and so on, until finally finding a solution I could work with. One issue was the need to deal with periods (".") but I wonder if it was the `spec_tbl_df` subclass also? Anyway, I got there. A positive learning outcome is that having a mindset based on knowing there *will* be a solution makes it easier to keep looking for it.
 
 My method of variable creation is unfortunately flawed by design. As Iused the mention of each speaker from the original text to assign a new variable in the same row, that means those mentions are included also as words spoken by the speaker, incorrectly skewing their frequency of use. With the limits of time for this report, I have not yet addressed this issue, though I have considered potential solutions such as at the time of creating the `character` variable, the corresponding `text` value would be assigned a null value, making removal easy through a filter process, using `is.na` for instance.
 
@@ -747,27 +759,25 @@ My original design included extracting features based on the play structure also
 
 Many and varied!! Trying to distill them into a few points:
 
-- **Organisation/Planning**
-    + I am enjoying developing better habits for organising my work, which is coming from different impetuses. The assignments and their requirements are helping lead by example, and also working with RStudio/RMarkdown as tools that streamline and support workflow has been a positive contribution towards my work during this teaching period. 
-
-- **Conceptual**
-    + Learning about Tidy Data principles has been invaluable in how to conceive approaching a dataset such as a play, to consider from first principles on how to identify features and create a structural framework upon which to build. Seeing how this is applied in practice through my recent and final Data Visualisation assignment has helped to clarify how this conceptual approach feeds directly into practical application.  
-
-- **Adaptability**
-    + There is no one way - but there will be a way. As I'm problem-solving, I'm always remembering that there is a good chance someone has probably faced a similar issue and I can see from the Tidyverse tools that there is a strong commitment to supporting the R community. It is also about the adaptability of the skills we are learning that I'm enjoying - approaching numerical or text datasets with similar skillsets and principles is helping me to go into a new project with a greater feeling of having a foundation to build from. 
-    + In the instance of extracting character and gender variables, it became obvious I needed to adapt my plan and do this prior to merging the data sets. Fortunately, it was easy to insert this into my pipeline without undoing other work I had done. Aiming for a methodical approach that allows for flexibility when change becomes necessary has helped me in this case. And not being afraid to change tack when required!
+-   **Organisation/Planning**
+    -   I am enjoying developing better habits for organising my work, which is coming from different impetuses. The assignments and their requirements are helping lead by example, and also working with RStudio/RMarkdown as tools that streamline and support workflow has been a positive contribution towards my work during this teaching period.
+-   **Conceptual**
+    -   Learning about Tidy Data principles has been invaluable in how to conceive approaching a dataset such as a play, to consider from first principles on how to identify features and create a structural framework upon which to build. Seeing how this is applied in practice through my recent and final Data Visualisation assignment has helped to clarify how this conceptual approach feeds directly into practical application.
+-   **Adaptability**
+    -   There is no one way - but there will be a way. As I'm problem-solving, I'm always remembering that there is a good chance someone has probably faced a similar issue and I can see from the Tidyverse tools that there is a strong commitment to supporting the R community. It is also about the adaptability of the skills we are learning that I'm enjoying - approaching numerical or text datasets with similar skillsets and principles is helping me to go into a new project with a greater feeling of having a foundation to build from.
+    -   In the instance of extracting character and gender variables, it became obvious I needed to adapt my plan and do this prior to merging the data sets. Fortunately, it was easy to insert this into my pipeline without undoing other work I had done. Aiming for a methodical approach that allows for flexibility when change becomes necessary has helped me in this case. And not being afraid to change tack when required!
 
 ### Finally
 
 At the end of this report, there is still work to be done, namely:
 
-- removal of non-spoken words from the word list to eliminate skewing the data due to unnecessary presence of character names
-- address difference in spelling through transformational methods such as lemmatisation and modernisation 
-- adjust stopwords list to account for Old English usage 
+-   removal of non-spoken words from the word list to eliminate skewing the data due to unnecessary presence of character names
+-   address difference in spelling through transformational methods such as lemmatisation and modernisation
+-   adjust stopwords list to account for Old English usage
 
-Though, I trust this project works as a "proof of concept", offering the foundation for a gender-focused comparative analysis of the works by Shakespeare and Cary. 
+Though, I trust this project works as a "proof of concept", offering the foundation for a gender-focused comparative analysis of the works by Shakespeare and Cary.
 
-***
+------------------------------------------------------------------------
 
 <br>
 
@@ -775,68 +785,65 @@ Though, I trust this project works as a "proof of concept", offering the foundat
 
 The video link of my walkthrough of this report is:
 
-- <https://vimeo.com/819290988>
+-   <https://vimeo.com/819290988>
 
+------------------------------------------------------------------------
 
-
-
-***
-***
+------------------------------------------------------------------------
 
 <br>
-
 
 ## References
 
 **Main data source**
 
-Shakespeare W (1623) , _Macbeth_, Project Gutenberg. <https://www.gutenberg.org/ebooks/1533>
+Shakespeare W (1623) , *Macbeth*, Project Gutenberg. <https://www.gutenberg.org/ebooks/1533>
 
-Cary E (1613) _The Tragedie of Mariam, the faire queene of Jewry_, A Celebration of Women Writers website, accessed 17 April 2023. <https://digital.library.upenn.edu/women/cary/mariam/mariam.html>
+Cary E (1613) *The Tragedie of Mariam, the faire queene of Jewry*, A Celebration of Women Writers website, accessed 17 April 2023. <https://digital.library.upenn.edu/women/cary/mariam/mariam.html>
 
 **References**
 
-Agrawal R (14 June 2021) _Must Known Techniques for text preprocessing in NLP_, Analytics Vidhya website, accessed 18 April 2023. <https://www.analyticsvidhya.com/blog/2021/06/must-known-techniques-for-text-preprocessing-in-nlp/>
+Agrawal R (14 June 2021) *Must Known Techniques for text preprocessing in NLP*, Analytics Vidhya website, accessed 18 April 2023. <https://www.analyticsvidhya.com/blog/2021/06/must-known-techniques-for-text-preprocessing-in-nlp/>
 
-Braganza V (22 June 2022) _10 Women Writing in the Time of Shakespeare_, website, accessed 17 April 2023. <https://www.mentalfloss.com/posts/women-writers-contemporary-with-shakespeare>
+Braganza V (22 June 2022) *10 Women Writing in the Time of Shakespeare*, website, accessed 17 April 2023. <https://www.mentalfloss.com/posts/women-writers-contemporary-with-shakespeare>
 
-Dempsey M (7 May 2010) _Regular expression "\^[a-zA-Z]" or "[^a-zA-Z]"_, Stack Overflow website, accessed 18 April 2023. <https://stackoverflow.com/questions/2790813/regular-expression-a-za-z-or-a-za-z>
+Dempsey M (7 May 2010) *Regular expression "\^[a-zA-Z]" or "[\^a-zA-Z]"*, Stack Overflow website, accessed 18 April 2023. <https://stackoverflow.com/questions/2790813/regular-expression-a-za-z-or-a-za-z>
 
-Mowat B and Werstine P (n.d.) _An Introduction to This Text: Macbeth_, Folger Shakespeare Library website, accessed 17 April 2023. <https://www.folger.edu/explore/shakespeares-works/macbeth/an-introduction-to-this-text>
+Mowat B and Werstine P (n.d.) *An Introduction to This Text: Macbeth*, Folger Shakespeare Library website, accessed 17 April 2023. <https://www.folger.edu/explore/shakespeares-works/macbeth/an-introduction-to-this-text>
 
-Silge J and Robinson S (2022) _Text Mining with R_, Text Mining with R website, accessed 17 April 2023. <https://www.tidytextmining.com>
+Silge J and Robinson S (2022) *Text Mining with R*, Text Mining with R website, accessed 17 April 2023. <https://www.tidytextmining.com>
 
-Rydberg-Cox J (n.d.) _Statistical Methods for Studying Literature Using R_, Daedalus: Projects in Digital Humanities website, accessed 17 April 2023. <https://www.chlt.org/StatisticalMethods/analyzing-literary-data.html>
+Rydberg-Cox J (n.d.) *Statistical Methods for Studying Literature Using R*, Daedalus: Projects in Digital Humanities website, accessed 17 April 2023. <https://www.chlt.org/StatisticalMethods/analyzing-literary-data.html>
 
-UQ (The University of Queensland) (6 April 2023) _Text mining & text analysis_, UQ website, accessed 17 April 2023. <https://guides.library.uq.edu.au/research-techniques/text-mining-analysis/preparing-text-for-analysis>
+UQ (The University of Queensland) (6 April 2023) *Text mining & text analysis*, UQ website, accessed 17 April 2023. <https://guides.library.uq.edu.au/research-techniques/text-mining-analysis/preparing-text-for-analysis>
 
-Tidyverse (27 December 2018) _readr 1.3.1_, Tidyverse website, accessed 17 April 2023. <https://www.tidyverse.org/blog/2018/12/readr-1-3-1/>
+Tidyverse (27 December 2018) *readr 1.3.1*, Tidyverse website, accessed 17 April 2023. <https://www.tidyverse.org/blog/2018/12/readr-1-3-1/>
 
-EB (Encyclopedia Britannica) (2020) (2 October 2020) _William Shakespeare’s Important Works_, EB website, accessed 18 April 2023. <https://www.britannica.com/summary/William-Shakespeares-Important-Works>
+EB (Encyclopedia Britannica) (2020) (2 October 2020) *William Shakespeare's Important Works*, EB website, accessed 18 April 2023. <https://www.britannica.com/summary/William-Shakespeares-Important-Works>
 
 <br>
 
 **R packages**
 
-Johnston M, Robinson D (2022). _gutenbergr: Download and Process Public Domain Works from Project Gutenberg_. R package version 0.2.3. <https://CRAN.R-project.org/package=gutenbergr>.
+Johnston M, Robinson D (2022). *gutenbergr: Download and Process Public Domain Works from Project Gutenberg*. R package version 0.2.3. <https://CRAN.R-project.org/package=gutenbergr>.
 
-Müller K (2020) _here: A Simpler Way to Find Your Files_, R package version 1.0.1. <https://CRAN.R-project.org/package=here>
+Müller K (2020) *here: A Simpler Way to Find Your Files*, R package version 1.0.1. <https://CRAN.R-project.org/package=here>
 
-Bache S, Wickham H (2022) _magrittr: A Forward-Pipe Operator for R_, R package version 2.0.3. <https://CRAN.R-project.org/package=magrittr>
+Bache S, Wickham H (2022) *magrittr: A Forward-Pipe Operator for R*, R package version 2.0.3. <https://CRAN.R-project.org/package=magrittr>
 
-Silge J, Robinson D (2016) _tidytext: Text Mining and Analysis Using Tidy Data Principles in R._ JOSS, 1(3). doi:10.21105/joss.00037 <https://doi.org/10.21105/joss.00037>
+Silge J, Robinson D (2016) *tidytext: Text Mining and Analysis Using Tidy Data Principles in R.* JOSS, 1(3). <doi:10.21105/joss.00037> <https://doi.org/10.21105/joss.00037>
 
-Wickham H (2022). _stringr: Simple, Consistent Wrappers for Common String Operations_, R package version 1.5.0. <https://CRAN.R-project.org/package=stringr>
+Wickham H (2022). *stringr: Simple, Consistent Wrappers for Common String Operations*, R package version 1.5.0. <https://CRAN.R-project.org/package=stringr>
 
-Wickham H, François R, Henry L, Müller K, Vaughan D (2023) _dplyr: A Grammar of Data Manipulation_, R package version 1.1.0. <https://CRAN.R-project.org/package=dplyr>
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023) *dplyr: A Grammar of Data Manipulation*, R package version 1.1.0. <https://CRAN.R-project.org/package=dplyr>
 
-Wickham H, Hester J, Bryan J (2023) _readr: Read Rectangular Text Data_, R package version 2.1.4. <https://CRAN.R-project.org/package=readr>
+Wickham H, Hester J, Bryan J (2023) *readr: Read Rectangular Text Data*, R package version 2.1.4. <https://CRAN.R-project.org/package=readr>
 
-Wickham H, Seidel D (2022) _scales: Scale Functions for Visualization_. R package version 1.2.1. <https://CRAN.R-project.org/package=scales>.
+Wickham H, Seidel D (2022) *scales: Scale Functions for Visualization*. R package version 1.2.1. <https://CRAN.R-project.org/package=scales>.
 
-Wickham H, Vaughan D, Girlich M (2023) _tidyr: Tidy Messy Data_, R package version 1.3.0. <https://CRAN.R-project.org/package=tidyr>
+Wickham H, Vaughan D, Girlich M (2023) *tidyr: Tidy Messy Data*, R package version 1.3.0. <https://CRAN.R-project.org/package=tidyr>
 
-Wickham H. (2016) _ggplot2: Elegant Graphics for Data Analysis_, Springer-Verlag New York.
+Wickham H. (2016) *ggplot2: Elegant Graphics for Data Analysis*, Springer-Verlag New York.
 
 Yihui X (2023) *knitr: A General-Purpose Package for Dynamic Report Generation in R*, R package version 1.42.
 
